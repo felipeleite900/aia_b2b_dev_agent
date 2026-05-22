@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: "2026-05-22"
-last_updated: "2026-05-22"  # updated by quick-dev (Stories 4.1-4.2 → review)
+last_updated: "2026-05-22"  # updated by quick-dev (Epic 5 governance assessments → review)
 project: ai_first_development
 project_key: NOKEY
 tracking_system: file-system
@@ -81,8 +81,8 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Governance & Compliance
-  epic-5: backlog
-  5-1-dep-review-assessment: backlog
-  5-2-dntl-data-classification: backlog
-  5-3-de-identification-standards-review: backlog
+  epic-5: in-progress
+  5-1-dep-review-assessment: review
+  5-2-dntl-data-classification: review
+  5-3-de-identification-standards-review: review
   epic-5-retrospective: optional
