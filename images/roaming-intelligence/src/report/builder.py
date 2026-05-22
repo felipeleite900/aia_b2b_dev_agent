@@ -56,6 +56,13 @@ def build_report(bq: BigQueryClient, config: ReportConfig) -> str:
         refresh_date=config.refresh_date,
     )
 
+    # Story 3.3: Country Overview
+    from src.report.sections.country_overview import generate_country_overview
+
+    sections["country-overview"] = generate_country_overview(
+        country_df=country_summary_df,
+    )
+
     html = template.render(
         refresh_date=config.refresh_date,
         sections=sections,
