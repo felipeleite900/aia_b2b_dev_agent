@@ -225,8 +225,17 @@ resources:
             - init:
                 assign:
                   - project_id: "${project}"
+                  - location: "${location}"
+                  - report_bucket: "${report_bucket}"
                   - refresh_date: null
                   - report_gcs_path: null
+            - read_gchat_secret:
+                call: googleapis.secretmanager.v1.projects.secrets.versions.accessRaw
+                args:
+                  secret_id: "${gchat_secret_id}"
+                  version: "latest"
+                  project_id: $${project_id}
+                result: gchat_url_secret
             - try_pipeline:
                 try:
                   steps:
@@ -275,12 +284,47 @@ resources:
                     - report_failed:
                         raise: $${"step6_generate_report failed with HTTP " + string(run_result.code)}
                     - pipeline_success:
+                        assign:
+                          - report_gcs_path: $${"gs://" + report_bucket + "/reports/" + string(sys.now().year) + "-" + text.right_pad(string(sys.now().month), 2, "0") + "-" + text.right_pad(string(sys.now().day - 1), 2, "0") + "/roaming-intelligence.html"}
+                    - notify_success:
+                        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+                        args:
+                          workflow_id: aia_gchat_workflow
+                          location: $${location}
+                          project_id: $${project_id}
+                          argument:
+                            url_secret: $${gchat_url_secret}
+                            workflow_name: "${process_nm}_workflow"
+                            message_title: "Pipeline completed successfully"
+                            message_description: $${"All 6 steps completed. Report: " + report_gcs_path}
+                    - return_success:
                         return:
                           status: "success"
                           steps_completed: 6
+                          report_path: $${report_gcs_path}
                 except:
                   as: e
                   steps:
+                    - notify_failure:
+                        try:
+                          call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+                          args:
+                            workflow_id: aia_gchat_workflow
+                            location: $${location}
+                            project_id: $${project_id}
+                            argument:
+                              url_secret: $${gchat_url_secret}
+                              workflow_name: "${process_nm}_workflow"
+                              message_title: "Pipeline FAILED"
+                              message_description: $${e.message}
+                        except:
+                          as: notify_err
+                          steps:
+                            - log_notify_error:
+                                call: sys.log
+                                args:
+                                  text: $${"gchat notification failed: " + notify_err.message}
+                                  severity: "WARNING"
                     - pipeline_failed:
                         return:
                           status: "failed"
