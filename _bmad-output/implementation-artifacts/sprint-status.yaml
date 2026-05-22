@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: "2026-05-22"
-last_updated: "2026-05-22"  # updated by quick-dev (Story 2.1 → review)
+last_updated: "2026-05-22"  # updated by quick-dev (Story 2.2 → review)
 project: ai_first_development
 project_key: NOKEY
 tracking_system: file-system
@@ -53,7 +53,7 @@ development_status:
   # Epic 2: Daily Quality Intelligence Pipeline
   epic-2: in-progress
   2-1-build-kpi-refresh-stored-procedure: review
-  2-2-build-composite-quality-score-stored-procedure: backlog
+  2-2-build-composite-quality-score-stored-procedure: review
   2-3-build-degradation-detection-stored-procedure: backlog
   2-4-build-data-quality-checks-stored-procedure: backlog
   2-5-build-curated-output-layer: backlog
