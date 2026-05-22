@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: "2026-05-22"
-last_updated: "2026-05-22"  # updated by quick-dev (Story 2.5 → review)
+last_updated: "2026-05-22"  # updated by quick-dev (Story 2.6 → review, Epic 2 complete)
 project: ai_first_development
 project_key: NOKEY
 tracking_system: file-system
@@ -57,7 +57,7 @@ development_status:
   2-3-build-degradation-detection-stored-procedure: review
   2-4-build-data-quality-checks-stored-procedure: review
   2-5-build-curated-output-layer: review
-  2-6-build-historical-backfill-procedure: backlog
+  2-6-build-historical-backfill-procedure: review
   epic-2-retrospective: optional
 
   # Epic 3: Interactive Report Generation & Distribution
