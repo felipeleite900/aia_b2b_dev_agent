@@ -117,6 +117,38 @@ def quality_log_df() -> pd.DataFrame:
     ])
 
 
+def carrier_quality_trend_df() -> pd.DataFrame:
+    """Sample 7-day trend data matching crt_mv_carrier_quality_trend schema."""
+    from datetime import date, timedelta
+
+    rows = []
+    base_date = date(2026, 5, 15)
+    # 3 carriers, 7 days each
+    for carrier in SAMPLE_CARRIERS[:3]:
+        country_map = {c["country_code"]: c["country_name"] for c in SAMPLE_COUNTRIES}
+        for day_offset in range(7):
+            d = base_date + timedelta(days=day_offset)
+            rows.append({
+                "refresh_date": d.isoformat(),
+                "country_name": country_map.get(carrier["country_code"], "Unknown"),
+                "country_code": carrier["country_code"],
+                "carrier_name": carrier["carrier_name"],
+                "mcc": carrier["mcc"],
+                "mnc": carrier["mnc"],
+                "kpi_latency_ms": 45.0 + day_offset * 0.5,
+                "kpi_throughput_kbps": 2500.0 - day_offset * 10,
+                "kpi_packet_loss_pct": 0.5 + day_offset * 0.05,
+                "kpi_session_success_pct": 98.0 - day_offset * 0.1,
+                "norm_latency": 85.0 - day_offset,
+                "norm_throughput": 80.0 - day_offset * 0.5,
+                "norm_packet_loss": 90.0 - day_offset,
+                "norm_session_success": 88.0 - day_offset * 0.3,
+                "composite_quality_score": 85.0 - day_offset * 0.5,
+                "degradation_flag": False,
+            })
+    return pd.DataFrame(rows)
+
+
 def quality_log_with_failure_df() -> pd.DataFrame:
     """Quality log with one failed check for testing."""
     return pd.DataFrame([

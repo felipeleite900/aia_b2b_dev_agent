@@ -63,6 +63,12 @@ def build_report(bq: BigQueryClient, config: ReportConfig) -> str:
         country_df=country_summary_df,
     )
 
+    # Story 3.5: Trend Charts
+    from src.report.sections.trend_charts import generate_trend_charts
+
+    trend_df = bq.query_carrier_quality_trend()
+    sections["trends"] = generate_trend_charts(trend_df=trend_df)
+
     # Story 3.4: Carrier Rankings
     from src.report.sections.carrier_rankings import generate_carrier_rankings
 
