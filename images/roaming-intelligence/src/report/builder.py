@@ -63,6 +63,13 @@ def build_report(bq: BigQueryClient, config: ReportConfig) -> str:
         country_df=country_summary_df,
     )
 
+    # Story 3.4: Carrier Rankings
+    from src.report.sections.carrier_rankings import generate_carrier_rankings
+
+    sections["carrier-rankings"] = generate_carrier_rankings(
+        carrier_df=carrier_summary_df,
+    )
+
     html = template.render(
         refresh_date=config.refresh_date,
         sections=sections,
