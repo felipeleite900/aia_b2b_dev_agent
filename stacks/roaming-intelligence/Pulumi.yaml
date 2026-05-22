@@ -1,0 +1,353 @@
+# Pulumi.yaml — International Roaming Intelligence
+# Forked from: telus/bi-layer-docs common_patterns/scheduled_bq_multi_step_stored_proc
+# Pattern: Monolithic stack with inline Cloud Workflows sourceContents
+# (source: infrastructure/cloud-workflows-orchestration.md §7)
+
+name: roaming-intelligence
+runtime: yaml
+description: >
+  Daily roaming intelligence pipeline — data refresh, KPI computation,
+  degradation detection, quality checks, curated output, and HTML report generation.
+  Scheduled weekdays 06:00 ET. Active in both bi-stg and bi-srv.
+
+config:
+  project:
+    type: string
+
+variables:
+  process_nm: roaming_intelligence
+  location: northamerica-northeast1
+  schedule: "0 6 * * 1-5"                      # Weekdays 06:00 ET
+  time_zone: America/Toronto
+  # Architecture decision: both envs active (diverges from standard stg-paused pattern)
+  pause_status: {% if PROJECT_TYPE == "bi-stg" -%} false {%- elif PROJECT_TYPE == "bi-srv" -%} false {%- else -%} {{ raise("Unknown PROJECT_TYPE: must be bi-stg or bi-srv") }} {%- endif %}
+
+  # GCS report output bucket — env-specific, configured in environment.j2
+  report_bucket: {{ report_bucket }}
+
+  # Cloud Run Job image — env-specific tag
+  report_image: {{ report_image }}
+
+  # gchat webhook secret for pipeline notifications
+  gchat_secret_id: {{ gchat_secret_id }}
+
+  # Stored procedure queries — step1 through step5
+  # (Implemented in subsequent stories — Epic 2)
+  step1_refresh_query: |
+    CALL `${project}.${process_nm}.sp_refresh_carrier_kpis`(CURRENT_DATE() - 1);
+  step2_compute_query: |
+    CALL `${project}.${process_nm}.sp_compute_composite_scores`(CURRENT_DATE() - 1);
+  step3_degradation_query: |
+    CALL `${project}.${process_nm}.sp_detect_degradation`(CURRENT_DATE() - 1);
+  step4_quality_query: |
+    CALL `${project}.${process_nm}.sp_run_quality_checks`(CURRENT_DATE() - 1);
+  step5_curate_query: |
+    CALL `${project}.${process_nm}.sp_curate_output`(CURRENT_DATE() - 1);
+
+resources:
+  # BigQuery dataset — single dataset for all tables
+  # Table definitions added in Story 1.4 (below)
+  default_dataset:
+    type: gcp:bigquery:Dataset
+    properties:
+      datasetId: ${process_nm}
+      location: ${location}
+      deleteContentsOnDestroy: false
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Story 1.4 — BigQuery Staging Tables
+  # ──────────────────────────────────────────────────────────────────────
+
+  stg_carrier_kpi_daily:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: stg_carrier_kpi_daily
+      deletionProtection: false
+      timePartitioning:
+        type: DAY
+        field: refresh_date
+      schema: |
+        [
+          {"name": "refresh_date",            "type": "DATE",    "mode": "NULLABLE"},
+          {"name": "country_name",            "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "country_code",            "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "carrier_name",            "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "mcc",                     "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "mnc",                     "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "is_steered",              "type": "BOOLEAN", "mode": "NULLABLE"},
+          {"name": "kpi_latency_ms",          "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "kpi_throughput_kbps",      "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "kpi_packet_loss_pct",      "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "kpi_session_success_pct",  "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "norm_latency",            "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "norm_throughput",          "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "norm_packet_loss",        "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "norm_session_success",    "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "traffic_volume_mb",       "type": "FLOAT",   "mode": "NULLABLE"},
+          {"name": "session_count",           "type": "INTEGER", "mode": "NULLABLE"},
+          {"name": "subscriber_count",        "type": "INTEGER", "mode": "NULLABLE"}
+        ]
+
+  stg_carrier_composite_daily:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: stg_carrier_composite_daily
+      deletionProtection: false
+      timePartitioning:
+        type: DAY
+        field: refresh_date
+      schema: |
+        [
+          {"name": "refresh_date",              "type": "DATE",   "mode": "NULLABLE"},
+          {"name": "country_name",              "type": "STRING", "mode": "NULLABLE"},
+          {"name": "country_code",              "type": "STRING", "mode": "NULLABLE"},
+          {"name": "carrier_name",              "type": "STRING", "mode": "NULLABLE"},
+          {"name": "mcc",                       "type": "STRING", "mode": "NULLABLE"},
+          {"name": "mnc",                       "type": "STRING", "mode": "NULLABLE"},
+          {"name": "composite_quality_score",   "type": "FLOAT",  "mode": "NULLABLE"}
+        ]
+
+  stg_carrier_degradation_daily:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: stg_carrier_degradation_daily
+      deletionProtection: false
+      timePartitioning:
+        type: DAY
+        field: refresh_date
+      schema: |
+        [
+          {"name": "refresh_date",        "type": "DATE",    "mode": "NULLABLE"},
+          {"name": "country_name",        "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "country_code",        "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "carrier_name",        "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "mcc",                 "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "mnc",                 "type": "STRING",  "mode": "NULLABLE"},
+          {"name": "degradation_flag",    "type": "BOOLEAN", "mode": "NULLABLE"},
+          {"name": "degradation_details", "type": "STRING",  "mode": "NULLABLE"}
+        ]
+
+  stg_data_quality_log:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: stg_data_quality_log
+      deletionProtection: false
+      timePartitioning:
+        type: DAY
+        field: refresh_date
+      schema: |
+        [
+          {"name": "refresh_date", "type": "DATE",      "mode": "NULLABLE"},
+          {"name": "step_name",    "type": "STRING",    "mode": "NULLABLE"},
+          {"name": "start_time",   "type": "TIMESTAMP", "mode": "NULLABLE"},
+          {"name": "end_time",     "type": "TIMESTAMP", "mode": "NULLABLE"},
+          {"name": "row_count",    "type": "INTEGER",   "mode": "NULLABLE"},
+          {"name": "status",       "type": "STRING",    "mode": "NULLABLE"},
+          {"name": "message",      "type": "STRING",    "mode": "NULLABLE"}
+        ]
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Story 1.4 — Reference Table
+  # ──────────────────────────────────────────────────────────────────────
+
+  ref_mcc_country:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: ref_mcc_country
+      deletionProtection: false
+      # No time partitioning — small reference table
+      schema: |
+        [
+          {"name": "mcc",          "type": "STRING", "mode": "NULLABLE"},
+          {"name": "country_name", "type": "STRING", "mode": "NULLABLE"},
+          {"name": "country_code", "type": "STRING", "mode": "NULLABLE"}
+        ]
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Story 1.4 — Curated View Placeholders (real queries in Epic 2)
+  # ──────────────────────────────────────────────────────────────────────
+
+  crt_mv_carrier_quality_summary:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: crt_mv_carrier_quality_summary
+      deletionProtection: false
+      view:
+        query: "SELECT 1 AS placeholder"
+        useLegacySql: false
+
+  crt_mv_country_quality_summary:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: crt_mv_country_quality_summary
+      deletionProtection: false
+      view:
+        query: "SELECT 1 AS placeholder"
+        useLegacySql: false
+
+  crt_mv_carrier_quality_trend:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: crt_mv_carrier_quality_trend
+      deletionProtection: false
+      view:
+        query: "SELECT 1 AS placeholder"
+        useLegacySql: false
+
+  crt_mv_carrier_usage_summary:
+    type: gcp:bigquery:Table
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      tableId: crt_mv_carrier_usage_summary
+      deletionProtection: false
+      view:
+        query: "SELECT 1 AS placeholder"
+        useLegacySql: false
+
+  # Cloud Workflows — 6-step pipeline
+  # (Step implementations added in Epic 2 and Epic 3)
+  pipeline_workflow:
+    type: gcp:workflows:Workflow
+    properties:
+      name: ${process_nm}_workflow
+      region: ${location}
+      sourceContents: |
+        main:
+          steps:
+            - init:
+                assign:
+                  - project_id: "${project}"
+                  - refresh_date: null
+                  - report_gcs_path: null
+            - try_pipeline:
+                try:
+                  steps:
+                    - step1_refresh_data:
+                        call: run_bq_proc
+                        args:
+                          project_id: $${project_id}
+                          query: "${step1_refresh_query}"
+                          step_name: "step1_refresh_data"
+                    - step2_compute_kpis:
+                        call: run_bq_proc
+                        args:
+                          project_id: $${project_id}
+                          query: "${step2_compute_query}"
+                          step_name: "step2_compute_kpis"
+                    - step3_detect_degradation:
+                        call: run_bq_proc
+                        args:
+                          project_id: $${project_id}
+                          query: "${step3_degradation_query}"
+                          step_name: "step3_detect_degradation"
+                    - step4_quality_checks:
+                        call: run_bq_proc
+                        args:
+                          project_id: $${project_id}
+                          query: "${step4_quality_query}"
+                          step_name: "step4_quality_checks"
+                    - step5_curate:
+                        call: run_bq_proc
+                        args:
+                          project_id: $${project_id}
+                          query: "${step5_curate_query}"
+                          step_name: "step5_curate"
+                    - step6_generate_report:
+                        call: http.post
+                        args:
+                          url: "https://${location}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${project}/jobs/${process_nm}-report:run"
+                          auth:
+                            type: OAuth2
+                        result: run_result
+                    - check_report_result:
+                        switch:
+                          - condition: $${run_result.code == 200}
+                            next: pipeline_success
+                        next: report_failed
+                    - report_failed:
+                        raise: $${"step6_generate_report failed with HTTP " + string(run_result.code)}
+                    - pipeline_success:
+                        return:
+                          status: "success"
+                          steps_completed: 6
+                except:
+                  as: e
+                  steps:
+                    - pipeline_failed:
+                        return:
+                          status: "failed"
+                          error: $${e.message}
+
+        run_bq_proc:
+          params:
+            - project_id
+            - query
+            - step_name
+          steps:
+            - submit_job:
+                call: googleapis.bigquery.v2.jobs.insert
+                args:
+                  projectId: $${project_id}
+                  body:
+                    configuration:
+                      query:
+                        query: $${query}
+                        useLegacySql: false
+                result: job_response
+            - poll_job:
+                call: googleapis.bigquery.v2.jobs.get
+                args:
+                  projectId: $${project_id}
+                  jobId: $${job_response.body.jobReference.jobId}
+                result: job_status
+            - check_done:
+                switch:
+                  - condition: $${job_status.body.status.state == "DONE"}
+                    next: check_errors
+                next: wait_and_poll
+            - wait_and_poll:
+                call: sys.sleep
+                args:
+                  seconds: 10
+                next: poll_job
+            - check_errors:
+                switch:
+                  - condition: $${"errorResult" in job_status.body.status}
+                    next: raise_error
+                return: $${job_status}
+            - raise_error:
+                raise: $${step_name + " failed: " + job_status.body.status.errorResult.message}
+
+  # Cloud Scheduler — daily trigger
+  pipeline_scheduler:
+    type: gcp:cloudscheduler:Job
+    properties:
+      name: ${process_nm}_trigger
+      schedule: ${schedule}
+      timeZone: ${time_zone}
+      paused: ${pause_status}
+      region: ${location}
+      httpTarget:
+        uri: https://workflowexecutions.googleapis.com/v1/projects/${project}/locations/${location}/workflows/${pipeline_workflow.name}/executions
+        httpMethod: POST
+        oauthToken:
+          serviceAccountEmail: {{ builder }}
+          scope: https://www.googleapis.com/auth/cloud-platform
+
+  # IAM — pipeline service account permissions
+  # Story 1.4 verified: dataEditor is scoped to the dataset via datasetId,
+  # which covers all tables and views created above. No additional IAM needed.
+  pipeline_sa_bq_editor:
+    type: gcp:bigquery:DatasetIamMember
+    properties:
+      datasetId: ${default_dataset.datasetId}
+      role: roles/bigquery.dataEditor
+      member: serviceAccount:{{ builder }}
