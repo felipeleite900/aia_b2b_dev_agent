@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: "2026-05-22"
-last_updated: "2026-05-22"  # updated by quick-dev (Story 3.2 → review)
+last_updated: "2026-05-22"  # updated by quick-dev (Stories 3.3-3.7 → review)
 project: ai_first_development
 project_key: NOKEY
 tracking_system: file-system
@@ -66,9 +66,9 @@ development_status:
   3-2-build-executive-summary-report-section: review
   3-3-build-country-overview-report-section: review
   3-4-build-carrier-rankings-report-section: review
-  3-5-build-trend-charts-report-section: in-progress
-  3-6-build-usage-analytics-report-section: backlog
-  3-7-build-data-quality-report-section: backlog
+  3-5-build-trend-charts-report-section: review
+  3-6-build-usage-analytics-report-section: review
+  3-7-build-data-quality-report-section: review
   3-8-build-gcs-upload-and-report-output: backlog
   epic-3-retrospective: optional
 

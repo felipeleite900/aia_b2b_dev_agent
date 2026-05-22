@@ -149,6 +149,32 @@ def carrier_quality_trend_df() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def carrier_usage_summary_df() -> pd.DataFrame:
+    """Sample carrier usage summary matching crt_mv_carrier_usage_summary schema."""
+    rows = []
+    country_map = {c["country_code"]: c["country_name"] for c in SAMPLE_COUNTRIES}
+
+    for i, c in enumerate(SAMPLE_CARRIERS):
+        traffic = 5000.0 - i * 200
+        total_traffic = sum(5000.0 - j * 200 for j in range(len(SAMPLE_CARRIERS)))
+        share = traffic / total_traffic * 100
+        rows.append({
+            "refresh_date": "2026-05-21",
+            "country_name": country_map.get(c["country_code"], "Unknown"),
+            "country_code": c["country_code"],
+            "carrier_name": c["carrier_name"],
+            "mcc": c["mcc"],
+            "mnc": c["mnc"],
+            "is_steered": c["is_steered"],
+            "traffic_volume_mb": traffic,
+            "session_count": 100000 - i * 5000,
+            "subscriber_count": 50000 - i * 2000,
+            "traffic_share_pct": share,
+            "is_minor_carrier": share < 1.0,
+        })
+    return pd.DataFrame(rows)
+
+
 def quality_log_with_failure_df() -> pd.DataFrame:
     """Quality log with one failed check for testing."""
     return pd.DataFrame([

@@ -76,6 +76,20 @@ def build_report(bq: BigQueryClient, config: ReportConfig) -> str:
         carrier_df=carrier_summary_df,
     )
 
+    # Story 3.6: Usage Analytics
+    from src.report.sections.usage_analytics import generate_usage_analytics
+
+    usage_df = bq.query_carrier_usage_summary()
+    sections["usage"] = generate_usage_analytics(usage_df=usage_df)
+
+    # Story 3.7: Data Quality
+    from src.report.sections.data_quality import generate_data_quality
+
+    sections["data-quality"] = generate_data_quality(
+        quality_log_df=quality_log_df,
+        refresh_date=config.refresh_date,
+    )
+
     html = template.render(
         refresh_date=config.refresh_date,
         sections=sections,
