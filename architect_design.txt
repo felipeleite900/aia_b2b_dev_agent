@@ -1,0 +1,2352 @@
+
+╭─── Claude Code v2.1.68 ──────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                Welcome back Felipe!                │ started                 │
+│                                                    │ Run /init to create a … │
+│                       ▐▛███▜▌                      │ ─────────────────────── │
+│                      ▝▜█████▛▘                     │ Recent activity         │
+│                        ▘▘ ▝▝                       │ No recent activity      │
+│                                                    │                         │
+│        Opus 4.6 · Claude Enterprise · TELUS        │                         │
+│  ~/Documents/Code/tellus/ai_first_development/test │                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+❯ /bmad-create-architecture 
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow": {
+         "activation_steps_prepend": [
+     … +27 lines (ctrl+o to expand)
+
+⏺ Searched for 4 patterns, read 8 files (ctrl+o to expand)
+
+⏺ Now let me load the matched SSOT documents for the data_pipeline topics.
+
+⏺ Read 3 files (ctrl+o to expand)
+
+⏺ Now let me load the first workflow step.
+
+⏺ Searched for 6 patterns, read 1 file (ctrl+o to expand)
+
+⏺ An existing architecture document was found. Let me check its state.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ The architecture document exists with stepsCompleted: [1]. Following the
+  workflow rules, I need to load the continuation step.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ [Phase 2/5: Planning — Data Pipeline]
+
+  [GOVERNANCE WARNING] DEP Review Required
+    A Data Enablement Plan review is required before implementation for projects
+   touching TELUS data.
+    (source: governance/data-enablement-plan.md)
+
+  [GOVERNANCE WARNING] DNTL Classification Required
+    Data must be classified under the DNTL framework (Do Not Touch, Not for LLM,
+   Touch with Care, Low Risk) before implementation.
+    (source: governance/dntl-data-classification.md)
+
+  [GOVERNANCE WARNING] De-identification Assessment Required
+    Projects handling personal information must apply appropriate
+  de-identification techniques (Anonymization, De-Identification,
+  Pseudonymization, Synthetic, Tokenization).
+    (source: governance/de-identification-standards.md)
+
+  Resolution options:
+    - /governance-checklist {gate} — complete the SSOT-sourced checklist
+    - /override {gate} — log rationale and skip
+    - Continue working — warning persists in sprint status
+
+  ---
+  Welcome back Felipe! I found your Architecture work for International Roaming 
+  Intelligence.
+
+  Current Progress:
+  - Steps completed: Step 1 (Initialization)
+  - Input documents loaded: 4 files
+    - prds/prd-ai_first_development-2026-05-21/prd.md
+    - prds/prd-ai_first_development-2026-05-21/reconcile-brief.md
+    - prds/prd-ai_first_development-2026-05-21/review-rubric.md
+    - briefs/brief-ai_first_development-2026-05-21/brief.md
+
+  Document Sections Found:
+  - # Architecture Decision Document — header only, with placeholder text
+
+  Incomplete Areas:
+  - No architectural content has been written yet — the document is still at the
+   template stage after initialization
+
+  SSOT Context Loaded (for data_pipeline):
+  - Bi-Layer monorepo pattern (source: infrastructure/bi-layer-overview.md)
+  - BigQuery Enterprise Datahub layers (source:
+  infrastructure/bigquery-enterprise-datahub.md)
+  - Cloud Workflows orchestration (source:
+  infrastructure/cloud-workflows-orchestration.md)
+
+  What would you like to do?
+
+  - [R] Resume from where we left off (proceed to Step 2: Project Context
+  Analysis)
+  - [C] Continue to next logical step
+  - [O] Overview of all remaining steps
+  - [X] Start over (will overwrite existing work)
+
+✻ Baked for 1m 32s
+
+❯ R 
+
+⏺ Searched for 1 pattern, read 5 files (ctrl+o to expand)
+
+⏺ All input documents loaded. Let me analyze the project for architectural
+  implications.
+
+  ---
+  I'm reviewing your project documentation for International Roaming 
+  Intelligence.
+
+  I found 18 functional requirements organized across 7 feature groups: Daily
+  Data Pipeline, Quality KPI View, Usage Analytics, Comparative Carrier Ranking,
+   Trend Visibility, Data Quality Monitoring, and Web Application.
+
+  Key architectural aspects I notice:
+
+  - Two distinct subsystems — a daily batch data pipeline (FR-1 to FR-3, FR-13
+  to FR-15) and an interactive web application (FR-4 to FR-12, FR-16 to FR-18).
+  These have fundamentally different runtime profiles and deployment shapes.
+  - Pre-computation is the performance strategy — sub-second UI interactivity
+  (FR-17: <500ms interactions) against ~200 countries and ~487 carriers requires
+   materialized views or cached aggregations, not live queries against raw
+  tables.
+  - The Composite Quality Score is architecturally load-bearing — FR-5, FR-9,
+  FR-10, and FR-12 all depend on it. The review rubric flags this as the
+  highest-priority resolution gap. Architecture needs a default computation
+  strategy.
+  - Data residency constraint is non-negotiable — all processing in
+  northamerica-northeast1 / northamerica-northeast2 per Canadian data
+  sovereignty. (source: governance/canadian-data-sovereignty.md)
+  - Authentication via Google IAP on bi-layer Cloud Run — standard internal-tool
+   pattern, not custom auth.
+  - Pipeline observability and data quality monitoring run alongside the
+  pipeline, not as a separate system — they share the same Cloud Workflows
+  orchestration surface.
+  - No PII in the data path — aggregated network performance metrics only. This
+  simplifies the data governance profile significantly.
+
+  Scale indicators:
+  - Project complexity: medium — two subsystems (pipeline + web app) but
+  straightforward data flow and small user base
+  - Primary technical domain: data pipeline + internal web application
+  - Cross-cutting concerns: data residency, authentication, composite score
+  computation, data quality validation, observability
+
+  Architectural dependencies from SSOT:
+  - Bi-layer monorepo pattern for both pipeline (stacks/) and web app (images/ +
+   stacks/) (source: infrastructure/bi-layer-overview.md)
+  - BigQuery Enterprise Datahub if Netscout data is served via ent_* tables —
+  access-request PR required (source:
+  infrastructure/bigquery-enterprise-datahub.md)
+  - Cloud Workflows for daily pipeline orchestration (source:
+  infrastructure/cloud-workflows-orchestration.md)
+
+  Does this match your understanding of the project scope and requirements?
+
+  ---
+  Here's the Project Context Analysis I'll add to the architecture document:
+
+  ## Project Context Analysis
+
+  ### Requirements Overview
+
+  **Functional Requirements:**
+  18 FRs across 7 feature groups forming two primary subsystems:
+
+  1. **Data Pipeline Subsystem** (FR-1 to FR-3, FR-13 to FR-15): Daily batch
+  pipeline transforming Netscout probe data in BigQuery into curated analytics
+  tables. Includes incremental processing, idempotent refreshes, pipeline
+  observability, and data quality checks (freshness, coverage, volume anomaly
+  detection). Orchestrated via Cloud Workflows on a daily schedule.
+
+  2. **Web Application Subsystem** (FR-4 to FR-12, FR-16 to FR-18):
+  Purpose-built internal web app serving quality KPIs, usage analytics,
+  comparative carrier rankings, and trend visibility. Authenticated via Google
+  IAP. Reads from pre-computed materialized views for sub-second interactivity.
+  Deployed on bi-layer Cloud Run.
+
+  **Non-Functional Requirements:**
+  - Performance: Pre-computed aggregations, <3s page load, <500ms interactions,
+  pipeline completes within 2 hours
+  - Reliability: No data corruption on failure, retry on transient errors, last
+  successful refresh always available
+  - Observability: Structured pipeline logs, application request metrics, data
+  quality metrics in UI
+  - Data residency: northamerica-northeast1 / northamerica-northeast2 only
+  - Security: No PII, Google IAP authentication, <10 concurrent users
+
+  **Scale & Complexity:**
+  - Primary domain: Data pipeline + internal web application
+  - Complexity level: Medium
+  - Data surface: ~200 countries, ~487 partner carriers, daily refresh cadence
+  - User base: ~10 concurrent users (carrier steering team)
+  - Estimated architectural components: 5-7 (pipeline orchestration, BigQuery
+  data model, web API, web UI, authentication layer, monitoring/alerting, data
+  quality checks)
+
+  ### Technical Constraints & Dependencies
+
+  - **Netscout probe data in BigQuery**: Primary data source. Schema validation
+  is the first implementation task (OQ-1)
+  - **BigQuery Enterprise Datahub**: If source data is via `ent_*` tables,
+  access PR to `telus/tf-infra-cio-datahub-bilayer` must be merged before
+  pipeline development (source: infrastructure/bigquery-enterprise-datahub.md)
+  - **Cloud Workflows**: Daily orchestration per bi-layer patterns (source:
+  infrastructure/cloud-workflows-orchestration.md)
+  - **Bi-layer Cloud Run**: Web app hosting. Sync ≤5s profile fits bi-layer
+  (source: infrastructure/bi-layer-overview.md)
+  - **Google IAP**: Authentication — standard internal-tool mechanism
+  - **Canadian data residency**: All GCP resources in
+  northamerica-northeast1/northeast2 (source:
+  governance/canadian-data-sovereignty.md)
+  - **Composite Quality Score**: V1 default equal-weight average across
+  normalized KPIs (0-100). Architecturally critical — drives ranking,
+  comparison, and degradation features
+
+  ### Cross-Cutting Concerns Identified
+
+  - **Data quality as a first-class concern**: Quality checks (freshness,
+  coverage, anomaly detection) run alongside the pipeline and surface in the web
+   app — not a separate monitoring system
+  - **Pre-computation strategy**: The gap between raw Netscout data and
+  sub-second UI responses requires a materialized view / aggregation layer in
+  BigQuery
+  - **Composite score computation**: Must be computed during the pipeline phase
+  and stored, not calculated at query time — it's consumed by ranking,
+  comparison, and degradation detection
+  - **Idempotent pipeline design**: Re-running the same day's pipeline must
+  produce identical results (FR-1) — influences how intermediate tables are
+  written
+  - **Backfill mode**: Full 90-day initial load capability required alongside
+  daily incremental processing (FR-2)
+  - **Degradation detection logic**: Direction-aware threshold checks per KPI
+  type — must be baked into the pipeline, not computed in the UI
+
+  What would you like to do?
+
+  - [A] Advanced Elicitation — dive deeper into architectural implications
+  - [P] Party Mode — bring different perspectives to analyze requirements
+  - [C] Continue — save this analysis and proceed to architecture decisions
+
+✻ Worked for 1m 11s
+
+❯ C 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1]                                             
+      2 +stepsCompleted: [1, 2]                                          
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 44 lines
+      14  # Architecture Decision Document                               
+      15                                                                 
+      16  _This document builds collaboratively through step-by-step     
+          discovery. Sections are appended as we work through each       
+          architectural decision together._                              
+      17 +                                                               
+      18 +## Project Context Analysis                                    
+      19 +                                                               
+      20 +### Requirements Overview                                      
+      21 +                                                               
+      22 +**Functional Requirements:**                                   
+      23 +18 FRs across 7 feature groups forming two primary subsystems: 
+      24 +                                                               
+      25 +1. **Data Pipeline Subsystem** (FR-1 to FR-3, FR-13 to FR-15): 
+         + Daily batch pipeline transforming Netscout probe data in      
+         +BigQuery into curated analytics tables. Includes incremental   
+         +processing, idempotent refreshes, pipeline observability, and  
+         +data quality checks (freshness, coverage, volume anomaly       
+         +detection). Orchestrated via Cloud Workflows on a daily        
+         +schedule.                                                      
+      26 +                                                               
+      27 +2. **Web Application Subsystem** (FR-4 to FR-12, FR-16 to      
+         +FR-18): Purpose-built internal web app serving quality KPIs,   
+         +usage analytics, comparative carrier rankings, and trend       
+         +visibility. Authenticated via Google IAP. Reads from           
+         +pre-computed materialized views for sub-second interactivity.  
+         +Deployed on bi-layer Cloud Run.                                
+      28 +                                                               
+      29 +**Non-Functional Requirements:**                               
+      30 +- Performance: Pre-computed aggregations, <3s page load,       
+         +<500ms interactions, pipeline completes within 2 hours         
+      31 +- Reliability: No data corruption on failure, retry on         
+         +transient errors, last successful refresh always available     
+      32 +- Observability: Structured pipeline logs, application request 
+         + metrics, data quality metrics in UI                           
+      33 +- Data residency: northamerica-northeast1 /                    
+         +northamerica-northeast2 only                                   
+      34 +- Security: No PII, Google IAP authentication, <10 concurrent  
+         +users                                                          
+      35 +                                                               
+      36 +**Scale & Complexity:**                                        
+      37 +- Primary domain: Data pipeline + internal web application     
+      38 +- Complexity level: Medium                                     
+      39 +- Data surface: ~200 countries, ~487 partner carriers, daily   
+         +refresh cadence                                                
+      40 +- User base: ~10 concurrent users (carrier steering team)      
+      41 +- Estimated architectural components: 5-7 (pipeline            
+         +orchestration, BigQuery data model, web API, web UI,           
+         +authentication layer, monitoring/alerting, data quality        
+         +checks)                                                        
+      42 +                                                               
+      43 +### Technical Constraints & Dependencies                       
+      44 +                                                               
+      45 +- **Netscout probe data in BigQuery**: Primary data source.    
+         +Schema validation is the first implementation task (OQ-1)      
+      46 +- **BigQuery Enterprise Datahub**: If source data is via       
+         +`ent_*` tables, access PR to                                   
+         +`telus/tf-infra-cio-datahub-bilayer` must be merged before     
+         +pipeline development (source:                                  
+         +infrastructure/bigquery-enterprise-datahub.md)                 
+      47 +- **Cloud Workflows**: Daily orchestration per bi-layer        
+         +patterns (source:                                              
+         +infrastructure/cloud-workflows-orchestration.md)               
+      48 +- **Bi-layer Cloud Run**: Web app hosting. Sync ≤5s profile    
+         +fits bi-layer (source: infrastructure/bi-layer-overview.md)    
+      49 +- **Google IAP**: Authentication — standard internal-tool      
+         +mechanism                                                      
+      50 +- **Canadian data residency**: All GCP resources in            
+         +northamerica-northeast1/northeast2 (source:                    
+         +governance/canadian-data-sovereignty.md)                       
+      51 +- **Composite Quality Score**: V1 default equal-weight average 
+         + across normalized KPIs (0-100). Architecturally critical —    
+         +drives ranking, comparison, and degradation features           
+      52 +                                                               
+      53 +### Cross-Cutting Concerns Identified                          
+      54 +                                                               
+      55 +- **Data quality as a first-class concern**: Quality checks    
+         +(freshness, coverage, anomaly detection) run alongside the     
+         +pipeline and surface in the web app — not a separate           
+         +monitoring system                                              
+      56 +- **Pre-computation strategy**: The gap between raw Netscout   
+         +data and sub-second UI responses requires a materialized view  
+         +/ aggregation layer in BigQuery                                
+      57 +- **Composite score computation**: Must be computed during the 
+         + pipeline phase and stored, not calculated at query time —     
+         +it's consumed by ranking, comparison, and degradation          
+         +detection                                                      
+      58 +- **Idempotent pipeline design**: Re-running the same day's    
+         +pipeline must produce identical results (FR-1) — influences    
+         +how intermediate tables are written                            
+      59 +- **Backfill mode**: Full 90-day initial load capability       
+         +required alongside daily incremental processing (FR-2)         
+      60 +- **Degradation detection logic**: Direction-aware threshold   
+         +checks per KPI type — must be baked into the pipeline, not     
+         +computed in the UI                                             
+
+⏺ Project Context Analysis saved. Loading Step 3.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Before we dive into starter templates, let me surface what the TELUS
+  infrastructure context and SSOT already establish for this project.
+
+  Technical Constraints Already Established by Context:
+
+  - Cloud Platform: GCP (bi-layer pattern — non-negotiable for TELUS data
+  pipeline work) (source: infrastructure/bi-layer-overview.md)
+  - Data Layer: BigQuery — source data already lives here, curated tables stay
+  here
+  - Orchestration: Cloud Workflows — bi-layer-blessed for scheduled multi-step
+  pipelines (source: infrastructure/cloud-workflows-orchestration.md)
+  - IaC: Pulumi YAML + Jinja — bi-layer standard (source:
+  engineering/pulumi-best-practices.md)
+  - Web Hosting: Bi-layer Cloud Run with sync ≤5s profile
+  - Authentication: Google IAP
+  - Region: northamerica-northeast1 / northamerica-northeast2
+
+  What's NOT yet decided:
+
+  The web application's technology stack — the PRD explicitly defers this to
+  architecture. This is the meaningful starter decision for this project. The
+  two subsystems have different profiles:
+
+  1. Data Pipeline — no "starter" in the traditional sense. The stacks catalog
+  in telus/bi-layer-docs provides canonical Pulumi YAML templates that we fork
+  and adapt. Relevant templates:
+    - common_patterns/scheduled_bq_multi_step_stored_proc — multi-step BigQuery
+  stored proc chain (fits the daily ETL pipeline)
+    - big_query/* — BigQuery datasets, views, materialized views
+    - common_patterns/scheduled_dataset_and_partitioned_table — partitioned
+  table provisioning
+  2. Web Application — this is where the real starter decision lives. Given
+  bi-layer Cloud Run and the <10 user internal tool profile, the key questions
+  are:
+
+    - Backend framework: FastAPI is the SSOT-preferred Python web framework
+  (source: engineering/python-project-structure.md). Fits well — Python team,
+  BigQuery client library, lightweight API serving pre-computed data.
+    - Frontend approach: This is the open question.
+
+  Felipe, a few questions to narrow the starter decision:
+
+  - Frontend preference: Are you thinking a Python-rendered UI (e.g., Jinja
+  templates, HTMX), a single-page app (React, Vue, Svelte), or a Python-native
+  dashboard tool (Streamlit, Dash)?
+  - Team experience: What's your comfort level with frontend
+  JavaScript/TypeScript frameworks vs. staying in the Python ecosystem?
+  - UI complexity: The PRD describes interactive filtering, sorting,
+  drill-downs, trend charts, and side-by-side comparisons. How important is rich
+   interactivity vs. simplicity of implementation?
+
+✻ Sautéed for 53s
+
+❯ - Just a static html, we eon't worry about deploy and sent the html file  
+  over to stakeholders.                                                     
+  - Baseic experience                                                       
+  - A mixed, we can have something basic, but with minimal interation.      
+
+⏺ That's a significant simplification. Let me recalibrate — this changes the
+  architecture fundamentally.
+
+  What this means architecturally:
+
+  The PRD's Feature 4.7 (Web Application with Cloud Run, IAP, responsive views)
+  is replaced by a static HTML report generated by the pipeline. This eliminates
+   an entire subsystem:
+
+  - No Cloud Run service
+  - No Google IAP authentication
+  - No backend API
+  - No deployment pipeline for the web app
+  - Distribution is manual (share the HTML file)
+
+  The entire project becomes a single subsystem: a BigQuery data pipeline that
+  produces static HTML output.
+
+  Given your basic frontend experience and the need for minimal interactivity
+  (filtering, sorting, trend charts), here's what I'd recommend:
+
+  ---
+  Starter Options for Report Generation:
+
+  Option A: Python + Plotly (Recommended)
+  - Plotly generates self-contained interactive HTML files — charts with hover,
+  zoom, filter built in
+  - No JavaScript knowledge needed — you write Python, it outputs HTML
+  - Handles tables, trend charts, bar charts, heatmaps natively
+  - Single .html file with everything embedded (data + charts + CSS)
+
+  Option B: Python + Jinja2 templates + Chart.js
+  - More control over layout and styling
+  - Requires some HTML/CSS/JS knowledge
+  - Lighter-weight output files
+  - More effort to build but more customizable
+
+  Option C: Python + Streamlit (export to HTML)
+  - Fastest to prototype but limited static export capabilities
+  - Better suited for a live dashboard, not a file-to-share workflow
+
+  For a basic-experience team generating shareable HTML files with interactive
+  charts and tables, Option A (Plotly) fits best. You stay entirely in Python,
+  and Plotly's plotly.express + dash_table or raw plotly.graph_objects handle
+  the chart interactivity out of the box.
+
+  Proposed Starter Stack:
+
+  Layer: Pipeline orchestration
+  Technology: Cloud Workflows + BigQuery stored procs
+  Rationale: Bi-layer standard (source:
+    infrastructure/cloud-workflows-orchestration.md)
+  ────────────────────────────────────────
+  Layer: IaC
+  Technology: Pulumi YAML + Jinja
+  Rationale: Bi-layer standard
+  ────────────────────────────────────────
+  Layer: Data processing
+  Technology: BigQuery SQL (stored procs, views, MVs)
+  Rationale: Data already lives here
+  ────────────────────────────────────────
+  Layer: Report generation
+  Technology: Python + Plotly
+  Rationale: Self-contained interactive HTML, Python-only
+  ────────────────────────────────────────
+  Layer: HTML templating
+  Technology: Jinja2 (for page structure)
+  Rationale: Standard Python templating
+  ────────────────────────────────────────
+  Layer: Styling
+  Technology: Minimal CSS (embedded)
+  Rationale: Single-file output, no CDN dependencies
+  ────────────────────────────────────────
+  Layer: Distribution
+  Technology: Manual file sharing
+  Rationale: Per your requirement
+
+  Bi-layer stacks catalog templates to fork:
+  - common_patterns/scheduled_bq_multi_step_stored_proc — daily ETL pipeline
+  - big_query/* — datasets, views, materialized views
+  - cloudrun/ — lightweight Cloud Run job for the Python report generation step
+  (runs daily after pipeline completes, outputs HTML to GCS or local)
+
+  Does this direction match what you had in mind? Any adjustments before I
+  finalize the starter evaluation?
+
+  What would you like to do?
+  - [A] Advanced Elicitation — explore alternative approaches
+  - [P] Party Mode — evaluate trade-offs from different perspectives
+  - [C] Continue — save this decision and move to architectural decisions
+
+✻ Baked for 31s
+
+❯ c 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2]                                          
+      2 +stepsCompleted: [1, 2, 3]                                       
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 53 lines
+       58  - **Idempotent pipeline design**: Re-running the same day's   
+           pipeline must produce identical results (FR-1) — influences   
+           how intermediate tables are written                           
+       59  - **Backfill mode**: Full 90-day initial load capability      
+           required alongside daily incremental processing (FR-2)        
+       60  - **Degradation detection logic**: Direction-aware threshold  
+           checks per KPI type — must be baked into the pipeline, not    
+           computed in the UI                                            
+       61 +                                                              
+       62 +## Starter Template Evaluation                                
+       63 +                                                              
+       64 +### Architecture Pivot: Static HTML Reports                   
+       65 +                                                              
+       66 +The PRD's Feature 4.7 (deployed web application with Cloud    
+          +Run, IAP, real-time interactivity) is replaced by **static    
+          +HTML reports generated by the pipeline**. This eliminates the 
+          + web application subsystem entirely and consolidates the      
+          +project into a single subsystem: a BigQuery data pipeline     
+          +that produces shareable HTML output.                          
+       67 +                                                              
+       68 +**Rationale:** The steering team's workflow is better served  
+          +by a daily HTML report they can open, share, and review       
+          +offline. No deployment infrastructure, no authentication      
+          +layer, no ongoing hosting. Distribution is manual (file       
+          +sharing).                                                     
+       69 +                                                              
+       70 +**Impact on PRD requirements:**                               
+       71 +- FR-16 (authenticated access): Replaced by file-level access 
+          + control (who receives the file)                              
+       72 +- FR-17 (responsive data views): Replaced by Plotly's         
+          +built-in chart interactivity (hover, zoom, filter)            
+       73 +- FR-18 (filter and search): Simplified to Plotly's native    
+          +filtering + HTML-embedded table sorting                       
+       74 +- FR-4 through FR-12 (quality views, rankings, trends):       
+          +Delivered as sections within the HTML report                  
+       75 +- All pipeline FRs (FR-1 to FR-3, FR-13 to FR-15): Unchanged  
+       76 +                                                              
+       77 +### Primary Technology Domain                                 
+       78 +                                                              
+       79 +**Data pipeline with static report generation** — single      
+          +subsystem on GCP bi-layer.                                    
+       80 +                                                              
+       81 +### Selected Technology Stack                                 
+       82 +                                                              
+       83 +| Layer | Technology | Rationale |                            
+       84 +|---|---|---|                                                 
+       85 +| Pipeline orchestration | Cloud Workflows + Cloud Scheduler  
+          +| Bi-layer standard for scheduled multi-step pipelines        
+          +(source: infrastructure/cloud-workflows-orchestration.md) |   
+       86 +| IaC | Pulumi YAML + Jinja | Bi-layer standard (source:      
+          +engineering/pulumi-best-practices.md) |                       
+       87 +| Data processing | BigQuery SQL (stored procs, views,        
+          +materialized views) | Source data already in BigQuery; all    
+          +transformation stays in BQ |                                  
+       88 +| Report generation | Python + Plotly | Self-contained        
+          +interactive HTML output; Python-only — no frontend JS         
+          +knowledge needed |                                            
+       89 +| HTML templating | Jinja2 | Standard Python templating for   
+          +page structure around Plotly charts |                         
+       90 +| Styling | Minimal embedded CSS | Single-file output with no 
+          + external CDN dependencies |                                  
+       91 +| Distribution | Manual file sharing | HTML file sent to      
+          +stakeholders |                                                
+       92 +                                                              
+       93 +### Bi-Layer Stacks Catalog Templates                         
+       94 +                                                              
+       95 +Templates to fork from `telus/bi-layer-docs` (source:         
+          +infrastructure/bi-layer-overview.md §5):                      
+       96 +                                                              
+       97 +- `common_patterns/scheduled_bq_multi_step_stored_proc` —     
+          +daily ETL pipeline (data refresh → quality computation →      
+          +degradation detection → data quality checks)                  
+       98 +- `big_query/*` — BigQuery datasets, views, materialized      
+          +views for curated analytics tables                            
+       99 +- Cloud Run job pattern — lightweight Python container that   
+          +runs after pipeline completes, queries curated tables,        
+          +generates HTML via Plotly + Jinja2, outputs to GCS            
+      100 +                                                              
+      101 +### Architectural Decisions Provided by Stack                 
+      102 +                                                              
+      103 +**Language & Runtime:** Python — TELUS standard for data      
+          +engineering (source: engineering/python-project-structure.md) 
+      104 +                                                              
+      105 +**Data Layer:** BigQuery SQL — stored procedures for ETL,     
+          +materialized views for pre-computed aggregations, partitioned 
+          + tables for historical data                                   
+      106 +                                                              
+      107 +**Report Generation:** Plotly generates self-contained HTML   
+          +with interactive charts (hover tooltips, zoom, pan, filter).  
+          +No JavaScript authoring required. Jinja2 templates wrap the   
+          +Plotly output into a structured report with navigation        
+          +sections.                                                     
+      108 +                                                              
+      109 +**Pipeline Pattern:** Cloud Workflows multi-step chain: data  
+          +refresh → KPI computation → composite scoring → degradation   
+          +detection → data quality checks → report generation           
+      110 +                                                              
+      111 +**Project Structure:** Bi-layer monorepo pattern —            
+          +`stacks/<project>/` for Pulumi IaC, `images/<project>/` for   
+          +the Python report generation container                        
+      112 +                                                              
+      113 +**Note:** Project initialization (forking bi-layer stacks     
+          +catalog templates into the team's fork) should be the first   
+          +implementation story.                                         
+
+⏺ Saved. Loading Step 4.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Building on what we've established, let me identify what's already decided vs.
+   what we still need to work through.
+
+  Already Decided (Steps 2-3):
+  - GCP bi-layer, Cloud Workflows, Pulumi YAML + Jinja
+  - BigQuery SQL for all data processing
+  - Python + Plotly + Jinja2 for report generation
+  - Static HTML output, manual distribution
+  - northamerica-northeast1 / northamerica-northeast2 region constraint
+
+  Remaining Decisions — organized by priority:
+
+  ---
+  Category 1: Data Architecture
+
+  This is the most architecturally significant set of decisions for this
+  project.
+
+  Decision 1.1: BigQuery Data Model Layers
+
+  The pipeline needs to transform raw Netscout data into report-ready tables.
+  How many layers?
+
+  - Option A: Two-layer — Raw source → Curated output tables. Simpler. Store
+  procs read raw, write final.
+  - Option B: Three-layer (Recommended) — Raw source → Work/staging tables →
+  Curated output (materialized views). More robust: intermediate tables let you
+  debug pipeline issues, reprocess specific steps, and separate the "compute
+  KPIs" step from the "aggregate for reporting" step.
+
+  For a pipeline with multiple steps (feature refresh, composite scoring,
+  degradation detection, quality checks), three layers keep each step's
+  inputs/outputs clean.
+
+  Decision 1.2: Partitioning Strategy
+
+  BigQuery tables should be partitioned for incremental processing and cost
+  control.
+
+  - Option A: Daily date-partitioned (Recommended) — Partition by refresh_date.
+  Each pipeline run writes to one partition. Backfill overwrites specific date
+  partitions. Idempotency comes naturally (rerun = overwrite same partition).
+  - Option B: Ingestion-time partitioned — Simpler but harder to backfill
+  cleanly.
+
+  Decision 1.3: Composite Quality Score Storage
+
+  The score drives ranking, comparison, and degradation. Where does it live?
+
+  - Option A: Computed in a stored proc, stored as a column in the curated 
+  carrier-level table (Recommended) — One computation, consumed by both the
+  report and any future consumers. Equal-weight average of normalized KPIs
+  (0-100 each).
+  - Option B: Computed at report generation time in Python — Simpler initially
+  but duplicates logic if anything else ever needs the score.
+
+  Decision 1.4: Historical Retention
+
+  - PRD says 90-day backfill for initial load, trend windows up to 90 days.
+  - Recommendation: Retain 180 days in curated tables (gives margin beyond the
+  90-day trend window), with older data available in raw source if needed.
+
+  What are your thoughts on these data architecture decisions? Any adjustments?
+
+✻ Cogitated for 1m 5s
+
+❯ *1.1 - B                                                                  
+  *1.2 - A                                                                  
+  *1.3 - A                                                                  
+  *1.4 - Let's keep 90 days                                                 
+
+⏺ Got it. Moving to the next category.
+
+  ---
+  Category 2: Pipeline Architecture
+
+  Decision 2.1: Cloud Workflows Composition Pattern
+
+  Per the SSOT, two patterns exist (source:
+  infrastructure/cloud-workflows-orchestration.md §7):
+
+  - Option A: Monolithic stack — All steps in a single Pulumi.yaml with inline
+  sourceContents. Good for 1-3 workflows.
+  - Option B: Split-files (Recommended) — Pulumi.yaml + workflow_definitions/
+  directory with separate YAML per workflow. Master workflow orchestrates
+  leaves.
+
+  This project has a natural multi-step chain: data refresh → KPI computation →
+  composite scoring → degradation detection → data quality checks → report
+  generation. That's 5-6 logical steps. The split-files pattern lets you test
+  each step independently and keeps code review manageable.
+
+  Decision 2.2: Report Generation Placement
+
+  Where does the Python report generation step run?
+
+  - Option A: Cloud Run Job triggered as the last Cloud Workflows step 
+  (Recommended) — The workflow chains BQ stored procs, then calls a Cloud Run
+  job that runs the Python/Plotly container. Output goes to a GCS bucket. Clean
+  separation: SQL does data, Python does presentation.
+  - Option B: All in one Cloud Run Job — Single Python container that runs BQ
+  queries via the client library AND generates the report. Simpler but mixes
+  data logic with presentation.
+
+  Decision 2.3: Pipeline Error Handling
+
+  - Option A: Fail-fast with gchat notification (Recommended) — If any step
+  fails, the workflow stops and sends a Google Chat alert via the shared
+  aia_gchat_workflow library (source:
+  infrastructure/cloud-workflows-orchestration.md §8.3). Last successful data
+  remains available.
+  - Option B: Continue on non-critical failures — Data quality checks are
+  non-blocking; report generates with warnings. More complex to implement.
+
+  Decision 2.4: Schedule
+
+  - Daily refresh. PRD targets data available by 08:00 ET.
+  - Recommendation: Schedule at 0 6 * * * (06:00 ET, Mon-Fri) with time_zone: 
+  America/Toronto. Paused in bi-stg, active in bi-srv. Weekdays only since the
+  steering team reviews during business hours.
+
+  Your thoughts on pipeline architecture?
+
+❯ 2.1 - A                                                                   
+  2.2 - A                                                                   
+  2.3 - A                                                                   
+  2.4 - We can go with the proposed cron job, but let's keep active on      
+  staging                                                                   
+
+⏺ Noted. Next category.
+
+  ---
+  Category 3: Report Architecture
+
+  Decision 3.1: Report Output Format
+
+  - Option A: Single HTML file (Recommended) — Everything in one self-contained
+  file: charts, tables, styling, data all embedded. Easy to share via
+  email/Slack. Plotly embeds the JS library inline. File size will be manageable
+   given ~200 countries / ~487 carriers of pre-aggregated data.
+  - Option B: Multi-file (HTML + assets) — Separate CSS/JS files. Lighter
+  individual files but requires zipping to share.
+
+  Decision 3.2: Report Structure / Sections
+
+  Mapping PRD features to report sections:
+
+  1. Executive Summary — Data freshness timestamp, coverage stats, top-level
+  alerts (degradation flags, data quality issues)
+  2. Country Overview — Table of all countries with aggregate quality indicator,
+   sortable
+  3. Carrier Rankings by Country — Per-country section: carriers ranked by
+  composite score, individual KPIs visible, steered-to carrier flagged
+  4. Trend Charts — Plotly line charts per country showing 7/14/30/90-day KPI
+  trends per carrier
+  5. Usage Analytics — Traffic volume, session count, subscriber count per
+  carrier, traffic share
+  6. Data Quality — Freshness check, coverage validation, volume anomaly flags
+
+  Does this structure cover what the steering team needs? Anything to add,
+  remove, or reorder?
+
+  Decision 3.3: Report Output Location
+
+  - Option A: GCS bucket (Recommended) — Cloud Run job writes HTML to a GCS
+  bucket. Team accesses via a shared link or automated distribution. Versioned
+  by date (reports/2026-05-22/roaming-intelligence.html).
+  - Option B: Attached to gchat notification — Pipeline completion notification
+  includes a link to the GCS file. Combines alerting with delivery.
+  - Option C: Both — GCS for storage/history, gchat link for daily delivery.
+
+  Your thoughts?
+
+❯ A 
+
+⏺ Single HTML file, proposed report structure, GCS bucket. Next category.
+
+  ---
+  Category 4: Infrastructure & Deployment
+
+  Decision 4.1: Bi-layer Monorepo Structure
+
+  The project needs both SQL (stored procs, views) and a Python container
+  (report generator). In the bi-layer pattern:
+
+  stacks/roaming-intelligence/
+    Pulumi.yaml              # Cloud Workflows, Cloud Scheduler, BQ
+  datasets/tables, IAM
+    environment.j2           # Env-specific variables
+  images/roaming-intelligence/
+    Dockerfile               # Python report generator container
+    src/                     # Python code (Plotly + Jinja2 + BQ client)
+    sql/                     # BQ stored procs (deployed via stacks but authored
+   here)
+
+  Decision 4.2: Monitoring & Alerting
+
+  - Pipeline failures: gchat notification via aia_gchat_workflow (already
+  decided in 2.3)
+  - Pipeline success: Should the daily gchat message include a link to the
+  generated report in GCS?
+    - Option A: Yes (Recommended) — Team gets a daily "report ready" message
+  with GCS link. Zero friction.
+    - Option B: No — Team knows to check GCS on their own.
+
+  Decision 4.3: Environment Strategy
+
+  Both bi-stg and bi-srv active (per your earlier choice). How to differentiate:
+
+  - Recommendation: Same pipeline logic in both. bi-stg writes to a separate GCS
+   bucket (reports-stg/) so test runs don't overwrite production reports. bi-srv
+   writes to the production bucket. Jinja PROJECT_TYPE switch handles the bucket
+   name.
+
+  Your thoughts?
+
+❯ sound good 
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ 4.1 - go ahead                                                            
+  4.2 - A                                                                   
+  4.3 - The buckets should be in their own project, so if tehy have similar 
+   names wouldn't be a problem, but we can keep segregated bucket names.    
+
+⏺ Good point — bi-layer already gives separate GCP projects per env, so bucket
+  naming collision isn't a real risk. We'll still use distinct names for clarity
+   in logs/links.
+
+  Last category, kept brief since the web app elimination simplifies this
+  significantly.
+
+  ---
+  Category 5: Security & Access
+
+  - BigQuery data access: Service account bound via
+  telus/tf-infra-cio-datahub-bilayer JSON config (if source data is Datahub
+  ent_* tables). Both bi-stg and bi-srv SAs get read access. (source:
+  infrastructure/bigquery-enterprise-datahub.md §4)
+  - GCS report bucket: IAM-scoped to the pipeline's service account (write) and
+  the steering team's Google group (read). No public access.
+  - No PII in pipeline: Aggregated network performance metrics only. No
+  subscriber-level data flows through.
+
+  Any additional security concerns, or does this cover it?
+
+❯ covers it, let's continue 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3]                                       
+      2 +stepsCompleted: [1, 2, 3, 4]                                    
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 117 lines
+      111  **Project Structure:** Bi-layer monorepo pattern —            
+           `stacks/<project>/` for Pulumi IaC, `images/<project>/` for   
+           the Python report generation container                        
+      112                                                                
+      113  **Note:** Project initialization (forking bi-layer stacks     
+           catalog templates into the team's fork) should be the first   
+           implementation story.                                         
+      114 +                                                              
+      115 +## Core Architectural Decisions                               
+      116 +                                                              
+      117 +### Decision Priority Analysis                                
+      118 +                                                              
+      119 +**Critical Decisions (Block Implementation):**                
+      120 +- BigQuery data model: three-layer (raw → work/staging →      
+          +curated)                                                      
+      121 +- Partitioning: daily date-partitioned by `refresh_date`      
+      122 +- Composite Quality Score: stored proc computation, persisted 
+          + as column                                                    
+      123 +- Pipeline composition: monolithic Cloud Workflows stack      
+      124 +- Report generation: Cloud Run Job as final pipeline step     
+      125 +                                                              
+      126 +**Important Decisions (Shape Architecture):**                 
+      127 +- Report format: single self-contained HTML file              
+      128 +- Output location: GCS bucket, date-versioned                 
+      129 +- Pipeline notifications: gchat with report link on           
+          +success/failure                                               
+      130 +- Environment strategy: both `bi-stg` and `bi-srv` active,    
+          +separate GCP projects with segregated bucket names            
+      131 +                                                              
+      132 +**Deferred Decisions (Post-MVP):**                            
+      133 +- Alerting/notification beyond gchat (email distribution,     
+          +scheduled sends)                                              
+      134 +- Composite Quality Score weight customization UI             
+      135 +- Sub-daily refresh cadence                                   
+      136 +                                                              
+      137 +### Data Architecture                                         
+      138 +                                                              
+      139 +**Data Model: Three-Layer BigQuery Pipeline**                 
+      140 +- **Layer 1 — Raw source**: Netscout probe data in BigQuery   
+          +(read-only, owned by upstream). If served via Datahub `ent_*` 
+          + tables, access bound via                                     
+          +`telus/tf-infra-cio-datahub-bilayer` JSON config. (source:    
+          +infrastructure/bigquery-enterprise-datahub.md §4)             
+      141 +- **Layer 2 — Work/staging tables**: Intermediate results     
+          +from each pipeline step (normalized KPIs,                     
+          +per-carrier-per-country aggregations). Used for debugging,    
+          +reprocessing, and step isolation. Written by stored procs     
+          +during pipeline execution.                                    
+      142 +- **Layer 3 — Curated output**: Final materialized views      
+          +consumed by the report generator. Includes composite quality  
+          +scores, degradation flags, data quality indicators, usage     
+          +analytics. This is the contract between the pipeline and the  
+          +report.                                                       
+      143 +                                                              
+      144 +**Partitioning Strategy:** Daily date-partitioned by          
+          +`refresh_date`. Each pipeline run writes to a single          
+          +partition. Rerunning the same day overwrites the partition —  
+          +idempotency by design (FR-1). Backfill overwrites specific    
+          +date partitions without affecting other dates.                
+      145 +                                                              
+      146 +**Composite Quality Score:** Computed in a BigQuery stored    
+          +procedure. Equal-weight average of normalized KPIs (each KPI  
+          +scaled 0-100). Stored as a column (`composite_quality_score`) 
+          + in the curated carrier-level table. Single computation point 
+          + consumed by ranking (FR-9), comparison (FR-10), and          
+          +degradation detection (FR-12).                                
+      147 +                                                              
+      148 +**Historical Retention:** 90 days in curated tables. Aligns   
+          +with the maximum trend window (FR-11). Older partitions are   
+          +dropped on a rolling basis. Raw source data retention is      
+          +upstream's responsibility.                                    
+      149 +                                                              
+      150 +### Pipeline Architecture                                     
+      151 +                                                              
+      152 +**Composition Pattern: Monolithic Stack**                     
+      153 +Single `Pulumi.yaml` with inline `sourceContents` defining    
+          +the Cloud Workflows step chain. Appropriate for 1 workflow    
+          +with 5-6 sequential steps. (source:                           
+          +infrastructure/cloud-workflows-orchestration.md §7)           
+      154 +                                                              
+      155 +**Pipeline Step Chain:**                                      
+      156 +1. `step1_refresh_data` — Incremental load: BQ stored proc    
+          +reads new/changed raw data, writes to work tables             
+      157 +2. `step2_compute_kpis` — Normalize individual KPIs (0-100    
+          +scale), compute composite quality score, write to work tables 
+      158 +3. `step3_detect_degradation` — Direction-aware threshold     
+          +checks per KPI over 7-day trailing window, write degradation  
+          +flags                                                         
+      159 +4. `step4_quality_checks` — Freshness validation, coverage    
+          +diff vs. prior refresh, volume anomaly detection (50% of      
+          +14-day rolling average)                                       
+      160 +5. `step5_curate` — Write final curated tables/materialized   
+          +views from work tables                                        
+      161 +6. `step6_generate_report` — Trigger Cloud Run Job: Python    
+          +container queries curated tables, generates HTML via Plotly + 
+          + Jinja2, writes to GCS bucket                                 
+      162 +                                                              
+      163 +**Report Generation Step:** Cloud Run Job triggered as the    
+          +final Cloud Workflows step. Clean separation: SQL handles all 
+          + data transformation (steps 1-5), Python handles presentation 
+          + (step 6). The Cloud Run container image lives in             
+          +`images/roaming-intelligence/`.                               
+      164 +                                                              
+      165 +**Error Handling:** Fail-fast. If any step fails, the         
+          +workflow stops and sends a Google Chat alert via the shared   
+          +`aia_gchat_workflow` library workflow. (source:               
+          +infrastructure/cloud-workflows-orchestration.md §8.3) Last    
+          +successful curated data and report remain available — no      
+          +corruption on failure (FR-1 reliability NFR).                 
+      166 +                                                              
+      167 +**Schedule:** `0 6 * * 1-5` — weekdays at 06:00 ET.           
+          +`time_zone: America/Toronto`. Active in both `bi-stg` and     
+          +`bi-srv`. (source:                                            
+          +infrastructure/cloud-workflows-orchestration.md §6)           
+      168 +                                                              
+      169 +### Report Architecture                                       
+      170 +                                                              
+      171 +**Format:** Single self-contained HTML file. All charts       
+          +(Plotly JS), data, and styling embedded. No external CDN      
+          +dependencies. Shareable via email, Slack, or direct GCS link. 
+      172 +                                                              
+      173 +**Report Sections:**                                          
+      174 +1. **Executive Summary** — Data freshness timestamp,          
+          +country/carrier coverage stats, degradation alerts, data      
+          +quality flags                                                 
+      175 +2. **Country Overview** — Sortable table of all countries     
+          +with aggregate quality indicator                              
+      176 +3. **Carrier Rankings by Country** — Per-country: carriers    
+          +ranked by composite score, individual KPIs visible,           
+          +steered-to carrier flagged with `is_steered` indicator        
+      177 +4. **Trend Charts** — Plotly interactive line charts per      
+          +country: 7/14/30/90-day KPI trends per carrier (hover, zoom,  
+          +filter built in)                                              
+      178 +5. **Usage Analytics** — Traffic volume, session count,       
+          +subscriber count per carrier; traffic share percentages; <1%  
+          +carriers grouped under "Other"                                
+      179 +6. **Data Quality** — Freshness check result, coverage        
+          +validation (missing countries/carriers vs. prior refresh),    
+          +volume anomaly flags                                          
+      180 +                                                              
+      181 +**Output Location:** GCS bucket, date-versioned path:         
+          +`reports/{YYYY-MM-DD}/roaming-intelligence.html`. Separate    
+          +buckets per environment (segregated names across the `bi-stg` 
+          + and `bi-srv` GCP projects).                                  
+      182 +                                                              
+      183 +### Infrastructure & Deployment                               
+      184 +                                                              
+      185 +**Bi-layer Monorepo Structure:**                              
+      186 +```                                                           
+      187 +stacks/roaming-intelligence/                                  
+      188 +  Pulumi.yaml              # Cloud Workflows, Scheduler, BQ   
+          +datasets/tables/views, IAM                                    
+      189 +  environment.j2           # Env-specific variables (bucket   
+          +names, schedule, pause status)                                
+      190 +images/roaming-intelligence/                                  
+      191 +  Dockerfile               # Python report generator          
+          +container                                                     
+      192 +  src/                     # Python code (Plotly + Jinja2 +   
+          +BQ client)                                                    
+      193 +  templates/               # Jinja2 HTML report templates     
+      194 +  sql/                     # BQ stored proc source (deployed  
+          +via stacks, authored here)                                    
+      195 +```                                                           
+      196 +                                                              
+      197 +**Environment Strategy:** Both `bi-stg` and `bi-srv` active.  
+          +Separate GCP projects per bi-layer standard. Each environment 
+          + writes to its own GCS bucket (segregated names). Jinja       
+          +`PROJECT_TYPE` switch handles bucket name, schedule, and any  
+          +env-specific configuration.                                   
+      198 +                                                              
+      199 +**Monitoring & Alerting:**                                    
+      200 +- Pipeline failure: gchat notification via                    
+          +`aia_gchat_workflow` with error context                       
+      201 +- Pipeline success: gchat notification with direct GCS link   
+          +to the generated report                                       
+      202 +- Pipeline observability: structured logs per run (start      
+          +time, end time, rows processed, countries/carriers covered,   
+          +success/failure) per FR-3                                     
+      203 +                                                              
+      204 +### Security & Access                                         
+      205 +                                                              
+      206 +**BigQuery Access:** Service account bound via                
+          +`telus/tf-infra-cio-datahub-bilayer` JSON config. Both        
+          +`bi-stg` and `bi-srv` SAs get `roles/bigquery.dataViewer` on  
+          +source datasets, `roles/bigquery.dataEditor` on project-owned 
+          + datasets. (source:                                           
+          +infrastructure/bigquery-enterprise-datahub.md §4)             
+      207 +                                                              
+      208 +**GCS Report Bucket:** IAM-scoped. Pipeline service account:  
+          +write (`roles/storage.objectCreator`). Steering team Google   
+          +group: read (`roles/storage.objectViewer`). No public access. 
+      209 +                                                              
+      210 +**Data Classification:** No PII in the pipeline. Aggregated   
+          +network performance metrics at carrier/country level only.    
+          +Classification: Internal. (source:                            
+          +governance/telus-trust-model.md)                              
+      211 +                                                              
+      212 +### Decision Impact Analysis                                  
+      213 +                                                              
+      214 +**Implementation Sequence:**                                  
+      215 +1. Fork bi-layer stacks catalog templates, set up project     
+          +structure                                                     
+      216 +2. Validate Netscout BigQuery schema (OQ-1) — unblocks all    
+          +pipeline work                                                 
+      217 +3. Request Datahub access if needed (PR to                    
+          +`telus/tf-infra-cio-datahub-bilayer`)                         
+      218 +4. Build BQ stored procs: data refresh → KPI normalization →  
+          +composite scoring                                             
+      219 +5. Build BQ stored procs: degradation detection → data        
+          +quality checks                                                
+      220 +6. Build curated output layer (materialized views)            
+      221 +7. Build Python report generator (Plotly + Jinja2 container)  
+      222 +8. Wire Cloud Workflows: step chain + Cloud Scheduler + gchat 
+          + notifications                                                
+      223 +9. Backfill 90 days of historical data                        
+      224 +10. Validate end-to-end in `bi-stg`, then promote to `bi-srv` 
+      225 +                                                              
+      226 +**Cross-Component Dependencies:**                             
+      227 +- Steps 4-6 (BQ stored procs and views) define the data       
+          +contract that step 7 (report generator) consumes              
+      228 +- Step 3 (Datahub access) blocks steps 4-6 if source data is  
+          +via `ent_*` tables                                            
+      229 +- Step 8 (Cloud Workflows) depends on steps 4-7 being         
+          +independently testable                                        
+      230 +- Step 9 (backfill) requires the full pipeline to be          
+          +functional                                                    
+
+⏺ All core decisions saved. Loading Step 5.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ For this project, the key consistency areas where AI agents could diverge are
+  narrower than a typical web app — no API endpoints, no frontend components, no
+   state management. The conflict surface is:
+
+  1. BigQuery SQL Naming
+
+  The SSOT already defines SQL naming conventions (source:
+  engineering/sql-best-practices.md §6):
+  - sp_* — stored procedures
+  - vw_* — views
+  - mv_* — materialized views
+  - bq_* — ad-hoc query scripts
+  - snap_* — snapshot tables
+
+  For this project specifically, agents could name things like the carrier
+  quality table differently (carrier_quality, quality_by_carrier,
+  carrier_kpi_daily). We need a convention.
+
+  Proposed naming pattern for project tables/views:
+
+  ┌───────────────────┬──────────────────────────────┬──────────────────────┐
+  │      Object       │             Name             │      Rationale       │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Dataset           │ roaming_intelligence         │ Project identifier   │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Daily KPI work    │ bq_carrier_kpi_daily         │ Work layer, daily    │
+  │ table             │                              │ grain                │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Composite score   │ bq_carrier_composite_daily   │ Work layer           │
+  │ work table        │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Degradation flags │ bq_carrier_degradation_daily │ Work layer           │
+  │  work table       │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Quality check     │ bq_data_quality_log          │ Pipeline metadata    │
+  │ results           │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Curated carrier   │ mv_carrier_quality_summary   │ Materialized view,   │
+  │ view              │                              │ report contract      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Curated country   │ mv_country_quality_summary   │ Materialized view,   │
+  │ view              │                              │ report contract      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Curated trend     │ mv_carrier_quality_trend     │ 90-day rolling,      │
+  │ view              │                              │ report contract      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Curated usage     │ mv_carrier_usage_summary     │ Materialized view,   │
+  │ view              │                              │ report contract      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Refresh stored    │ sp_refresh_carrier_kpis      │ Step 1               │
+  │ proc              │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Scoring stored    │ sp_compute_composite_scores  │ Step 2               │
+  │ proc              │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Degradation       │ sp_detect_degradation        │ Step 3               │
+  │ stored proc       │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Quality check     │ sp_run_quality_checks        │ Step 4               │
+  │ stored proc       │                              │                      │
+  ├───────────────────┼──────────────────────────────┼──────────────────────┤
+  │ Curate stored     │ sp_curate_output             │ Step 5               │
+  │ proc              │                              │                      │
+  └───────────────────┴──────────────────────────────┴──────────────────────┘
+
+  2. Python Code Conventions
+
+  - snake_case for all Python (PEP 8) (source: engineering/python-clean-code.md)
+  - structlog for structured logging (source: engineering/python-logging.md)
+  - Type hints on all function signatures
+  - Google-style docstrings (source: engineering/python-documentation.md)
+
+  3. Column Naming in BigQuery
+
+  Agents could name KPI columns inconsistently. Proposed standard:
+
+  ┌─────────────────────────┬─────────┬──────────────────────────────────────┐
+  │         Column          │  Type   │             Description              │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ refresh_date            │ DATE    │ Partition key                        │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ country_name            │ STRING  │ Country display name                 │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ country_code            │ STRING  │ ISO country code                     │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ carrier_name            │ STRING  │ Partner carrier name                 │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ mcc                     │ STRING  │ Mobile Country Code                  │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ mnc                     │ STRING  │ Mobile Network Code                  │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ is_steered              │ BOOL    │ Currently steered-to carrier         │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ kpi_latency_ms          │ FLOAT64 │ Raw latency                          │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ kpi_throughput_kbps     │ FLOAT64 │ Raw throughput                       │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ kpi_packet_loss_pct     │ FLOAT64 │ Raw packet loss                      │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ kpi_session_success_pct │ FLOAT64 │ Raw session success rate             │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ norm_latency            │ FLOAT64 │ Normalized 0-100 (inverted — lower   │
+  │                         │         │ latency = higher score)              │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ norm_throughput         │ FLOAT64 │ Normalized 0-100                     │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ norm_packet_loss        │ FLOAT64 │ Normalized 0-100 (inverted — lower   │
+  │                         │         │ loss = higher score)                 │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ norm_session_success    │ FLOAT64 │ Normalized 0-100                     │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ composite_quality_score │ FLOAT64 │ Equal-weight average of normalized   │
+  │                         │         │ KPIs                                 │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ traffic_volume_mb       │ FLOAT64 │ Usage                                │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ session_count           │ INT64   │ Usage                                │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ subscriber_count        │ INT64   │ Usage                                │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ degradation_flag        │ BOOL    │ Any KPI degraded >20% over 7-day     │
+  │                         │         │ window                               │
+  ├─────────────────────────┼─────────┼──────────────────────────────────────┤
+  │ degradation_details     │ STRING  │ JSON: which KPIs degraded and by how │
+  │                         │         │  much                                │
+  └─────────────────────────┴─────────┴──────────────────────────────────────┘
+
+  4. Process Patterns
+
+  - Idempotent writes: All stored procs use DELETE + INSERT on the partition
+  (not MERGE). Simpler, guarantees clean partition state.
+  - Logging: Each stored proc logs to bq_data_quality_log: step name, start
+  time, end time, row count, status.
+  - Error propagation: Cloud Workflows step failures propagate the BQ error
+  message to the gchat notification.
+  - Date handling: All dates in BigQuery as DATE type, ISO 8601 (YYYY-MM-DD).
+  All timestamps as TIMESTAMP type, UTC.
+
+  5. Report Generation Patterns
+
+  - One Python function per report section (e.g., generate_country_overview(),
+  generate_carrier_rankings())
+  - Plotly figures created via plotly.graph_objects (not plotly.express) for
+  consistency and control
+  - Jinja2 base template defines HTML structure; section functions inject Plotly
+   HTML into template slots
+  - Report filename: roaming-intelligence-{YYYY-MM-DD}.html
+
+  Does this cover the consistency surface? Anything to adjust or add?
+
+  What would you like to do?
+  - [A] Advanced Elicitation — explore additional patterns
+  - [P] Party Mode — review from different perspectives
+  - [C] Continue — save patterns and move to project structure
+
+✻ Sautéed for 1m 39s
+
+❯ Let's also and on the tables names the layer in the datawarehouse. raw,   
+  stg, crt ...                                                              
+
+⏺ Good call — layer prefixes make the data lineage self-documenting. Revised
+  naming convention:
+
+  Layer Prefixes:
+  - raw_ — Source data (upstream Netscout / Datahub ent_* tables — we don't own
+  these, but reference them with this mental model)
+  - stg_ — Staging/work layer: intermediate pipeline outputs
+  - crt_ — Curated layer: final output contract consumed by the report generator
+
+  Revised Table/View Names:
+
+  ┌───────┬────────────────────┬────────────────────────────────────────────┐
+  │ Layer │       Object       │                    Name                    │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ raw   │ Source tables      │ ent_* (upstream, read-only — naming is     │
+  │       │                    │ Datahub's)                                 │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ stg   │ Daily KPI table    │ stg_carrier_kpi_daily                      │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ stg   │ Composite score    │ stg_carrier_composite_daily                │
+  │       │ table              │                                            │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ stg   │ Degradation flags  │ stg_carrier_degradation_daily              │
+  │       │ table              │                                            │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ stg   │ Quality check log  │ stg_data_quality_log                       │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ crt   │ Carrier quality    │ crt_mv_carrier_quality_summary             │
+  │       │ summary            │                                            │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ crt   │ Country quality    │ crt_mv_country_quality_summary             │
+  │       │ summary            │                                            │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ crt   │ Carrier quality    │ crt_mv_carrier_quality_trend               │
+  │       │ trend              │                                            │
+  ├───────┼────────────────────┼────────────────────────────────────────────┤
+  │ crt   │ Carrier usage      │ crt_mv_carrier_usage_summary               │
+  │       │ summary            │                                            │
+  └───────┴────────────────────┴────────────────────────────────────────────┘
+
+  Stored procs keep sp_ only (they operate across layers — the layer is in the
+  tables they read/write, not in the proc name itself).
+
+  The crt_mv_ prefix combines layer (crt) + object type (mv for materialized
+  view), so you immediately know: curated layer, materialized view, consumed by
+  the report.
+
+  Does that match what you had in mind?
+
+  What would you like to do?
+  - [A] Advanced Elicitation — explore additional patterns
+  - [P] Party Mode — review from different perspectives
+  - [C] Continue — save patterns and move to project structure
+
+❯ c 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3, 4]                                    
+      2 +stepsCompleted: [1, 2, 3, 4, 5]                                 
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Now let me find the right insertion point — end of the document.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 113 lines
+      228  - Step 3 (Datahub access) blocks steps 4-6 if source data is  
+           via `ent_*` tables                                            
+      229  - Step 8 (Cloud Workflows) depends on steps 4-7 being         
+           independently testable                                        
+      230  - Step 9 (backfill) requires the full pipeline to be          
+           functional                                                    
+      231 +                                                              
+      232 +## Implementation Patterns & Consistency Rules                
+      233 +                                                              
+      234 +### Data Warehouse Layer Convention                           
+      235 +                                                              
+      236 +All BigQuery objects carry a layer prefix indicating their    
+          +position in the data pipeline:                                
+      237 +                                                              
+      238 +| Prefix | Layer | Purpose |                                  
+      239 +|---|---|---|                                                 
+      240 +| `raw_` | Raw | Source data (upstream Netscout / Datahub     
+          +`ent_*` — read-only, naming is Datahub's) |                   
+      241 +| `stg_` | Staging | Intermediate pipeline outputs — work     
+          +tables written by stored procs |                              
+      242 +| `crt_` | Curated | Final output contract consumed by the    
+          +report generator |                                            
+      243 +                                                              
+      244 +### BigQuery Naming Conventions                               
+      245 +                                                              
+      246 +**Object Type Prefixes** (per SSOT: source:                   
+          +engineering/sql-best-practices.md §6):                        
+      247 +- `sp_` — stored procedures                                   
+      248 +- `vw_` — views                                               
+      249 +- `mv_` — materialized views                                  
+      250 +- `bq_` — ad-hoc query scripts                                
+      251 +                                                              
+      252 +**Combined naming pattern**:                                  
+          +`{layer}_{type_prefix}_{descriptor}` for views/MVs;           
+          +`{layer}_{descriptor}` for tables; `sp_{descriptor}` for      
+          +stored procs (no layer prefix — procs operate across layers). 
+      253 +                                                              
+      254 +**Dataset:** `roaming_intelligence`                           
+      255 +                                                              
+      256 +**Table and View Names:**                                     
+      257 +                                                              
+      258 +| Layer | Object | Name |                                     
+      259 +|---|---|---|                                                 
+      260 +| raw | Source tables | `ent_*` (upstream Datahub, read-only  
+          +— naming is theirs) |                                         
+      261 +| stg | Daily KPI table | `stg_carrier_kpi_daily` |           
+      262 +| stg | Composite score table | `stg_carrier_composite_daily` 
+          + |                                                            
+      263 +| stg | Degradation flags table |                             
+          +`stg_carrier_degradation_daily` |                             
+      264 +| stg | Quality check log | `stg_data_quality_log` |          
+      265 +| crt | Carrier quality summary |                             
+          +`crt_mv_carrier_quality_summary` |                            
+      266 +| crt | Country quality summary |                             
+          +`crt_mv_country_quality_summary` |                            
+      267 +| crt | Carrier quality trend |                               
+          +`crt_mv_carrier_quality_trend` |                              
+      268 +| crt | Carrier usage summary |                               
+          +`crt_mv_carrier_usage_summary` |                              
+      269 +                                                              
+      270 +**Stored Procedure Names:**                                   
+      271 +                                                              
+      272 +| Proc | Pipeline Step |                                      
+      273 +|---|---|                                                     
+      274 +| `sp_refresh_carrier_kpis` | Step 1: Incremental load,       
+          +normalize KPIs |                                              
+      275 +| `sp_compute_composite_scores` | Step 2: Equal-weight        
+          +composite scoring |                                           
+      276 +| `sp_detect_degradation` | Step 3: Direction-aware 7-day     
+          +threshold checks |                                            
+      277 +| `sp_run_quality_checks` | Step 4: Freshness, coverage,      
+          +volume anomaly |                                              
+      278 +| `sp_curate_output` | Step 5: Write curated materialized     
+          +views |                                                       
+      279 +                                                              
+      280 +### Column Naming Standard                                    
+      281 +                                                              
+      282 +All columns use `snake_case`. KPI columns carry a `kpi_`      
+          +prefix for raw values and `norm_` prefix for normalized       
+          +(0-100) values.                                               
+      283 +                                                              
+      284 +| Column | Type | Description |                               
+      285 +|---|---|---|                                                 
+      286 +| `refresh_date` | DATE | Partition key |                     
+      287 +| `country_name` | STRING | Country display name |            
+      288 +| `country_code` | STRING | ISO country code |                
+      289 +| `carrier_name` | STRING | Partner carrier name |            
+      290 +| `mcc` | STRING | Mobile Country Code |                      
+      291 +| `mnc` | STRING | Mobile Network Code |                      
+      292 +| `is_steered` | BOOL | Currently steered-to carrier |        
+      293 +| `kpi_latency_ms` | FLOAT64 | Raw latency |                  
+      294 +| `kpi_throughput_kbps` | FLOAT64 | Raw throughput |          
+      295 +| `kpi_packet_loss_pct` | FLOAT64 | Raw packet loss           
+          +percentage |                                                  
+      296 +| `kpi_session_success_pct` | FLOAT64 | Raw session success   
+          +rate |                                                        
+      297 +| `norm_latency` | FLOAT64 | Normalized 0-100 (inverted:      
+          +lower latency = higher score) |                               
+      298 +| `norm_throughput` | FLOAT64 | Normalized 0-100 |            
+      299 +| `norm_packet_loss` | FLOAT64 | Normalized 0-100 (inverted:  
+          +lower loss = higher score) |                                  
+      300 +| `norm_session_success` | FLOAT64 | Normalized 0-100 |       
+      301 +| `composite_quality_score` | FLOAT64 | Equal-weight average  
+          +of normalized KPIs |                                          
+      302 +| `traffic_volume_mb` | FLOAT64 | Usage metric |              
+      303 +| `session_count` | INT64 | Usage metric |                    
+      304 +| `subscriber_count` | INT64 | Usage metric |                 
+      305 +| `degradation_flag` | BOOL | Any KPI degraded >20% over      
+          +7-day window |                                                
+      306 +| `degradation_details` | STRING | JSON: which KPIs degraded  
+          +and by how much |                                             
+      307 +                                                              
+      308 +### Python Code Conventions                                   
+      309 +                                                              
+      310 +- **Naming**: `snake_case` for all Python identifiers (PEP 8) 
+          + (source: engineering/python-clean-code.md)                   
+      311 +- **Logging**: `structlog` for structured logging with        
+          +correlation IDs (source: engineering/python-logging.md)       
+      312 +- **Type hints**: Required on all function signatures         
+      313 +- **Docstrings**: Google-style (source:                       
+          +engineering/python-documentation.md)                          
+      314 +- **Report functions**: One function per report section       
+          +(e.g., `generate_country_overview()`,                         
+          +`generate_carrier_rankings()`)                                
+      315 +- **Plotly API**: Use `plotly.graph_objects` (not             
+          +`plotly.express`) for consistency and fine-grained control    
+      316 +- **Jinja2**: Base template defines HTML structure; section   
+          +functions inject Plotly HTML into template slots              
+      317 +                                                              
+      318 +### Process Patterns                                          
+      319 +                                                              
+      320 +**Idempotent Writes:** All stored procs use `DELETE` +        
+          +`INSERT` on the target partition (not `MERGE`). Simpler,      
+          +guarantees clean partition state on rerun.                    
+      321 +                                                              
+      322 +**Pipeline Logging:** Each stored proc logs to                
+          +`stg_data_quality_log`: step name, start time, end time, row  
+          +count, status. This table is the observability contract       
+          +(FR-3).                                                       
+      323 +                                                              
+      324 +**Error Propagation:** Cloud Workflows step failures          
+          +propagate the BigQuery error message to the gchat             
+          +notification via `aia_gchat_workflow`.                        
+      325 +                                                              
+      326 +**Date Handling:** All dates as BigQuery `DATE` type, ISO     
+          +8601 (`YYYY-MM-DD`). All timestamps as `TIMESTAMP` type, UTC. 
+          + Report filename includes date:                               
+          +`roaming-intelligence-{YYYY-MM-DD}.html`.                     
+      327 +                                                              
+      328 +### Enforcement Guidelines                                    
+      329 +                                                              
+      330 +**All AI Agents MUST:**                                       
+      331 +- Use the layer prefix convention (`stg_`, `crt_`) for every  
+          +new table or view                                             
+      332 +- Follow the column naming standard — no ad-hoc column names  
+          +outside this schema without updating this document            
+      333 +- Use `DELETE` + `INSERT` for idempotent writes, never        
+          +`MERGE` or `INSERT` without clearing the partition            
+      334 +- Log every stored proc execution to `stg_data_quality_log`   
+      335 +- Use `plotly.graph_objects` (not `plotly.express`) for all   
+          +chart generation                                              
+      336 +- Include type hints on all Python function signatures        
+      337 +                                                              
+      338 +**Anti-Patterns:**                                            
+      339 +- Creating tables without a layer prefix                      
+      340 +- Using `camelCase` in BigQuery column names                  
+      341 +- Writing to curated (`crt_*`) tables directly from a stored  
+          +proc that reads raw — always go through staging               
+      342 +- Hardcoding GCP project IDs or bucket names — use Jinja      
+          +`PROJECT_TYPE` / `environment.j2` variables                   
+      343 +- Mixing Plotly Express and Graph Objects in the same         
+          +codebase                                                      
+
+⏺ Patterns saved. Loading Step 6.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Here's the complete project structure, mapped to our decisions and the
+  bi-layer monorepo pattern.
+
+  roaming-intelligence/                          # Team's fork of the bi-layer
+  monorepo
+  ├── stacks/roaming-intelligence/
+  │   ├── Pulumi.yaml                            # Cloud Workflows, Scheduler,
+  BQ resources, IAM
+  │   ├── environment.j2                         # Env-specific: bucket names,
+  schedule, pause
+  │   └── sql/                                   # BQ stored proc source
+  (referenced by Pulumi)
+  │       ├── sp_refresh_carrier_kpis.sql        # Step 1: incremental load +
+  KPI normalization
+  │       ├── sp_compute_composite_scores.sql    # Step 2: equal-weight
+  composite scoring
+  │       ├── sp_detect_degradation.sql          # Step 3: 7-day direction-aware
+   threshold checks
+  │       ├── sp_run_quality_checks.sql          # Step 4: freshness, coverage,
+  volume anomaly
+  │       ├── sp_curate_output.sql               # Step 5: write crt_mv_*
+  materialized views
+  │       └── backfill/
+  │           └── sp_backfill_historical.sql     # One-time 90-day initial load
+  │
+  ├── images/roaming-intelligence/
+  │   ├── Dockerfile                             # Python container for report
+  generation
+  │   ├── pyproject.toml                         # Python deps: plotly, jinja2,
+  google-cloud-bigquery, structlog
+  │   ├── src/
+  │   │   ├── __init__.py
+  │   │   ├── main.py                            # Entry point: query BQ →
+  generate HTML → upload GCS
+  │   │   ├── config.py                          # Env config: GCP project,
+  bucket name, dataset
+  │   │   ├── bq_client.py                       # BigQuery query functions
+  (reads crt_mv_* views)
+  │   │   ├── report/
+  │   │   │   ├── __init__.py
+  │   │   │   ├── builder.py                     # Orchestrates section
+  generation, assembles final HTML
+  │   │   │   ├── sections/
+  │   │   │   │   ├── __init__.py
+  │   │   │   │   ├── executive_summary.py       # Section 1: freshness,
+  coverage, alerts
+  │   │   │   │   ├── country_overview.py        # Section 2: country table with
+   quality indicators
+  │   │   │   │   ├── carrier_rankings.py        # Section 3: per-country
+  carrier rankings (FR-5, FR-9)
+  │   │   │   │   ├── trend_charts.py            # Section 4: Plotly time-series
+   per country (FR-11)
+  │   │   │   │   ├── usage_analytics.py         # Section 5: traffic, sessions,
+   share (FR-7, FR-8)
+  │   │   │   │   └── data_quality.py            # Section 6: quality check
+  results (FR-13-15)
+  │   │   │   └── charts.py                      # Shared Plotly graph_objects
+  helpers
+  │   │   └── gcs_upload.py                      # Upload HTML to GCS bucket
+  │   ├── templates/
+  │   │   ├── base.html.j2                       # Jinja2 base: HTML structure,
+  nav, embedded CSS
+  │   │   └── section.html.j2                    # Reusable section wrapper
+  │   └── tests/
+  │       ├── __init__.py
+  │       ├── test_bq_client.py                  # Mock BQ responses, verify
+  query construction
+  │       ├── test_builder.py                    # Verify report assembly
+  │       ├── test_sections/
+  │       │   ├── test_executive_summary.py
+  │       │   ├── test_carrier_rankings.py
+  │       │   ├── test_trend_charts.py
+  │       │   └── ...
+  │       └── fixtures/
+  │           └── sample_data.py                 # Realistic mock data for ~5
+  countries, ~15 carriers
+  │
+  └── .github/                                   # CI (if applicable at fork
+  level)
+
+  Architectural Boundaries
+
+  Data Boundary — The crt_mv_* Contract:
+  The curated materialized views are the single interface between the pipeline
+  (SQL) and the report generator (Python). The Python code never reads stg_* or
+  raw_* tables. If a new data point is needed in the report, it must first
+  appear in a crt_mv_* view.
+
+  Pipeline Boundary — Stored Procs are Independent:
+  Each sp_* stored proc reads from one layer and writes to the next. No proc
+  reads and writes within the same layer. Execution order is enforced by Cloud
+  Workflows, not by SQL dependencies.
+
+  ent_* (raw) → sp_refresh_carrier_kpis → stg_carrier_kpi_daily
+                                           ↓
+             sp_compute_composite_scores → stg_carrier_composite_daily
+                                           ↓
+                sp_detect_degradation → stg_carrier_degradation_daily
+                                           ↓
+               sp_run_quality_checks → stg_data_quality_log
+                                           ↓
+                    sp_curate_output → crt_mv_* (curated views)
+                                           ↓
+                Cloud Run Job (Python) → roaming-intelligence-{date}.html → GCS
+
+  Report Boundary — Section Independence:
+  Each section module (sections/*.py) receives a DataFrame from bq_client.py and
+   returns a Plotly figure or HTML string. Sections don't call each other.
+  builder.py orchestrates assembly.
+
+  Requirements to Structure Mapping
+
+  ┌──────────────────────────┬──────────────────────────────────────────────┐
+  │       PRD Feature        │                    Files                     │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │                          │ sql/sp_refresh_carrier_kpis.sql,             │
+  │ FR-1 to FR-3 (Pipeline)  │ sql/sp_compute_composite_scores.sql,         │
+  │                          │ Pulumi.yaml                                  │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-4 (Country summary)   │ sections/country_overview.py,                │
+  │                          │ crt_mv_country_quality_summary               │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-5, FR-9, FR-10        │ sections/carrier_rankings.py,                │
+  │ (Carrier                 │ crt_mv_carrier_quality_summary               │
+  │ ranking/comparison)      │                                              │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-6 (Carrier detail)    │ sections/carrier_rankings.py (drill-down     │
+  │                          │ within same section)                         │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-7, FR-8 (Usage        │ sections/usage_analytics.py,                 │
+  │ analytics)               │ crt_mv_carrier_usage_summary                 │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-11, FR-12             │ sections/trend_charts.py,                    │
+  │ (Trends/degradation)     │ sql/sp_detect_degradation.sql,               │
+  │                          │ crt_mv_carrier_quality_trend                 │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ FR-13 to FR-15 (Data     │ sections/data_quality.py,                    │
+  │ quality)                 │ sql/sp_run_quality_checks.sql,               │
+  │                          │ stg_data_quality_log                         │
+  └──────────────────────────┴──────────────────────────────────────────────┘
+
+  Does this structure work? Anything to adjust?
+
+  What would you like to do?
+  - [A] Advanced Elicitation — explore alternative organization
+  - [P] Party Mode — review from different perspectives
+  - [C] Continue — save structure and move to validation
+
+✻ Cooked for 1m 27s
+
+❯ c 
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3, 4, 5]                                 
+      2 +stepsCompleted: [1, 2, 3, 4, 5, 6]                              
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 109 lines
+      341  - Writing to curated (`crt_*`) tables directly from a stored  
+           proc that reads raw — always go through staging               
+      342  - Hardcoding GCP project IDs or bucket names — use Jinja      
+           `PROJECT_TYPE` / `environment.j2` variables                   
+      343  - Mixing Plotly Express and Graph Objects in the same         
+           codebase                                                      
+      344 +                                                              
+      345 +## Project Structure & Boundaries                             
+      346 +                                                              
+      347 +### Complete Project Directory Structure                      
+      348 +                                                              
+      349 +```                                                           
+      350 +roaming-intelligence/                          # Team's fork  
+          +of the bi-layer monorepo                                      
+      351 +├── stacks/roaming-intelligence/                              
+      352 +│   ├── Pulumi.yaml                            # Cloud        
+          +Workflows, Scheduler, BQ resources, IAM                       
+      353 +│   ├── environment.j2                         #              
+          +Env-specific: bucket names, schedule, pause                   
+      354 +│   └── sql/                                   # BQ stored    
+          +proc source (referenced by Pulumi)                            
+      355 +│       ├── sp_refresh_carrier_kpis.sql        # Step 1:      
+          +incremental load + KPI normalization                          
+      356 +│       ├── sp_compute_composite_scores.sql    # Step 2:      
+          +equal-weight composite scoring                                
+      357 +│       ├── sp_detect_degradation.sql          # Step 3:      
+          +7-day direction-aware threshold checks                        
+      358 +│       ├── sp_run_quality_checks.sql          # Step 4:      
+          +freshness, coverage, volume anomaly                           
+      359 +│       ├── sp_curate_output.sql               # Step 5:      
+          +write crt_mv_* materialized views                             
+      360 +│       └── backfill/                                         
+      361 +│           └── sp_backfill_historical.sql     # One-time     
+          +90-day initial load                                           
+      362 +│                                                             
+      363 +├── images/roaming-intelligence/                              
+      364 +│   ├── Dockerfile                             # Python       
+          +container for report generation                               
+      365 +│   ├── pyproject.toml                         # Deps:        
+          +plotly, jinja2, google-cloud-bigquery, structlog              
+      366 +│   ├── src/                                                  
+      367 +│   │   ├── __init__.py                                       
+      368 +│   │   ├── main.py                            # Entry point: 
+          + query BQ → generate HTML → upload GCS                        
+      369 +│   │   ├── config.py                          # Env config:  
+          +GCP project, bucket name, dataset                             
+      370 +│   │   ├── bq_client.py                       # BigQuery     
+          +query functions (reads crt_mv_* views)                        
+      371 +│   │   ├── report/                                           
+      372 +│   │   │   ├── __init__.py                                   
+      373 +│   │   │   ├── builder.py                     # Orchestrates 
+          + section generation, assembles final HTML                     
+      374 +│   │   │   ├── sections/                                     
+      375 +│   │   │   │   ├── __init__.py                               
+      376 +│   │   │   │   ├── executive_summary.py       # Section 1:   
+          +freshness, coverage, alerts                                   
+      377 +│   │   │   │   ├── country_overview.py        # Section 2:   
+          +country table with quality indicators                         
+      378 +│   │   │   │   ├── carrier_rankings.py        # Section 3:   
+          +per-country carrier rankings                                  
+      379 +│   │   │   │   ├── trend_charts.py            # Section 4:   
+          +Plotly time-series per country                                
+      380 +│   │   │   │   ├── usage_analytics.py         # Section 5:   
+          +traffic, sessions, share                                      
+      381 +│   │   │   │   └── data_quality.py            # Section 6:   
+          +quality check results                                         
+      382 +│   │   │   └── charts.py                      # Shared       
+          +Plotly graph_objects helpers                                  
+      383 +│   │   └── gcs_upload.py                      # Upload HTML  
+          +to GCS bucket                                                 
+      384 +│   ├── templates/                                            
+      385 +│   │   ├── base.html.j2                       # Jinja2 base: 
+          + HTML structure, nav, embedded CSS                            
+      386 +│   │   └── section.html.j2                    # Reusable     
+          +section wrapper                                               
+      387 +│   └── tests/                                                
+      388 +│       ├── __init__.py                                       
+      389 +│       ├── test_bq_client.py                  # Mock BQ      
+          +responses, verify query construction                          
+      390 +│       ├── test_builder.py                    # Verify       
+          +report assembly                                               
+      391 +│       ├── test_sections/                                    
+      392 +│       │   ├── test_executive_summary.py                     
+      393 +│       │   ├── test_carrier_rankings.py                      
+      394 +│       │   ├── test_trend_charts.py                          
+      395 +│       │   └── ...                                           
+      396 +│       └── fixtures/                                         
+      397 +│           └── sample_data.py                 # Realistic    
+          +mock data for ~5 countries, ~15 carriers                      
+      398 +│                                                             
+      399 +└── .github/                                   # CI (if       
+          +applicable at fork level)                                     
+      400 +```                                                           
+      401 +                                                              
+      402 +### Architectural Boundaries                                  
+      403 +                                                              
+      404 +**Data Boundary — The `crt_mv_*` Contract:**                  
+      405 +The curated materialized views are the single interface       
+          +between the pipeline (SQL) and the report generator (Python). 
+          + The Python code never reads `stg_*` or `raw_*` tables. If a  
+          +new data point is needed in the report, it must first appear  
+          +in a `crt_mv_*` view.                                         
+      406 +                                                              
+      407 +**Pipeline Boundary — Stored Procs are Independent:**         
+      408 +Each `sp_*` stored proc reads from one layer and writes to    
+          +the next. No proc reads and writes within the same layer.     
+          +Execution order is enforced by Cloud Workflows, not by SQL    
+          +dependencies.                                                 
+      409 +                                                              
+      410 +### Data Flow                                                 
+      411 +                                                              
+      412 +```                                                           
+      413 +ent_* (raw) → sp_refresh_carrier_kpis → stg_carrier_kpi_daily 
+      414 +                                         ↓                    
+      415 +           sp_compute_composite_scores →                      
+          +stg_carrier_composite_daily                                   
+      416 +                                         ↓                    
+      417 +              sp_detect_degradation →                         
+          +stg_carrier_degradation_daily                                 
+      418 +                                         ↓                    
+      419 +             sp_run_quality_checks → stg_data_quality_log     
+      420 +                                         ↓                    
+      421 +                  sp_curate_output → crt_mv_* (curated views) 
+      422 +                                         ↓                    
+      423 +              Cloud Run Job (Python) →                        
+          +roaming-intelligence-{date}.html → GCS                        
+      424 +```                                                           
+      425 +                                                              
+      426 +**Report Boundary — Section Independence:**                   
+      427 +Each section module (`sections/*.py`) receives a DataFrame    
+          +from `bq_client.py` and returns a Plotly figure or HTML       
+          +string. Sections don't call each other. `builder.py`          
+          +orchestrates assembly.                                        
+      428 +                                                              
+      429 +### Requirements to Structure Mapping                         
+      430 +                                                              
+      431 +| PRD Feature | Files |                                       
+      432 +|---|---|                                                     
+      433 +| FR-1 to FR-3 (Pipeline) |                                   
+          +`sql/sp_refresh_carrier_kpis.sql`,                            
+          +`sql/sp_compute_composite_scores.sql`, `Pulumi.yaml` |        
+      434 +| FR-4 (Country summary) | `sections/country_overview.py`,    
+          +`crt_mv_country_quality_summary` |                            
+      435 +| FR-5, FR-9, FR-10 (Carrier ranking/comparison) |            
+          +`sections/carrier_rankings.py`,                               
+          +`crt_mv_carrier_quality_summary` |                            
+      436 +| FR-6 (Carrier detail) | `sections/carrier_rankings.py`      
+          +(drill-down within same section) |                            
+      437 +| FR-7, FR-8 (Usage analytics) |                              
+          +`sections/usage_analytics.py`, `crt_mv_carrier_usage_summary` 
+          + |                                                            
+      438 +| FR-11, FR-12 (Trends/degradation) |                         
+          +`sections/trend_charts.py`, `sql/sp_detect_degradation.sql`,  
+          +`crt_mv_carrier_quality_trend` |                              
+      439 +| FR-13 to FR-15 (Data quality) | `sections/data_quality.py`, 
+          + `sql/sp_run_quality_checks.sql`, `stg_data_quality_log` |    
+      440 +                                                              
+      441 +### Integration Points                                        
+      442 +                                                              
+      443 +**External Integration:**                                     
+      444 +- BigQuery Enterprise Datahub `ent_*` tables (read-only,      
+          +service-account-bound)                                        
+      445 +- GCS bucket (report output, date-versioned)                  
+      446 +- Google Chat via `aia_gchat_workflow` (pipeline              
+          +notifications)                                                
+      447 +- Cloud Scheduler (daily trigger)                             
+      448 +                                                              
+      449 +**Internal Integration:**                                     
+      450 +- SQL stored procs chained by Cloud Workflows (step-by-step,  
+          +no direct SQL dependencies)                                   
+      451 +- Python reads only from `crt_mv_*` views via `bq_client.py`  
+          +(single data access layer)                                    
+      452 +- `builder.py` assembles section outputs into final HTML via  
+          +Jinja2 templates                                              
+
+⏺ Structure saved. Loading Step 7.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Running validation against the complete architecture.
+
+  ---
+  Validation Summary:
+
+  Coherence Check
+
+  Decision Compatibility — All technology choices are native to the bi-layer
+  ecosystem. BigQuery + Cloud Workflows + Python + Pulumi YAML/Jinja is a
+  well-trodden TELUS pattern with no version conflicts.
+
+  Pattern Consistency — Layer prefixes (stg_, crt_) + object type prefixes (sp_,
+   mv_) are applied uniformly. Column naming is snake_case throughout. Python
+  conventions align with SSOT. Process patterns (DELETE+INSERT,
+  stg_data_quality_log) are consistent.
+
+  Structure Alignment — Data flow is strictly layered: raw → stg → crt → Python
+  → GCS. No shortcutting between layers. Section independence in the report
+  mirrors the modular file structure.
+
+  No contradictions found.
+
+  Requirements Coverage
+
+  FR Trace — all 18 FRs mapped:
+
+  ┌───────────────────┬────────────────────────────────────────┬────────────┐
+  │        FR         │         Architectural Support          │   Status   │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-1 (daily       │ Cloud Workflows + Scheduler,           │ Covered    │
+  │ refresh)          │ sp_refresh_carrier_kpis                │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-2              │ sp_refresh_carrier_kpis +              │ Covered    │
+  │ (incremental)     │ backfill/sp_backfill_historical        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-3              │ stg_data_quality_log + structlog       │ Covered    │
+  │ (observability)   │                                        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-4 (country     │ crt_mv_country_quality_summary +       │ Covered    │
+  │ summary)          │ country_overview.py                    │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-5 (carrier     │ crt_mv_carrier_quality_summary +       │ Covered    │
+  │ breakdown)        │ carrier_rankings.py + is_steered       │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-6 (carrier     │ carrier_rankings.py +                  │ Covered    │
+  │ detail)           │ crt_mv_carrier_quality_trend           │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-7 (usage       │ crt_mv_carrier_usage_summary +         │ Covered    │
+  │ metrics)          │ usage_analytics.py                     │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-8 (usage       │ usage_analytics.py (<1% grouped as     │ Covered    │
+  │ share)            │ "Other")                               │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-9 (multi-dim   │ carrier_rankings.py +                  │ Covered    │
+  │ ranking)          │ composite_quality_score                │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-10             │ carrier_rankings.py (visual comparison │ Simplified │
+  │ (side-by-side)    │  in report)                            │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-11 (trends)    │ crt_mv_carrier_quality_trend +         │ Covered    │
+  │                   │ trend_charts.py                        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-12             │ sp_detect_degradation +                │ Covered    │
+  │ (degradation)     │ degradation_flag/details               │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-13 (freshness) │ sp_run_quality_checks +                │ Covered    │
+  │                   │ executive_summary.py                   │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-14 (coverage)  │ sp_run_quality_checks +                │ Covered    │
+  │                   │ data_quality.py                        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-15 (anomaly)   │ sp_run_quality_checks +                │ Covered    │
+  │                   │ data_quality.py                        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-16 (auth)      │ GCS IAM (architecture pivot — no web   │ Pivoted    │
+  │                   │ app)                                   │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-17 (responsive │ Plotly built-in interactivity          │ Pivoted    │
+  │  views)           │                                        │            │
+  ├───────────────────┼────────────────────────────────────────┼────────────┤
+  │ FR-18             │ Plotly filtering + HTML table sorting  │ Simplified │
+  │ (filter/search)   │                                        │            │
+  └───────────────────┴────────────────────────────────────────┴────────────┘
+
+  NFRs — all 5 covered: performance (pre-computed MVs), reliability (idempotent
+  + fail-fast), observability (stg_data_quality_log + structlog), data residency
+   (northamerica-northeast1/2), security (no PII + GCS IAM).
+
+  Gap Analysis
+
+  Critical Gaps: None.
+
+  Important Gaps (2):
+
+  1. KPI normalization method undefined. The architecture says "normalized
+  0-100" but doesn't specify how. Min-max over the 90-day window? Percentile
+  rank? Fixed reference values? This affects composite score comparability
+  across days. Recommendation: Define during implementation of
+  sp_compute_composite_scores — use min-max normalization over the trailing
+  90-day window per KPI, recalculated daily.
+  2. OQ-1 (BigQuery schema) still open. The column naming standard assumes 4
+  specific KPIs. If the actual Netscout schema has different or additional KPIs,
+   the stored procs, column schema, and report sections all need adaptation.
+  Recommendation: Schema validation is already the first implementation task —
+  document column mapping as an addendum to this architecture once validated.
+
+  Nice-to-Have Gaps (2):
+
+  3. SQL stored proc testing strategy not specified (BigQuery supports scripted
+  tests but it's not documented in the architecture).
+  4. Report archival/retention policy for GCS beyond date-versioned paths.
+
+  ---
+  Does this validation look accurate? Any concerns to address before we
+  finalize?
+
+  What would you like to do?
+  - [A] Advanced Elicitation — address architectural concerns
+  - [P] Party Mode — review from different perspectives
+  - [C] Continue — save validation and complete the architecture
+
+✻ Brewed for 1m 40s
+
+❯ c 
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3, 4, 5, 6]                              
+      2 +stepsCompleted: [1, 2, 3, 4, 5, 6, 7]                           
+      3  inputDocuments:                                                 
+      4    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      5    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 129 lines
+      450  - SQL stored procs chained by Cloud Workflows (step-by-step,  
+           no direct SQL dependencies)                                   
+      451  - Python reads only from `crt_mv_*` views via `bq_client.py`  
+           (single data access layer)                                    
+      452  - `builder.py` assembles section outputs into final HTML via  
+           Jinja2 templates                                              
+      453 +                                                              
+      454 +## Architecture Validation Results                            
+      455 +                                                              
+      456 +### Coherence Validation                                      
+      457 +                                                              
+      458 +**Decision Compatibility:** All technology choices are native 
+          + to the bi-layer ecosystem. BigQuery + Cloud Workflows +      
+          +Python + Pulumi YAML/Jinja is a well-established TELUS        
+          +pattern with no version conflicts. The monolithic Cloud       
+          +Workflows stack, Cloud Run Job trigger, and three-layer       
+          +BigQuery model work together without friction.                
+      459 +                                                              
+      460 +**Pattern Consistency:** Layer prefixes (`stg_`, `crt_`) +    
+          +object type prefixes (`sp_`, `mv_`) are applied uniformly     
+          +across all named objects. Column naming is snake_case         
+          +throughout with `kpi_`/`norm_` prefixes for KPI values.       
+          +Python conventions (PEP 8, structlog, Google docstrings)      
+          +align with SSOT. Process patterns (DELETE+INSERT idempotency, 
+          + stg_data_quality_log logging) are consistent across all      
+          +stored procs.                                                 
+      461 +                                                              
+      462 +**Structure Alignment:** Data flow is strictly layered: raw → 
+          + stg → crt → Python → GCS. No shortcutting between layers.    
+          +Section independence in the report generator mirrors the      
+          +modular file structure. Bi-layer monorepo layout (stacks/ +   
+          +images/) follows the standard pattern.                        
+      463 +                                                              
+      464 +No contradictions or incompatibilities found.                 
+      465 +                                                              
+      466 +### Requirements Coverage Validation                          
+      467 +                                                              
+      468 +**Functional Requirements — all 18 FRs traced:**              
+      469 +                                                              
+      470 +| FR | Architectural Support | Status |                       
+      471 +|---|---|---|                                                 
+      472 +| FR-1 (daily refresh) | Cloud Workflows + Scheduler,         
+          +sp_refresh_carrier_kpis | Covered |                           
+      473 +| FR-2 (incremental) | sp_refresh_carrier_kpis +              
+          +backfill/sp_backfill_historical | Covered |                   
+      474 +| FR-3 (observability) | stg_data_quality_log + structlog |   
+          +Covered |                                                     
+      475 +| FR-4 (country summary) | crt_mv_country_quality_summary +   
+          +country_overview.py | Covered |                               
+      476 +| FR-5 (carrier breakdown) | crt_mv_carrier_quality_summary + 
+          + carrier_rankings.py + is_steered | Covered |                 
+      477 +| FR-6 (carrier detail) | carrier_rankings.py +               
+          +crt_mv_carrier_quality_trend | Covered |                      
+      478 +| FR-7 (usage metrics) | crt_mv_carrier_usage_summary +       
+          +usage_analytics.py | Covered |                                
+      479 +| FR-8 (usage share) | usage_analytics.py (<1% grouped as     
+          +"Other") | Covered |                                          
+      480 +| FR-9 (multi-dim ranking) | carrier_rankings.py +            
+          +composite_quality_score column | Covered |                    
+      481 +| FR-10 (side-by-side comparison) | carrier_rankings.py       
+          +(visual comparison in report layout) | Simplified |           
+      482 +| FR-11 (trends) | crt_mv_carrier_quality_trend +             
+          +trend_charts.py | Covered |                                   
+      483 +| FR-12 (degradation) | sp_detect_degradation +               
+          +degradation_flag/details columns | Covered |                  
+      484 +| FR-13 (freshness) | sp_run_quality_checks +                 
+          +executive_summary.py | Covered |                              
+      485 +| FR-14 (coverage) | sp_run_quality_checks + data_quality.py  
+          +| Covered |                                                   
+      486 +| FR-15 (anomaly) | sp_run_quality_checks + data_quality.py | 
+          + Covered |                                                    
+      487 +| FR-16 (auth) | GCS IAM (architecture pivot — no deployed    
+          +web app) | Pivoted |                                          
+      488 +| FR-17 (responsive views) | Plotly built-in interactivity    
+          +(hover, zoom, filter) | Pivoted |                             
+      489 +| FR-18 (filter/search) | Plotly native filtering + HTML      
+          +table sorting | Simplified |                                  
+      490 +                                                              
+      491 +**Non-Functional Requirements — all 5 covered:**              
+      492 +- Performance: pre-computed materialized views, pipeline <2h  
+          +target                                                        
+      493 +- Reliability: DELETE+INSERT idempotency, fail-fast with      
+          +last-good data preserved                                      
+      494 +- Observability: stg_data_quality_log + structlog + gchat     
+          +notifications                                                 
+      495 +- Data residency: northamerica-northeast1/northeast2 enforced 
+      496 +- Security: no PII, GCS IAM scoping, service-account-bound    
+          +access                                                        
+      497 +                                                              
+      498 +### Implementation Readiness Validation                       
+      499 +                                                              
+      500 +**Decision Completeness:** All critical decisions documented  
+          +— data model, pipeline composition, report format, output     
+          +location, environment strategy, monitoring, security.         
+          +Technology stack fully specified with SSOT source references. 
+      501 +                                                              
+      502 +**Structure Completeness:** Full directory tree with          
+          +file-level descriptions. Every file maps to specific PRD      
+          +requirements. Integration points clearly specified at all     
+          +boundaries.                                                   
+      503 +                                                              
+      504 +**Pattern Completeness:** Naming conventions cover BigQuery   
+          +objects (layer + type prefixes), columns (snake_case + domain 
+          + prefixes), and Python code (PEP 8). Process patterns cover   
+          +idempotency, logging, error propagation, and date handling.   
+          +Enforcement guidelines and anti-patterns documented.          
+      505 +                                                              
+      506 +### Gap Analysis Results                                      
+      507 +                                                              
+      508 +**Critical Gaps:** None.                                      
+      509 +                                                              
+      510 +**Important Gaps:**                                           
+      511 +                                                              
+      512 +1. **KPI normalization method undefined.** Architecture       
+          +specifies "normalized 0-100" but not the normalization        
+          +function. Recommendation: use min-max normalization over the  
+          +trailing 90-day window per KPI, recalculated daily. Define    
+          +during implementation of `sp_compute_composite_scores`.       
+      513 +                                                              
+      514 +2. **OQ-1 (BigQuery schema) still open.** Column naming       
+          +standard assumes 4 specific KPIs (latency, throughput, packet 
+          + loss, session success rate). If the actual Netscout schema   
+          +differs, stored procs, column schema, and report sections all 
+          + need adaptation. Schema validation is already sequenced as   
+          +the first implementation task — document column mapping as an 
+          + addendum once validated.                                     
+      515 +                                                              
+      516 +**Nice-to-Have Gaps:**                                        
+      517 +                                                              
+      518 +3. SQL stored proc testing strategy not specified (BigQuery   
+          +scripted tests could be added during implementation).         
+      519 +4. Report archival/retention policy for GCS objects beyond    
+          +date-versioned paths not defined.                             
+      520 +                                                              
+      521 +### Architecture Completeness Checklist                       
+      522 +                                                              
+      523 +**Requirements Analysis**                                     
+      524 +                                                              
+      525 +- [x] Project context thoroughly analyzed                     
+      526 +- [x] Scale and complexity assessed                           
+      527 +- [x] Technical constraints identified                        
+      528 +- [x] Cross-cutting concerns mapped                           
+      529 +                                                              
+      530 +**Architectural Decisions**                                   
+      531 +                                                              
+      532 +- [x] Critical decisions documented with versions             
+      533 +- [x] Technology stack fully specified                        
+      534 +- [x] Integration patterns defined                            
+      535 +- [x] Performance considerations addressed                    
+      536 +                                                              
+      537 +**Implementation Patterns**                                   
+      538 +                                                              
+      539 +- [x] Naming conventions established                          
+      540 +- [x] Structure patterns defined                              
+      541 +- [x] Communication patterns specified                        
+      542 +- [x] Process patterns documented                             
+      543 +                                                              
+      544 +**Project Structure**                                         
+      545 +                                                              
+      546 +- [x] Complete directory structure defined                    
+      547 +- [x] Component boundaries established                        
+      548 +- [x] Integration points mapped                               
+      549 +- [x] Requirements to structure mapping complete              
+      550 +                                                              
+      551 +### Architecture Readiness Assessment                         
+      552 +                                                              
+      553 +**Overall Status:** READY FOR IMPLEMENTATION                  
+      554 +                                                              
+      555 +**Confidence Level:** High — all 16 checklist items verified, 
+          + no critical gaps, all FRs traced to architectural            
+          +components.                                                   
+      556 +                                                              
+      557 +**Key Strengths:**                                            
+      558 +- Clean separation between SQL pipeline and Python report     
+          +generation via the `crt_mv_*` contract                        
+      559 +- Architecture pivot to static HTML dramatically simplified   
+          +the system while preserving all analytical value              
+      560 +- Strict layer discipline (raw → stg → crt) with enforced     
+          +naming conventions prevents agent drift                       
+      561 +- Every PRD requirement has a traceable home in the directory 
+          + structure                                                    
+      562 +                                                              
+      563 +**Areas for Future Enhancement:**                             
+      564 +- KPI normalization function (define during                   
+          +sp_compute_composite_scores implementation)                   
+      565 +- SQL testing strategy (add BigQuery scripted tests as test   
+          +coverage matures)                                             
+      566 +- GCS report retention policy (define when storage costs      
+          +become relevant)                                              
+      567 +- Alerting beyond gchat (email distribution, if steering team 
+          + requests it post-launch)                                     
+      568 +                                                              
+      569 +### Implementation Handoff                                    
+      570 +                                                              
+      571 +**AI Agent Guidelines:**                                      
+      572 +- Follow all architectural decisions exactly as documented    
+      573 +- Use implementation patterns consistently — layer prefixes,  
+          +column naming, DELETE+INSERT idempotency                      
+      574 +- Respect the `crt_mv_*` boundary: Python never reads stg_ or 
+          + raw_ tables                                                  
+      575 +- Refer to this document for all architectural questions      
+          +before making independent choices                             
+      576 +- When the BigQuery schema is validated (OQ-1), update the    
+          +column naming standard in this document                       
+      577 +                                                              
+      578 +**First Implementation Priority:**                            
+      579 +1. Fork bi-layer stacks catalog templates, set up project     
+          +structure                                                     
+      580 +2. Validate Netscout BigQuery schema (OQ-1) — unblocks all    
+          +pipeline work                                                 
+      581 +3. Request Datahub access if needed (PR to                    
+          +`telus/tf-infra-cio-datahub-bilayer`)                         
+
+⏺ Validation saved. Loading final step.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/architecture.md)
+  ⎿  Added 4 lines, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3, 4, 5, 6, 7]                           
+      2 +stepsCompleted: [1, 2, 3, 4, 5, 6, 7, 8]                        
+      3 +lastStep: 8                                                     
+      4 +status: 'complete'                                              
+      5 +completedAt: '2026-05-22'                                       
+      6  inputDocuments:                                                 
+      7    - "prds/prd-ai_first_development-2026-05-21/prd.md"           
+      8    -                                                             
+         "prds/prd-ai_first_development-2026-05-21/reconcile-brief.md"   
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow.on_complete": ""
+     }
+
+⏺ No on_complete hook. Architecture workflow is done.
+
+  ---
+  Felipe, the International Roaming Intelligence architecture is complete.
+
+  What we built together in this session:
+
+  1. Project Context Analysis — Traced 18 FRs across 7 feature groups,
+  identified technical constraints from SSOT, and assessed project complexity
+  2. Architecture Pivot — Simplified the PRD's two-subsystem design (pipeline +
+  deployed web app) into a single-subsystem approach: a BigQuery pipeline that
+  generates static HTML reports via Plotly. This eliminated Cloud Run hosting,
+  Google IAP auth, and an entire deployment surface
+  3. Core Decisions — Three-layer BigQuery data model (raw → stg → crt),
+  monolithic Cloud Workflows, Cloud Run Job for report generation, daily weekday
+   schedule, fail-fast error handling with gchat notifications
+  4. Implementation Patterns — Data warehouse layer convention (stg_, crt_),
+  complete column schema, BigQuery naming standards, Python conventions,
+  idempotency patterns, and enforcement guidelines
+  5. Project Structure — Full directory tree mapping every PRD requirement to
+  specific files, with clean architectural boundaries (the crt_mv_* contract
+  between SQL and Python)
+  6. Validation — All 18 FRs traced, all NFRs covered, 16/16 checklist items
+  verified, no critical gaps
+
+  The architecture document is at
+  _bmad-output/planning-artifacts/architecture.md and is ready to drive
+  implementation.
+
+  Do you have any questions about the architecture, or would you like guidance
+  on next steps?
+
+✻ Baked for 1m 5s
+
+❯ /export architect_design 
+  ⎿  Conversation exported to: architect_design.txt
+
+❯ Let's proceed 
+
+⏺ Skill(bmad-help)
+  ⎿  Successfully loaded skill
+
+⏺ Searched for 1 pattern, read 2 files (ctrl+o to expand)
+
+⏺ Felipe, here's where you stand:
+
+  ---
+  Phase 3 — Solutioning: 1 of 3 required items complete
+
+  ┌─────────┬─────────────────────────────────────┬─────────────────────────┐
+  │ Status  │                Skill                │          Notes          │
+  ├─────────┼─────────────────────────────────────┼─────────────────────────┤
+  │ Done    │ bmad-create-architecture [CA]       │ Completed just now      │
+  ├─────────┼─────────────────────────────────────┼─────────────────────────┤
+  │         │                                     │ Required — break the    │
+  │ Next    │ bmad-create-epics-and-stories [CE]  │ architecture into       │
+  │         │                                     │ implementable epics and │
+  │         │                                     │  stories                │
+  ├─────────┼─────────────────────────────────────┼─────────────────────────┤
+  │         │                                     │ Required — validates    │
+  │ Blocked │ bmad-check-implementation-readiness │ PRD, architecture, and  │
+  │         │  [IR]                               │ epics are aligned.      │
+  │         │                                     │ Needs CE first          │
+  └─────────┴─────────────────────────────────────┴─────────────────────────┘
+
+  ---
+  Recommended next step:
+
+  [CE] Create Epics and Stories — bmad-create-epics-and-stories
+
+  This takes the PRD requirements and architecture decisions and breaks them
+  into epics with user stories. Given the architecture pivot to static HTML
+  reports, the epic structure will likely be simpler than the PRD originally
+  implied.
+
+  Tip: Start this in a fresh context window so it gets a clean context budget
+  for the full PRD + architecture document.
+
+  ---
+  Also on your radar — governance gates still in "Warned" status:
+  - DEP Review
+  - DNTL Classification
+  - De-identification Assessment
+
+  These don't block solutioning but must be resolved before implementation. You
+  can address them anytime via [TGC] Governance Checklist or [TOG] Override
+  Gate.
+
+  ---
+  Want me to kick off the epics and stories workflow now, or do you have
+  questions about the architecture first?

@@ -1,0 +1,2593 @@
+
+╭─── Claude Code v2.1.68 ──────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                Welcome back Felipe!                │ started                 │
+│                                                    │ Run /init to create a … │
+│                       ▐▛███▜▌                      │ ─────────────────────── │
+│                      ▝▜█████▛▘                     │ Recent activity         │
+│                        ▘▘ ▝▝                       │ No recent activity      │
+│                                                    │                         │
+│        Opus 4.6 · Claude Enterprise · TELUS        │                         │
+│  ~/Documents/Code/tellus/ai_first_development/test │                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+❯ /bmad-create-epics-and-stories 
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow": {
+         "activation_steps_prepend": [
+     … +22 lines (ctrl+o to expand)
+
+⏺ Searched for 2 patterns, read 10 files (ctrl+o to expand)
+
+⏺ Now let me load the matched SSOT documents for the data_pipeline product type.
+
+⏺ Read 3 files (ctrl+o to expand)
+
+⏺ Now let me read the first step file.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Now let me search for the prerequisite documents.
+
+⏺ Searched for 5 patterns (ctrl+o to expand)
+
+⏺ Hey Felipe! Welcome to the Epic & Story Creation workflow for the
+  International Roaming Intelligence project.
+
+  [Phase 2/5: Planning — Data Pipeline]
+
+  ---
+  [GOVERNANCE WARNING] DEP Review Required
+    A Data Enablement Plan review is required before implementation for projects
+   touching TELUS data.
+    (source: governance/data-enablement-plan.md)
+
+  [GOVERNANCE WARNING] DNTL Classification Required
+    Data must be classified under the DNTL framework (Do Not Touch, Not for LLM,
+   Touch with Care, Low Risk) before implementation.
+    (source: governance/dntl-data-classification.md)
+
+  [GOVERNANCE WARNING] De-identification Assessment Required
+    Projects handling personal information must apply appropriate
+  de-identification techniques (Anonymization, De-Identification,
+  Pseudonymization, Synthetic, Tokenization).
+    (source: governance/de-identification-standards.md)
+
+  Resolution options:
+  - /governance-checklist {gate} — complete the SSOT-sourced checklist
+  - /override {gate} — log rationale and skip
+  - Continue working — warning persists in sprint status
+
+  ---
+  Document Discovery
+
+  I found the following input documents:
+
+  ┌──────────────┬───────────┬────────────────────────────────────────────┐
+  │   Document   │  Status   │                    Path                    │
+  ├──────────────┼───────────┼────────────────────────────────────────────┤
+  │ PRD          │ Found     │ planning-artifacts/prd.md                  │
+  ├──────────────┼───────────┼────────────────────────────────────────────┤
+  │ Architecture │ Found     │ planning-artifacts/architecture.md         │
+  ├──────────────┼───────────┼────────────────────────────────────────────┤
+  │ UX Design    │ Not found │ N/A (expected for a Data Pipeline project) │
+  └──────────────┴───────────┴────────────────────────────────────────────┘
+
+  Before I begin extracting requirements, are there any other documents you'd
+  like me to include in the analysis, or should any of the found documents be
+  excluded?
+
+✻ Churned for 2m 0s
+
+❯ go ahead, no other documents 
+
+⏺ Read 3 files (ctrl+o to expand)
+
+⏺ Now let me create the epics.md with extracted requirements.
+
+⏺ Write(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Wrote 92 lines to _bmad-output/planning-artifacts/epics.md
+     ---
+     stepsCompleted: [1]
+     inputDocuments:
+       - "planning-artifacts/prd.md"
+       - "planning-artifacts/architecture.md"
+     ---
+
+     # International Roaming Intelligence - Epic Breakdown
+
+     ## Overview
+     … +82 lines (ctrl+o to expand)
+
+⏺ Here's a summary of the extracted requirements:
+
+  ---
+  Functional Requirements: 18 FRs across 7 feature groups
+
+  ┌──────────────────┬──────────┬──────────────────────────────────────────┐
+  │  Feature Group   │   FRs    │                 Summary                  │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Daily Data       │ FR-1 to  │ Daily refresh, incremental processing,   │
+  │ Pipeline         │ FR-3     │ pipeline observability                   │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Quality KPI View │ FR-4 to  │ Country summary, carrier breakdown,      │
+  │                  │ FR-6     │ carrier detail drill-down                │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Usage Analytics  │ FR-7,    │ Usage metrics per carrier, traffic share │
+  │                  │ FR-8     │  visualization                           │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Comparative      │ FR-9,    │ Multi-dimensional ranking, side-by-side  │
+  │ Ranking          │ FR-10    │ comparison                               │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Trend Visibility │ FR-11,   │ Time-series trends, degradation          │
+  │                  │ FR-12    │ indicators                               │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Data Quality     │ FR-13 to │ Freshness, coverage validation, volume   │
+  │ Monitoring       │  FR-15   │ anomaly detection                        │
+  ├──────────────────┼──────────┼──────────────────────────────────────────┤
+  │ Web Application  │ FR-16 to │ Pivoted to static HTML reports — IAP     │
+  │ (Pivoted)        │  FR-18   │ replaced by GCS IAM, interactivity via   │
+  │                  │          │ Plotly                                   │
+  └──────────────────┴──────────┴──────────────────────────────────────────┘
+
+  Non-Functional Requirements: 5 NFRs
+
+  Performance, Reliability, Observability, Data Residency (Canadian), Security
+  (no PII)
+
+  Additional Requirements from Architecture: 13 items
+
+  Key highlights:
+  - Architecture pivot to static HTML reports (no deployed web app)
+  - Starter template — fork bi-layer catalog templates as first task
+  - Three-layer BigQuery model (raw → stg → crt)
+  - Monolithic Cloud Workflows with 6 pipeline steps
+  - Cloud Run Job for Python/Plotly report generation
+  - Schema validation (OQ-1) blocks all pipeline work
+  - Datahub access PR may be needed before pipeline development
+
+  UX Design Requirements: N/A (data pipeline project)
+
+  ---
+  Do these extracted requirements accurately represent what needs to be built?
+  Any additions or corrections?
+
+✻ Churned for 1m 28s
+
+❯ yes 
+
+⏺ Confirm the Requirements are complete and correct to [C] continue:
+
+❯ c 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Requirements confirmed and saved. Now let me design the epic structure.
+
+  ---
+  Epic Design Assessment
+
+  This project has a fully validated architecture with clear direction (static
+  HTML reports, monolithic Cloud Workflows, three-layer BQ model). Direction
+  changes between epics are unlikely, so fewer, larger epics are appropriate.
+
+  Key observations:
+  - The architecture consolidates everything into one subsystem (pipeline +
+  report)
+  - SQL stored procs are independent files, Python report sections are
+  independent files
+  - The main shared file (Pulumi.yaml) grows incrementally across setup →
+  pipeline → orchestration
+  - The user (steering analyst) consumes a single output: the daily HTML report
+
+  ---
+  Proposed Epic Structure
+
+  Epic 1: Project Foundation & Data Infrastructure
+  Set up the bi-layer project structure, validate the Netscout data source, and
+  establish BigQuery resources so the team can start building pipeline logic.
+  FRs covered: Enables FR-1, FR-2 (infrastructure prerequisites)
+
+  Epic 2: Daily Quality Intelligence Pipeline
+  Build all data transformation logic — from raw Netscout data through KPI
+  normalization, composite scoring, degradation detection, and data quality
+  checks to curated output views. After this epic, the crt_mv_* data contract is
+   fulfilled and curated tables can be queried directly.
+  FRs covered: FR-1, FR-2, FR-3, FR-5 (data), FR-7 (data), FR-9 (data), FR-11
+  (data), FR-12, FR-13, FR-14, FR-15
+
+  Epic 3: Interactive Report Generation & Distribution
+  Build the Python report generator that reads curated views and produces a
+  self-contained HTML report with all analytical views — quality rankings, usage
+   analytics, trend charts, side-by-side comparison, and data quality
+  indicators. After this epic, reports can be generated manually.
+  FRs covered: FR-4, FR-5 (presentation), FR-6, FR-7, FR-8, FR-9, FR-10, FR-11
+  (presentation), FR-16, FR-17, FR-18
+
+  Epic 4: Pipeline Orchestration & Operational Readiness
+  Wire Cloud Workflows to chain all pipeline steps and report generation, set up
+   the Cloud Scheduler, configure gchat notifications, run the 90-day historical
+   backfill, and validate end-to-end in bi-stg before promoting to bi-srv. After
+   this epic, the steering team receives daily automated reports.
+  FRs covered: FR-1 (scheduling), FR-3 (end-to-end observability), NFR-1, NFR-2
+
+  Epic 5: Governance & Compliance
+  Complete all mandatory governance gates for a data pipeline project: DEP
+  Review, DNTL Classification, and De-identification Standards assessment.
+  FRs covered: NFR-4, NFR-5, governance gates (source: lifecycle-config.yaml)
+
+  ---
+  FR Coverage Map
+
+  ┌───────┬──────────────┬──────────────────────────────────────────────────┐
+  │  FR   │     Epic     │                   Description                    │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-1  │ Epic 1 + 2 + │ Infra setup → pipeline logic → scheduled         │
+  │       │  4           │ orchestration                                    │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-2  │ Epic 1 + 2   │ Incremental processing + backfill stored proc    │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-3  │ Epic 2 + 4   │ Pipeline logging → end-to-end observability      │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-4  │ Epic 3       │ Country overview report section                  │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-5  │ Epic 2 + 3   │ Composite scoring (data) → carrier rankings      │
+  │       │              │ (report)                                         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-6  │ Epic 3       │ Carrier detail in report                         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-7  │ Epic 2 + 3   │ Usage data in pipeline → usage section in report │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-8  │ Epic 3       │ Usage share visualization in report              │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-9  │ Epic 2 + 3   │ Composite score (data) → ranking/sorting         │
+  │       │              │ (report)                                         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-10 │ Epic 3       │ Side-by-side comparison in report                │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-11 │ Epic 2 + 3   │ Trend data in pipeline → trend charts in report  │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-12 │ Epic 2       │ Degradation detection stored proc                │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-13 │ Epic 2 + 3   │ Freshness check (pipeline) → display (report)    │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-14 │ Epic 2 + 3   │ Coverage validation (pipeline) → display         │
+  │       │              │ (report)                                         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-15 │ Epic 2 + 3   │ Volume anomaly detection (pipeline) → display    │
+  │       │              │ (report)                                         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-16 │ Epic 3       │ GCS IAM-scoped access (pivoted from IAP)         │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-17 │ Epic 3       │ Plotly interactivity (pivoted from web app)      │
+  ├───────┼──────────────┼──────────────────────────────────────────────────┤
+  │ FR-18 │ Epic 3       │ Plotly filtering + HTML table sorting            │
+  └───────┴──────────────┴──────────────────────────────────────────────────┘
+
+  All 18 FRs covered. No gaps.
+
+  ---
+  Natural Dependencies
+
+  Epic 1 → Epic 2 → Epic 3 → Epic 4
+
+  Epic 5 (parallel — can run alongside any epic)
+
+  Does this epic structure align with your product vision? Should we adjust any
+  groupings?
+
+✻ Brewed for 1m 36s
+
+❯ Sound good 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1]                                             
+      2 +stepsCompleted: [1, 2]                                          
+      3  inputDocuments:                                                 
+      4    - "planning-artifacts/prd.md"                                 
+      5    - "planning-artifacts/architecture.md"                        
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 39 lines, removed 2 lines
+       85                                                                
+       86  ### FR Coverage Map                                           
+       87                                                                
+       88 -{{requirements_coverage_map}}                                 
+       88 +| FR | Epic | Description |                                   
+       89 +|---|---|---|                                                 
+       90 +| FR-1 | Epic 1 + 2 + 4 | Infra setup → pipeline logic →      
+          +scheduled orchestration |                                     
+       91 +| FR-2 | Epic 1 + 2 | Incremental processing + backfill       
+          +stored proc |                                                 
+       92 +| FR-3 | Epic 2 + 4 | Pipeline logging → end-to-end           
+          +observability |                                               
+       93 +| FR-4 | Epic 3 | Country overview report section |           
+       94 +| FR-5 | Epic 2 + 3 | Composite scoring (data) → carrier      
+          +rankings (report) |                                           
+       95 +| FR-6 | Epic 3 | Carrier detail in report |                  
+       96 +| FR-7 | Epic 2 + 3 | Usage data in pipeline → usage section  
+          +in report |                                                   
+       97 +| FR-8 | Epic 3 | Usage share visualization in report |       
+       98 +| FR-9 | Epic 2 + 3 | Composite score (data) →                
+          +ranking/sorting (report) |                                    
+       99 +| FR-10 | Epic 3 | Side-by-side comparison in report |        
+      100 +| FR-11 | Epic 2 + 3 | Trend data in pipeline → trend charts  
+          +in report |                                                   
+      101 +| FR-12 | Epic 2 | Degradation detection stored proc |        
+      102 +| FR-13 | Epic 2 + 3 | Freshness check (pipeline) → display   
+          +(report) |                                                    
+      103 +| FR-14 | Epic 2 + 3 | Coverage validation (pipeline) →       
+          +display (report) |                                            
+      104 +| FR-15 | Epic 2 + 3 | Volume anomaly detection (pipeline) →  
+          +display (report) |                                            
+      105 +| FR-16 | Epic 3 | GCS IAM-scoped access (pivoted from IAP) | 
+      106 +| FR-17 | Epic 3 | Plotly interactivity (pivoted from web     
+          +app) |                                                        
+      107 +| FR-18 | Epic 3 | Plotly filtering + HTML table sorting |    
+      108                                                                
+      109  ## Epic List                                                  
+      110                                                                
+      111 -{{epics_list}}                                                
+      111 +### Epic 1: Project Foundation & Data Infrastructure          
+      112 +Set up the bi-layer project structure, validate the Netscout  
+          +data source, and establish BigQuery resources so the team can 
+          + start building pipeline logic.                               
+      113 +**FRs covered:** Enables FR-1, FR-2 (infrastructure           
+          +prerequisites)                                                
+      114 +                                                              
+      115 +### Epic 2: Daily Quality Intelligence Pipeline               
+      116 +Build all data transformation logic — from raw Netscout data  
+          +through KPI normalization, composite scoring, degradation     
+          +detection, and data quality checks to curated output views.   
+          +After this epic, the crt_mv_* data contract is fulfilled and  
+          +curated tables can be queried directly.                       
+      117 +**FRs covered:** FR-1, FR-2, FR-3, FR-5 (data), FR-7 (data),  
+          +FR-9 (data), FR-11 (data), FR-12, FR-13, FR-14, FR-15         
+      118 +                                                              
+      119 +### Epic 3: Interactive Report Generation & Distribution      
+      120 +Build the Python report generator that reads curated views    
+          +and produces a self-contained HTML report with all analytical 
+          + views — quality rankings, usage analytics, trend charts,     
+          +side-by-side comparison, and data quality indicators. After   
+          +this epic, reports can be generated manually.                 
+      121 +**FRs covered:** FR-4, FR-5 (presentation), FR-6, FR-7, FR-8, 
+          + FR-9, FR-10, FR-11 (presentation), FR-16, FR-17, FR-18       
+      122 +                                                              
+      123 +### Epic 4: Pipeline Orchestration & Operational Readiness    
+      124 +Wire Cloud Workflows to chain all pipeline steps and report   
+          +generation, set up the Cloud Scheduler, configure gchat       
+          +notifications, run the 90-day historical backfill, and        
+          +validate end-to-end in bi-stg before promoting to bi-srv.     
+          +After this epic, the steering team receives daily automated   
+          +reports.                                                      
+      125 +**FRs covered:** FR-1 (scheduling), FR-3 (end-to-end          
+          +observability), NFR-1, NFR-2                                  
+      126 +                                                              
+      127 +### Epic 5: Governance & Compliance                           
+      128 +Complete all mandatory governance gates for a data pipeline   
+          +project: DEP Review, DNTL Classification, and                 
+          +De-identification Standards assessment.                       
+      129 +**FRs covered:** NFR-4, NFR-5, governance gates (source:      
+          +lifecycle-config.yaml)                                        
+
+⏺ Epic structure approved and saved.
+
+  Select an Option: [A] Advanced Elicitation [P] Party Mode [C] Continue
+
+✻ Baked for 53s
+
+❯ c 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Let's start generating stories for each epic. Beginning with Epic 1.
+
+  ---
+  Epic 1: Project Foundation & Data Infrastructure
+
+  Goal: Set up the bi-layer project structure, validate the Netscout data
+  source, and establish BigQuery resources so the team can start building
+  pipeline logic.
+
+  FRs covered: Enables FR-1, FR-2 (infrastructure prerequisites)
+
+  Relevant architecture decisions:
+  - Fork from common_patterns/scheduled_bq_multi_step_stored_proc and
+  big_query/* templates
+  - Three-layer BQ model (raw → stg → crt)
+  - Dataset: roaming_intelligence
+  - All resources in northamerica-northeast1
+  - Monorepo structure: stacks/roaming-intelligence/ +
+  images/roaming-intelligence/
+
+  Proposed Stories
+
+  Story 1.1: Set Up Bi-Layer Project Structure
+  As a data engineer,
+  I want the bi-layer monorepo structure forked from catalog templates with
+  stacks/ and images/ pillars,
+  So that the team has a standard project foundation to build pipeline and
+  report components on.
+
+  Acceptance Criteria:
+
+  Given the team's fork of the bi-layer monorepo exists
+  When the project structure is created
+  Then stacks/roaming-intelligence/ contains a Pulumi.yaml forked from
+  scheduled_bq_multi_step_stored_proc and an environment.j2 with env-specific
+  variables (bucket names, schedule, pause status)
+  And images/roaming-intelligence/ contains a Dockerfile, pyproject.toml, src/
+  directory structure, and templates/ directory per the architecture spec
+  And images/roaming-intelligence/sql/ directory exists for stored procedure
+  source files
+  And all GCP resources are configured for northamerica-northeast1
+  And environment.j2 includes Jinja PROJECT_TYPE switches for bi-stg and bi-srv
+
+  ---
+  Story 1.2: Validate Netscout BigQuery Schema
+  As a data engineer,
+  I want the Netscout probe data schema in BigQuery explored and documented,
+  So that the team confirms which KPIs are available and can map source columns
+  to the target data model.
+
+  Acceptance Criteria:
+
+  Given the Netscout probe data exists in BigQuery (via Datahub ent_* tables or
+  direct)
+  When the schema is validated
+  Then a schema mapping document is produced listing source columns and their
+  mapping to target columns (kpi_latency_ms, kpi_throughput_kbps,
+  kpi_packet_loss_pct, kpi_session_success_pct, country_name, country_code,
+  carrier_name, mcc, mnc)
+  And any KPIs not available in the source schema are flagged with mitigation
+  options
+  And the data grain (country/carrier/day) is confirmed
+  And the is_steered field source is identified (programmatic or manual tagging)
+  And OQ-1 is resolved with findings documented
+
+  ---
+  Story 1.3: Request Datahub Access for Source Data
+  As a data engineer,
+  I want a PR submitted to telus/tf-infra-cio-datahub-bilayer granting the
+  project's service accounts access to the Netscout source datasets,
+  So that the pipeline can read source data in both bi-stg and bi-srv
+  environments.
+
+  Acceptance Criteria:
+
+  Given the Netscout source datasets are identified from Story 1.2
+  When the access PR is submitted
+  Then terraform/bi/roaming-intelligence.json lists both bi-stg and bi-srv
+  service accounts
+  And the enterprise.datasets array includes all required ent_* dataset names
+  And the PR targets telus/tf-infra-cio-datahub-bilayer for CODEOWNERS review
+  And after merge and Terraform apply, queries against the listed datasets
+  succeed from the project's service accounts
+  (source: infrastructure/bigquery-enterprise-datahub.md §4-5)
+
+  ---
+  Story 1.4: Create BigQuery Dataset and Core Table Definitions
+  As a data engineer,
+  I want the roaming_intelligence BigQuery dataset and all staging/curated table
+   schemas defined in Pulumi IaC,
+  So that the pipeline stored procedures have target tables to write to.
+
+  Acceptance Criteria:
+
+  Given the project Pulumi stack exists from Story 1.1
+  When the BigQuery resources are provisioned
+  Then the roaming_intelligence dataset is created in northamerica-northeast1
+  And staging tables are created: stg_carrier_kpi_daily,
+  stg_carrier_composite_daily, stg_carrier_degradation_daily,
+  stg_data_quality_log
+  And curated materialized view placeholders are defined:
+  crt_mv_carrier_quality_summary, crt_mv_country_quality_summary,
+  crt_mv_carrier_quality_trend, crt_mv_carrier_usage_summary
+  And all tables are daily date-partitioned by refresh_date
+  And column schemas match the architecture spec (snake_case, kpi_/norm_
+  prefixes)
+  And IAM bindings grant the pipeline service account roles/bigquery.dataEditor
+  on project-owned datasets
+
+  ---
+  Epic 1 Summary: 4 stories covering project setup, schema validation, data
+  access, and table definitions.
+
+  Does this breakdown capture Epic 1 correctly? Are the stories appropriately
+  sized and the acceptance criteria complete?
+
+✻ Baked for 1m 4s
+
+❯ Proceed 
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 69 lines
+      127  ### Epic 5: Governance & Compliance                           
+      128  Complete all mandatory governance gates for a data pipeline   
+           project: DEP Review, DNTL Classification, and                 
+           De-identification Standards assessment.                       
+      129  **FRs covered:** NFR-4, NFR-5, governance gates (source:      
+           lifecycle-config.yaml)                                        
+      130 +                                                              
+      131 +## Epic 1: Project Foundation & Data Infrastructure           
+      132 +                                                              
+      133 +Set up the bi-layer project structure, validate the Netscout  
+          +data source, and establish BigQuery resources so the team can 
+          + start building pipeline logic.                               
+      134 +                                                              
+      135 +### Story 1.1: Set Up Bi-Layer Project Structure              
+      136 +                                                              
+      137 +As a data engineer,                                           
+      138 +I want the bi-layer monorepo structure forked from catalog    
+          +templates with stacks/ and images/ pillars,                   
+      139 +So that the team has a standard project foundation to build   
+          +pipeline and report components on.                            
+      140 +                                                              
+      141 +**Acceptance Criteria:**                                      
+      142 +                                                              
+      143 +**Given** the team's fork of the bi-layer monorepo exists     
+      144 +**When** the project structure is created                     
+      145 +**Then** `stacks/roaming-intelligence/` contains a            
+          +`Pulumi.yaml` forked from                                     
+          +`scheduled_bq_multi_step_stored_proc` and an `environment.j2` 
+          + with env-specific variables (bucket names, schedule, pause   
+          +status)                                                       
+      146 +**And** `images/roaming-intelligence/` contains a             
+          +`Dockerfile`, `pyproject.toml`, `src/` directory structure,   
+          +and `templates/` directory per the architecture spec          
+      147 +**And** `images/roaming-intelligence/sql/` directory exists   
+          +for stored procedure source files                             
+      148 +**And** all GCP resources are configured for                  
+          +`northamerica-northeast1`                                     
+      149 +**And** `environment.j2` includes Jinja `PROJECT_TYPE`        
+          +switches for `bi-stg` and `bi-srv`                            
+      150 +                                                              
+      151 +### Story 1.2: Validate Netscout BigQuery Schema              
+      152 +                                                              
+      153 +As a data engineer,                                           
+      154 +I want the Netscout probe data schema in BigQuery explored    
+          +and documented,                                               
+      155 +So that the team confirms which KPIs are available and can    
+          +map source columns to the target data model.                  
+      156 +                                                              
+      157 +**Acceptance Criteria:**                                      
+      158 +                                                              
+      159 +**Given** the Netscout probe data exists in BigQuery (via     
+          +Datahub `ent_*` tables or direct)                             
+      160 +**When** the schema is validated                              
+      161 +**Then** a schema mapping document is produced listing source 
+          + columns and their mapping to target columns (kpi_latency_ms, 
+          + kpi_throughput_kbps, kpi_packet_loss_pct,                    
+          +kpi_session_success_pct, country_name, country_code,          
+          +carrier_name, mcc, mnc)                                       
+      162 +**And** any KPIs not available in the source schema are       
+          +flagged with mitigation options                               
+      163 +**And** the data grain (country/carrier/day) is confirmed     
+      164 +**And** the `is_steered` field source is identified           
+          +(programmatic or manual tagging)                              
+      165 +**And** OQ-1 is resolved with findings documented             
+      166 +                                                              
+      167 +### Story 1.3: Request Datahub Access for Source Data         
+      168 +                                                              
+      169 +As a data engineer,                                           
+      170 +I want a PR submitted to `telus/tf-infra-cio-datahub-bilayer` 
+          + granting the project's service accounts access to the        
+          +Netscout source datasets,                                     
+      171 +So that the pipeline can read source data in both bi-stg and  
+          +bi-srv environments.                                          
+      172 +                                                              
+      173 +**Acceptance Criteria:**                                      
+      174 +                                                              
+      175 +**Given** the Netscout source datasets are identified from    
+          +Story 1.2                                                     
+      176 +**When** the access PR is submitted                           
+      177 +**Then** `terraform/bi/roaming-intelligence.json` lists both  
+          +`bi-stg` and `bi-srv` service accounts                        
+      178 +**And** the `enterprise.datasets` array includes all required 
+          + `ent_*` dataset names                                        
+      179 +**And** the PR targets `telus/tf-infra-cio-datahub-bilayer`   
+          +for CODEOWNERS review                                         
+      180 +**And** after merge and Terraform apply, queries against the  
+          +listed datasets succeed from the project's service accounts   
+      181 +(source: infrastructure/bigquery-enterprise-datahub.md §4-5)  
+      182 +                                                              
+      183 +### Story 1.4: Create BigQuery Dataset and Core Table         
+          +Definitions                                                   
+      184 +                                                              
+      185 +As a data engineer,                                           
+      186 +I want the `roaming_intelligence` BigQuery dataset and all    
+          +staging/curated table schemas defined in Pulumi IaC,          
+      187 +So that the pipeline stored procedures have target tables to  
+          +write to.                                                     
+      188 +                                                              
+      189 +**Acceptance Criteria:**                                      
+      190 +                                                              
+      191 +**Given** the project Pulumi stack exists from Story 1.1      
+      192 +**When** the BigQuery resources are provisioned               
+      193 +**Then** the `roaming_intelligence` dataset is created in     
+          +`northamerica-northeast1`                                     
+      194 +**And** staging tables are created: `stg_carrier_kpi_daily`,  
+          +`stg_carrier_composite_daily`,                                
+          +`stg_carrier_degradation_daily`, `stg_data_quality_log`       
+      195 +**And** curated materialized view placeholders are defined:   
+          +`crt_mv_carrier_quality_summary`,                             
+          +`crt_mv_country_quality_summary`,                             
+          +`crt_mv_carrier_quality_trend`,                               
+          +`crt_mv_carrier_usage_summary`                                
+      196 +**And** all tables are daily date-partitioned by              
+          +`refresh_date`                                                
+      197 +**And** column schemas match the architecture spec            
+          +(snake_case, kpi_/norm_ prefixes)                             
+      198 +**And** IAM bindings grant the pipeline service account       
+          +`roles/bigquery.dataEditor` on project-owned datasets         
+
+⏺ ---
+  Epic 2: Daily Quality Intelligence Pipeline
+
+  Goal: Build all data transformation logic — from raw Netscout data through KPI
+   normalization, composite scoring, degradation detection, and data quality
+  checks to curated output views. After this epic, the crt_mv_* data contract is
+   fulfilled.
+
+  FRs covered: FR-1, FR-2, FR-3, FR-5 (data), FR-7 (data), FR-9 (data), FR-11
+  (data), FR-12, FR-13, FR-14, FR-15
+
+  Relevant architecture decisions:
+  - 5 stored procs in sequence + 1 backfill proc
+  - DELETE + INSERT for idempotency
+  - Each proc logs to stg_data_quality_log
+  - Layer discipline: raw → stg → crt
+  - Composite score: equal-weight average of normalized KPIs (0-100)
+  - Degradation: direction-aware, 7-day window, 20% default threshold
+
+  Proposed Stories
+
+  Story 2.1: Build KPI Refresh Stored Procedure
+  As a carrier steering analyst,
+  I want raw Netscout probe data incrementally loaded and normalized into daily
+  KPI values per carrier per country,
+  So that I have up-to-date quality metrics to base steering decisions on.
+
+  Acceptance Criteria:
+
+  Given Netscout source data exists in BigQuery for the current date
+  When sp_refresh_carrier_kpis executes
+  Then stg_carrier_kpi_daily is populated with one row per carrier per country
+  per day
+  And raw KPI columns are populated: kpi_latency_ms, kpi_throughput_kbps,
+  kpi_packet_loss_pct, kpi_session_success_pct
+  And normalized KPI columns (0-100 scale) are populated: norm_latency
+  (inverted), norm_throughput, norm_packet_loss (inverted), norm_session_success
+  And usage metrics are populated: traffic_volume_mb, session_count,
+  subscriber_count
+  And metadata columns are populated: country_name, country_code, carrier_name,
+  mcc, mnc, is_steered
+  And the proc uses DELETE + INSERT on the refresh_date partition for
+  idempotency
+  And only new/changed data since the last refresh is processed (incremental)
+  And execution is logged to stg_data_quality_log with start time, end time, row
+   count, status
+
+  ---
+  Story 2.2: Build Composite Quality Score Stored Procedure
+  As a carrier steering analyst,
+  I want Partner Carriers scored with a composite quality metric that combines
+  all individual KPIs,
+  So that I can rank carriers at a glance and compare them objectively.
+
+  Acceptance Criteria:
+
+  Given stg_carrier_kpi_daily is populated with normalized KPIs for the current
+  date
+  When sp_compute_composite_scores executes
+  Then stg_carrier_composite_daily is populated with composite_quality_score as
+  the equal-weight average of norm_latency, norm_throughput, norm_packet_loss,
+  norm_session_success
+  And the score is a FLOAT64 between 0 and 100
+  And rows with missing KPIs compute the average over available KPIs only
+  (graceful handling)
+  And the proc uses DELETE + INSERT on the refresh_date partition
+  And execution is logged to stg_data_quality_log
+
+  ---
+  Story 2.3: Build Degradation Detection Stored Procedure
+  As a carrier steering analyst,
+  I want to be alerted when a carrier's quality drops significantly over a
+  trailing window,
+  So that I can react to degradation in days, not weeks.
+
+  Acceptance Criteria:
+
+  Given stg_carrier_kpi_daily contains at least 7 days of historical data for a
+  carrier
+  When sp_detect_degradation executes
+  Then stg_carrier_degradation_daily is populated with degradation_flag (BOOL)
+  and degradation_details (JSON) per carrier per country
+  And degradation is direction-aware: latency increase > 20% = degradation;
+  throughput decrease > 20% = degradation; packet loss increase > 20% =
+  degradation; session success decrease > 20% = degradation
+  And the threshold is compared against the 7-day trailing average
+  And degradation_details JSON includes which KPIs degraded and the percentage
+  change
+  And carriers with fewer than 7 days of data are not flagged (insufficient
+  baseline)
+  And the proc uses DELETE + INSERT on the refresh_date partition
+  And execution is logged to stg_data_quality_log
+
+  ---
+  Story 2.4: Build Data Quality Checks Stored Procedure
+  As a carrier steering analyst,
+  I want automated validation that the data is fresh, complete, and not
+  anomalous,
+  So that I can trust the data before making steering decisions.
+
+  Acceptance Criteria:
+
+  Given the current pipeline run has completed steps 1-3
+  When sp_run_quality_checks executes
+  Then freshness is validated: the latest refresh_date is within 36 hours of
+  current time; if stale, a warning record is written to stg_data_quality_log
+  And coverage is validated: countries and carriers present in the prior refresh
+   but missing in the current refresh are identified and logged
+  And volume anomaly detection runs: any carrier-country pair with traffic
+  volume below 50% of its 14-day rolling average is flagged
+  And a coverage summary is written to stg_data_quality_log: countries covered,
+  carriers covered, missing entities count, anomaly count
+  And the proc uses DELETE + INSERT on the refresh_date partition for its output
+  And execution is logged to stg_data_quality_log
+
+  ---
+  Story 2.5: Build Curated Output Layer
+  As a carrier steering analyst,
+  I want the final curated views to aggregate all pipeline outputs into a clean
+  data contract,
+  So that the report generator has a single, reliable interface to read from.
+
+  Acceptance Criteria:
+
+  Given all staging tables are populated for the current date
+  When sp_curate_output executes
+  Then crt_mv_carrier_quality_summary is populated by joining
+  stg_carrier_kpi_daily, stg_carrier_composite_daily, and
+  stg_carrier_degradation_daily
+  And crt_mv_country_quality_summary is populated with per-country aggregate
+  quality indicators
+  And crt_mv_carrier_quality_trend is populated with the last 90 days of daily
+  KPI values per carrier
+  And crt_mv_carrier_usage_summary is populated with traffic volume, session
+  count, subscriber count, and traffic share percentage per carrier per country
+  And carriers with < 1% traffic share are tagged for "Other" grouping
+  And the proc uses DELETE + INSERT on the refresh_date partition
+  And execution is logged to stg_data_quality_log
+
+  ---
+  Story 2.6: Build Historical Backfill Procedure
+  As a data engineer,
+  I want to backfill 90 days of historical data through the full pipeline,
+  So that the report has sufficient historical context for trend analysis from
+  day one.
+
+  Acceptance Criteria:
+
+  Given the pipeline stored procs (Stories 2.1-2.5) are functional
+  When sp_backfill_historical executes with a date range parameter
+  Then all pipeline steps run for each date in the range, writing to the correct
+   refresh_date partition
+  And the backfill is idempotent — rerunning for the same dates produces
+  identical results
+  And execution completes within a reasonable time for a 90-day range
+  And all curated views contain 90 days of historical data after completion
+
+  ---
+  Epic 2 Summary: 6 stories covering the full pipeline from incremental data
+  refresh through curated output, plus historical backfill. All 5 stored procs +
+   backfill.
+
+  Does this breakdown capture Epic 2 correctly? Are the stories appropriately
+  sized?
+
+✻ Brewed for 60s
+
+❯ continue 
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 107 lines
+      196  **And** all tables are daily date-partitioned by              
+           `refresh_date`                                                
+      197  **And** column schemas match the architecture spec            
+           (snake_case, kpi_/norm_ prefixes)                             
+      198  **And** IAM bindings grant the pipeline service account       
+           `roles/bigquery.dataEditor` on project-owned datasets         
+      199 +                                                              
+      200 +## Epic 2: Daily Quality Intelligence Pipeline                
+      201 +                                                              
+      202 +Build all data transformation logic — from raw Netscout data  
+          +through KPI normalization, composite scoring, degradation     
+          +detection, and data quality checks to curated output views.   
+          +After this epic, the crt_mv_* data contract is fulfilled and  
+          +curated tables can be queried directly.                       
+      203 +                                                              
+      204 +### Story 2.1: Build KPI Refresh Stored Procedure             
+      205 +                                                              
+      206 +As a carrier steering analyst,                                
+      207 +I want raw Netscout probe data incrementally loaded and       
+          +normalized into daily KPI values per carrier per country,     
+      208 +So that I have up-to-date quality metrics to base steering    
+          +decisions on.                                                 
+      209 +                                                              
+      210 +**Acceptance Criteria:**                                      
+      211 +                                                              
+      212 +**Given** Netscout source data exists in BigQuery for the     
+          +current date                                                  
+      213 +**When** `sp_refresh_carrier_kpis` executes                   
+      214 +**Then** `stg_carrier_kpi_daily` is populated with one row    
+          +per carrier per country per day                               
+      215 +**And** raw KPI columns are populated: `kpi_latency_ms`,      
+          +`kpi_throughput_kbps`, `kpi_packet_loss_pct`,                 
+          +`kpi_session_success_pct`                                     
+      216 +**And** normalized KPI columns (0-100 scale) are populated:   
+          +`norm_latency` (inverted), `norm_throughput`,                 
+          +`norm_packet_loss` (inverted), `norm_session_success`         
+      217 +**And** usage metrics are populated: `traffic_volume_mb`,     
+          +`session_count`, `subscriber_count`                           
+      218 +**And** metadata columns are populated: `country_name`,       
+          +`country_code`, `carrier_name`, `mcc`, `mnc`, `is_steered`    
+      219 +**And** the proc uses DELETE + INSERT on the `refresh_date`   
+          +partition for idempotency                                     
+      220 +**And** only new/changed data since the last refresh is       
+          +processed (incremental)                                       
+      221 +**And** execution is logged to `stg_data_quality_log` with    
+          +start time, end time, row count, status                       
+      222 +                                                              
+      223 +### Story 2.2: Build Composite Quality Score Stored Procedure 
+      224 +                                                              
+      225 +As a carrier steering analyst,                                
+      226 +I want Partner Carriers scored with a composite quality       
+          +metric that combines all individual KPIs,                     
+      227 +So that I can rank carriers at a glance and compare them      
+          +objectively.                                                  
+      228 +                                                              
+      229 +**Acceptance Criteria:**                                      
+      230 +                                                              
+      231 +**Given** `stg_carrier_kpi_daily` is populated with           
+          +normalized KPIs for the current date                          
+      232 +**When** `sp_compute_composite_scores` executes               
+      233 +**Then** `stg_carrier_composite_daily` is populated with      
+          +`composite_quality_score` as the equal-weight average of      
+          +`norm_latency`, `norm_throughput`, `norm_packet_loss`,        
+          +`norm_session_success`                                        
+      234 +**And** the score is a FLOAT64 between 0 and 100              
+      235 +**And** rows with missing KPIs compute the average over       
+          +available KPIs only (graceful handling)                       
+      236 +**And** the proc uses DELETE + INSERT on the `refresh_date`   
+          +partition                                                     
+      237 +**And** execution is logged to `stg_data_quality_log`         
+      238 +                                                              
+      239 +### Story 2.3: Build Degradation Detection Stored Procedure   
+      240 +                                                              
+      241 +As a carrier steering analyst,                                
+      242 +I want to be alerted when a carrier's quality drops           
+          +significantly over a trailing window,                         
+      243 +So that I can react to degradation in days, not weeks.        
+      244 +                                                              
+      245 +**Acceptance Criteria:**                                      
+      246 +                                                              
+      247 +**Given** `stg_carrier_kpi_daily` contains at least 7 days of 
+          + historical data for a carrier                                
+      248 +**When** `sp_detect_degradation` executes                     
+      249 +**Then** `stg_carrier_degradation_daily` is populated with    
+          +`degradation_flag` (BOOL) and `degradation_details` (JSON)    
+          +per carrier per country                                       
+      250 +**And** degradation is direction-aware: latency increase >    
+          +20% = degradation; throughput decrease > 20% = degradation;   
+          +packet loss increase > 20% = degradation; session success     
+          +decrease > 20% = degradation                                  
+      251 +**And** the threshold is compared against the 7-day trailing  
+          +average                                                       
+      252 +**And** `degradation_details` JSON includes which KPIs        
+          +degraded and the percentage change                            
+      253 +**And** carriers with fewer than 7 days of data are not       
+          +flagged (insufficient baseline)                               
+      254 +**And** the proc uses DELETE + INSERT on the `refresh_date`   
+          +partition                                                     
+      255 +**And** execution is logged to `stg_data_quality_log`         
+      256 +                                                              
+      257 +### Story 2.4: Build Data Quality Checks Stored Procedure     
+      258 +                                                              
+      259 +As a carrier steering analyst,                                
+      260 +I want automated validation that the data is fresh, complete, 
+          + and not anomalous,                                           
+      261 +So that I can trust the data before making steering           
+          +decisions.                                                    
+      262 +                                                              
+      263 +**Acceptance Criteria:**                                      
+      264 +                                                              
+      265 +**Given** the current pipeline run has completed steps 1-3    
+      266 +**When** `sp_run_quality_checks` executes                     
+      267 +**Then** freshness is validated: the latest `refresh_date` is 
+          + within 36 hours of current time; if stale, a warning record  
+          +is written to `stg_data_quality_log`                          
+      268 +**And** coverage is validated: countries and carriers present 
+          + in the prior refresh but missing in the current refresh are  
+          +identified and logged                                         
+      269 +**And** volume anomaly detection runs: any carrier-country    
+          +pair with traffic volume below 50% of its 14-day rolling      
+          +average is flagged                                            
+      270 +**And** a coverage summary is written to                      
+          +`stg_data_quality_log`: countries covered, carriers covered,  
+          +missing entities count, anomaly count                         
+      271 +**And** the proc uses DELETE + INSERT on the `refresh_date`   
+          +partition for its output                                      
+      272 +**And** execution is logged to `stg_data_quality_log`         
+      273 +                                                              
+      274 +### Story 2.5: Build Curated Output Layer                     
+      275 +                                                              
+      276 +As a carrier steering analyst,                                
+      277 +I want the final curated views to aggregate all pipeline      
+          +outputs into a clean data contract,                           
+      278 +So that the report generator has a single, reliable interface 
+          + to read from.                                                
+      279 +                                                              
+      280 +**Acceptance Criteria:**                                      
+      281 +                                                              
+      282 +**Given** all staging tables are populated for the current    
+          +date                                                          
+      283 +**When** `sp_curate_output` executes                          
+      284 +**Then** `crt_mv_carrier_quality_summary` is populated by     
+          +joining `stg_carrier_kpi_daily`,                              
+          +`stg_carrier_composite_daily`, and                            
+          +`stg_carrier_degradation_daily`                               
+      285 +**And** `crt_mv_country_quality_summary` is populated with    
+          +per-country aggregate quality indicators                      
+      286 +**And** `crt_mv_carrier_quality_trend` is populated with the  
+          +last 90 days of daily KPI values per carrier                  
+      287 +**And** `crt_mv_carrier_usage_summary` is populated with      
+          +traffic volume, session count, subscriber count, and traffic  
+          +share percentage per carrier per country                      
+      288 +**And** carriers with < 1% traffic share are tagged for       
+          +"Other" grouping                                              
+      289 +**And** the proc uses DELETE + INSERT on the `refresh_date`   
+          +partition                                                     
+      290 +**And** execution is logged to `stg_data_quality_log`         
+      291 +                                                              
+      292 +### Story 2.6: Build Historical Backfill Procedure            
+      293 +                                                              
+      294 +As a data engineer,                                           
+      295 +I want to backfill 90 days of historical data through the     
+          +full pipeline,                                                
+      296 +So that the report has sufficient historical context for      
+          +trend analysis from day one.                                  
+      297 +                                                              
+      298 +**Acceptance Criteria:**                                      
+      299 +                                                              
+      300 +**Given** the pipeline stored procs (Stories 2.1-2.5) are     
+          +functional                                                    
+      301 +**When** `sp_backfill_historical` executes with a date range  
+          +parameter                                                     
+      302 +**Then** all pipeline steps run for each date in the range,   
+          +writing to the correct `refresh_date` partition               
+      303 +**And** the backfill is idempotent — rerunning for the same   
+          +dates produces identical results                              
+      304 +**And** execution completes within a reasonable time for a    
+          +90-day range                                                  
+      305 +**And** all curated views contain 90 days of historical data  
+          +after completion                                              
+
+⏺ Epic 3: Interactive Report Generation & Distribution
+
+  Goal: Build the Python report generator that reads curated views and produces
+  a self-contained HTML report with all analytical views. After this epic,
+  reports can be generated manually.
+
+  FRs covered: FR-4, FR-5 (presentation), FR-6, FR-7, FR-8, FR-9, FR-10, FR-11
+  (presentation), FR-16, FR-17, FR-18
+
+  Relevant architecture decisions:
+  - Python + Plotly (graph_objects only) + Jinja2
+  - Single self-contained HTML file (no external CDN)
+  - 6 report sections: executive summary, country overview, carrier rankings,
+  trend charts, usage analytics, data quality
+  - Section independence: each section module receives a DataFrame, returns
+  Plotly figure or HTML
+  - builder.py orchestrates assembly
+  - Output to GCS: reports/{YYYY-MM-DD}/roaming-intelligence.html
+
+  Proposed Stories
+
+  Story 3.1: Set Up Report Generator Container and Base Template
+  As a data engineer,
+  I want the Python report generator container scaffolded with dependencies, BQ
+  client, and Jinja2 base HTML template,
+  So that report sections can be built and assembled into a complete HTML
+  output.
+
+  Acceptance Criteria:
+
+  Given images/roaming-intelligence/ exists from Epic 1
+  When the container scaffold is complete
+  Then Dockerfile builds a Python container with dependencies: plotly, jinja2,
+  google-cloud-bigquery, google-cloud-storage, structlog
+  And pyproject.toml declares all dependencies with pinned versions
+  And src/config.py reads env config (GCP project, bucket name, dataset) from
+  environment variables
+  And src/bq_client.py contains query functions that read from crt_mv_* views
+  only (never stg_* or raw_*)
+  And templates/base.html.j2 defines the HTML structure with embedded CSS,
+  navigation between sections, and report metadata (generation timestamp, data
+  freshness)
+  And templates/section.html.j2 provides a reusable section wrapper
+  And src/report/builder.py orchestrates section generation and assembles final
+  HTML via Jinja2
+  And src/main.py entry point chains: query BQ → generate sections → assemble
+  HTML → upload GCS
+  And type hints are present on all function signatures
+
+  ---
+  Story 3.2: Build Executive Summary Report Section
+  As a carrier steering analyst,
+  I want the report to open with a quick summary of data freshness, coverage,
+  and any alerts,
+  So that I can immediately assess whether the data is trustworthy and if any
+  carriers need attention.
+
+  Acceptance Criteria:
+
+  Given curated views and stg_data_quality_log are populated
+  When sections/executive_summary.py generates its output
+  Then the section displays the last successful refresh timestamp
+  And a staleness warning is shown if data is older than 36 hours (FR-13)
+  And country and carrier coverage counts are displayed
+  And the count of carriers with active degradation flags is shown
+  And the count of volume anomaly flags is shown
+  And the section returns HTML that builder.py can assemble without calling
+  other sections
+
+  ---
+  Story 3.3: Build Country Overview Report Section
+  As a carrier steering analyst,
+  I want a sortable table of all countries with aggregate quality indicators,
+  So that I can quickly identify which countries need attention.
+
+  Acceptance Criteria:
+
+  Given crt_mv_country_quality_summary is populated
+  When sections/country_overview.py generates its output
+  Then all countries with roaming data are listed in a sortable HTML table
+  (FR-4)
+  And each row shows: country name, aggregate quality indicator, carrier count,
+  total traffic volume
+  And countries with any degraded carriers are visually distinguished
+  And the table supports client-side sorting via embedded JavaScript (FR-18)
+  And the section uses plotly.graph_objects for any chart elements
+
+  ---
+  Story 3.4: Build Carrier Rankings Report Section
+  As a carrier steering analyst,
+  I want to see Partner Carriers ranked by quality within each country with
+  individual KPIs and comparison capability,
+  So that I can identify the best-performing carrier and compare alternatives.
+
+  Acceptance Criteria:
+
+  Given crt_mv_carrier_quality_summary is populated
+  When sections/carrier_rankings.py generates its output
+  Then for each country, carriers are ranked by composite_quality_score highest
+  first (FR-5, FR-9)
+  And individual KPIs are displayed per carrier: latency, throughput, packet
+  loss, session success rate
+  And the steered-to carrier is flagged with a distinct "STEERED" indicator
+  (FR-5)
+  And last 30 days of daily KPI values are shown per carrier for drill-down
+  (FR-6)
+  And carrier metadata is displayed: carrier name, MCC/MNC, country (FR-6)
+  And side-by-side comparison is supported: KPIs in aligned columns with better
+  values indicated per KPI direction; differences > 10% flagged as significant
+  (FR-10)
+  And the section uses plotly.graph_objects for any chart elements
+
+  ---
+  Story 3.5: Build Trend Charts Report Section
+  As a carrier steering analyst,
+  I want interactive time-series charts showing quality trends per carrier
+  within a country,
+  So that I can spot degradation patterns and validate the impact of steering
+  changes.
+
+  Acceptance Criteria:
+
+  Given crt_mv_carrier_quality_trend contains up to 90 days of daily KPI values
+  When sections/trend_charts.py generates its output
+  Then Plotly interactive line charts are rendered per country with one line per
+   carrier per KPI (FR-11)
+  And default view shows 30-day trend
+  And configurable windows (7, 14, 30, 90 days) are available via Plotly range
+  selector buttons (FR-11)
+  And charts support hover tooltips, zoom, and pan (FR-17)
+  And carriers with active degradation flags are visually distinguished in the
+  chart (FR-12)
+  And the section uses plotly.graph_objects exclusively
+
+  ---
+  Story 3.6: Build Usage Analytics Report Section
+  As a carrier steering analyst,
+  I want to see traffic volume, session counts, and traffic share per carrier,
+  So that I understand where roaming activity concentrates and how it shifts.
+
+  Acceptance Criteria:
+
+  Given crt_mv_carrier_usage_summary is populated
+  When sections/usage_analytics.py generates its output
+  Then per carrier per country: traffic volume (MB), session count, and
+  subscriber count are displayed (FR-7)
+  And traffic share is displayed as percentage of country total (FR-8)
+  And carriers with < 1% share are grouped under "Other" (FR-8)
+  And the section uses plotly.graph_objects for visualizations
+
+  ---
+  Story 3.7: Build Data Quality Report Section
+  As a carrier steering analyst,
+  I want a dedicated section showing data quality check results,
+  So that I can verify the data is complete and trustworthy before acting on it.
+
+  Acceptance Criteria:
+
+  Given stg_data_quality_log is populated with quality check results
+  When sections/data_quality.py generates its output
+  Then freshness check result is displayed with the refresh timestamp and
+  pass/warning status (FR-13)
+  And coverage validation shows countries and carriers present vs. prior
+  refresh, with missing entities listed (FR-14)
+  And volume anomaly flags are listed with the affected carrier-country pairs
+  and the percentage below the 14-day rolling average (FR-15)
+  And the section returns standalone HTML
+
+  ---
+  Story 3.8: Build GCS Upload and Report Output
+  As a data engineer,
+  I want the assembled HTML report uploaded to a date-versioned GCS path,
+  So that the steering team can access each day's report via a stable, shareable
+   link.
+
+  Acceptance Criteria:
+
+  Given builder.py has assembled the complete HTML report
+  When gcs_upload.py executes
+  Then the report is uploaded to
+  gs://{bucket}/reports/{YYYY-MM-DD}/roaming-intelligence-{YYYY-MM-DD}.html
+  And the bucket name is environment-specific (separate for bi-stg and bi-srv)
+  via config
+  And the upload uses the pipeline service account with
+  roles/storage.objectCreator
+  And the GCS report link is returned for use in notifications
+  And structured logging records the upload path and status
+
+  ---
+  Epic 3 Summary: 8 stories — container scaffold + base template, 6 report
+  sections (one per architectural section), and GCS upload.
+
+  Does this capture Epic 3 correctly? Ready to proceed to Epic 4?
+
+✻ Cogitated for 1m 23s
+
+❯ continue 
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 138 lines
+      303  **And** the backfill is idempotent — rerunning for the same   
+           dates produces identical results                              
+      304  **And** execution completes within a reasonable time for a    
+           90-day range                                                  
+      305  **And** all curated views contain 90 days of historical data  
+           after completion                                              
+      306 +                                                              
+      307 +## Epic 3: Interactive Report Generation & Distribution       
+      308 +                                                              
+      309 +Build the Python report generator that reads curated views    
+          +and produces a self-contained HTML report with all analytical 
+          + views — quality rankings, usage analytics, trend charts,     
+          +side-by-side comparison, and data quality indicators. After   
+          +this epic, reports can be generated manually.                 
+      310 +                                                              
+      311 +### Story 3.1: Set Up Report Generator Container and Base     
+          +Template                                                      
+      312 +                                                              
+      313 +As a data engineer,                                           
+      314 +I want the Python report generator container scaffolded with  
+          +dependencies, BQ client, and Jinja2 base HTML template,       
+      315 +So that report sections can be built and assembled into a     
+          +complete HTML output.                                         
+      316 +                                                              
+      317 +**Acceptance Criteria:**                                      
+      318 +                                                              
+      319 +**Given** `images/roaming-intelligence/` exists from Epic 1   
+      320 +**When** the container scaffold is complete                   
+      321 +**Then** `Dockerfile` builds a Python container with          
+          +dependencies: `plotly`, `jinja2`, `google-cloud-bigquery`,    
+          +`google-cloud-storage`, `structlog`                           
+      322 +**And** `pyproject.toml` declares all dependencies with       
+          +pinned versions                                               
+      323 +**And** `src/config.py` reads env config (GCP project, bucket 
+          + name, dataset) from environment variables                    
+      324 +**And** `src/bq_client.py` contains query functions that read 
+          + from `crt_mv_*` views only (never `stg_*` or `raw_*`)        
+      325 +**And** `templates/base.html.j2` defines the HTML structure   
+          +with embedded CSS, navigation between sections, and report    
+          +metadata (generation timestamp, data freshness)               
+      326 +**And** `templates/section.html.j2` provides a reusable       
+          +section wrapper                                               
+      327 +**And** `src/report/builder.py` orchestrates section          
+          +generation and assembles final HTML via Jinja2                
+      328 +**And** `src/main.py` entry point chains: query BQ → generate 
+          + sections → assemble HTML → upload GCS                        
+      329 +**And** type hints are present on all function signatures     
+      330 +                                                              
+      331 +### Story 3.2: Build Executive Summary Report Section         
+      332 +                                                              
+      333 +As a carrier steering analyst,                                
+      334 +I want the report to open with a quick summary of data        
+          +freshness, coverage, and any alerts,                          
+      335 +So that I can immediately assess whether the data is          
+          +trustworthy and if any carriers need attention.               
+      336 +                                                              
+      337 +**Acceptance Criteria:**                                      
+      338 +                                                              
+      339 +**Given** curated views and `stg_data_quality_log` are        
+          +populated                                                     
+      340 +**When** `sections/executive_summary.py` generates its output 
+      341 +**Then** the section displays the last successful refresh     
+          +timestamp                                                     
+      342 +**And** a staleness warning is shown if data is older than 36 
+          + hours (FR-13)                                                
+      343 +**And** country and carrier coverage counts are displayed     
+      344 +**And** the count of carriers with active degradation flags   
+          +is shown                                                      
+      345 +**And** the count of volume anomaly flags is shown            
+      346 +**And** the section returns HTML that `builder.py` can        
+          +assemble without calling other sections                       
+      347 +                                                              
+      348 +### Story 3.3: Build Country Overview Report Section          
+      349 +                                                              
+      350 +As a carrier steering analyst,                                
+      351 +I want a sortable table of all countries with aggregate       
+          +quality indicators,                                           
+      352 +So that I can quickly identify which countries need           
+          +attention.                                                    
+      353 +                                                              
+      354 +**Acceptance Criteria:**                                      
+      355 +                                                              
+      356 +**Given** `crt_mv_country_quality_summary` is populated       
+      357 +**When** `sections/country_overview.py` generates its output  
+      358 +**Then** all countries with roaming data are listed in a      
+          +sortable HTML table (FR-4)                                    
+      359 +**And** each row shows: country name, aggregate quality       
+          +indicator, carrier count, total traffic volume                
+      360 +**And** countries with any degraded carriers are visually     
+          +distinguished                                                 
+      361 +**And** the table supports client-side sorting via embedded   
+          +JavaScript (FR-18)                                            
+      362 +**And** the section uses `plotly.graph_objects` for any chart 
+          + elements                                                     
+      363 +                                                              
+      364 +### Story 3.4: Build Carrier Rankings Report Section          
+      365 +                                                              
+      366 +As a carrier steering analyst,                                
+      367 +I want to see Partner Carriers ranked by quality within each  
+          +country with individual KPIs and comparison capability,       
+      368 +So that I can identify the best-performing carrier and        
+          +compare alternatives.                                         
+      369 +                                                              
+      370 +**Acceptance Criteria:**                                      
+      371 +                                                              
+      372 +**Given** `crt_mv_carrier_quality_summary` is populated       
+      373 +**When** `sections/carrier_rankings.py` generates its output  
+      374 +**Then** for each country, carriers are ranked by             
+          +`composite_quality_score` highest first (FR-5, FR-9)          
+      375 +**And** individual KPIs are displayed per carrier: latency,   
+          +throughput, packet loss, session success rate                 
+      376 +**And** the steered-to carrier is flagged with a distinct     
+          +"STEERED" indicator (FR-5)                                    
+      377 +**And** last 30 days of daily KPI values are shown per        
+          +carrier for drill-down (FR-6)                                 
+      378 +**And** carrier metadata is displayed: carrier name, MCC/MNC, 
+          + country (FR-6)                                               
+      379 +**And** side-by-side comparison is supported: KPIs in aligned 
+          + columns with better values indicated per KPI direction;      
+          +differences > 10% flagged as significant (FR-10)              
+      380 +**And** the section uses `plotly.graph_objects` for any chart 
+          + elements                                                     
+      381 +                                                              
+      382 +### Story 3.5: Build Trend Charts Report Section              
+      383 +                                                              
+      384 +As a carrier steering analyst,                                
+      385 +I want interactive time-series charts showing quality trends  
+          +per carrier within a country,                                 
+      386 +So that I can spot degradation patterns and validate the      
+          +impact of steering changes.                                   
+      387 +                                                              
+      388 +**Acceptance Criteria:**                                      
+      389 +                                                              
+      390 +**Given** `crt_mv_carrier_quality_trend` contains up to 90    
+          +days of daily KPI values                                      
+      391 +**When** `sections/trend_charts.py` generates its output      
+      392 +**Then** Plotly interactive line charts are rendered per      
+          +country with one line per carrier per KPI (FR-11)             
+      393 +**And** default view shows 30-day trend                       
+      394 +**And** configurable windows (7, 14, 30, 90 days) are         
+          +available via Plotly range selector buttons (FR-11)           
+      395 +**And** charts support hover tooltips, zoom, and pan (FR-17)  
+      396 +**And** carriers with active degradation flags are visually   
+          +distinguished in the chart (FR-12)                            
+      397 +**And** the section uses `plotly.graph_objects` exclusively   
+      398 +                                                              
+      399 +### Story 3.6: Build Usage Analytics Report Section           
+      400 +                                                              
+      401 +As a carrier steering analyst,                                
+      402 +I want to see traffic volume, session counts, and traffic     
+          +share per carrier,                                            
+      403 +So that I understand where roaming activity concentrates and  
+          +how it shifts.                                                
+      404 +                                                              
+      405 +**Acceptance Criteria:**                                      
+      406 +                                                              
+      407 +**Given** `crt_mv_carrier_usage_summary` is populated         
+      408 +**When** `sections/usage_analytics.py` generates its output   
+      409 +**Then** per carrier per country: traffic volume (MB),        
+          +session count, and subscriber count are displayed (FR-7)      
+      410 +**And** traffic share is displayed as percentage of country   
+          +total (FR-8)                                                  
+      411 +**And** carriers with < 1% share are grouped under "Other"    
+          +(FR-8)                                                        
+      412 +**And** the section uses `plotly.graph_objects` for           
+          +visualizations                                                
+      413 +                                                              
+      414 +### Story 3.7: Build Data Quality Report Section              
+      415 +                                                              
+      416 +As a carrier steering analyst,                                
+      417 +I want a dedicated section showing data quality check         
+          +results,                                                      
+      418 +So that I can verify the data is complete and trustworthy     
+          +before acting on it.                                          
+      419 +                                                              
+      420 +**Acceptance Criteria:**                                      
+      421 +                                                              
+      422 +**Given** `stg_data_quality_log` is populated with quality    
+          +check results                                                 
+      423 +**When** `sections/data_quality.py` generates its output      
+      424 +**Then** freshness check result is displayed with the refresh 
+          + timestamp and pass/warning status (FR-13)                    
+      425 +**And** coverage validation shows countries and carriers      
+          +present vs. prior refresh, with missing entities listed       
+          +(FR-14)                                                       
+      426 +**And** volume anomaly flags are listed with the affected     
+          +carrier-country pairs and the percentage below the 14-day     
+          +rolling average (FR-15)                                       
+      427 +**And** the section returns standalone HTML                   
+      428 +                                                              
+      429 +### Story 3.8: Build GCS Upload and Report Output             
+      430 +                                                              
+      431 +As a data engineer,                                           
+      432 +I want the assembled HTML report uploaded to a date-versioned 
+          + GCS path,                                                    
+      433 +So that the steering team can access each day's report via a  
+          +stable, shareable link.                                       
+      434 +                                                              
+      435 +**Acceptance Criteria:**                                      
+      436 +                                                              
+      437 +**Given** `builder.py` has assembled the complete HTML report 
+      438 +**When** `gcs_upload.py` executes                             
+      439 +**Then** the report is uploaded to `gs://{bucket}/reports/{YY 
+          +YY-MM-DD}/roaming-intelligence-{YYYY-MM-DD}.html`             
+      440 +**And** the bucket name is environment-specific (separate for 
+          + `bi-stg` and `bi-srv`) via config                            
+      441 +**And** the upload uses the pipeline service account with     
+          +`roles/storage.objectCreator`                                 
+      442 +**And** the GCS report link is returned for use in            
+          +notifications                                                 
+      443 +**And** structured logging records the upload path and status 
+
+⏺ Epic 4: Pipeline Orchestration & Operational Readiness
+
+  Goal: Wire Cloud Workflows to chain all pipeline steps and report generation,
+  set up the Cloud Scheduler, configure gchat notifications, run the 90-day
+  historical backfill, and validate end-to-end in bi-stg before promoting to
+  bi-srv.
+
+  FRs covered: FR-1 (scheduling), FR-3 (end-to-end observability), NFR-1, NFR-2
+
+  Relevant architecture decisions:
+  - Monolithic Cloud Workflows stack with inline sourceContents
+  - Schedule: 0 6 * * 1-5 (weekdays 06:00 ET), time_zone: America/Toronto
+  - Pause status: env-aware via Jinja
+  - gchat via aia_gchat_workflow shared library workflow
+  - Fail-fast: step failure stops the chain
+  - Two-stage fork-and-PR promotion flow (source:
+  infrastructure/bi-layer-overview.md §4)
+
+  Proposed Stories
+
+  Story 4.1: Wire Cloud Workflows Step Chain
+  As a data engineer,
+  I want all pipeline steps and report generation wired as a Cloud Workflows
+  step chain in Pulumi,
+  So that the full pipeline executes as a single orchestrated workflow.
+
+  Acceptance Criteria:
+
+  Given all stored procs (Epic 2) and the report generator container (Epic 3)
+  are built
+  When the Cloud Workflows definition is added to
+  stacks/roaming-intelligence/Pulumi.yaml
+  Then the workflow defines 6 sequential steps: step1_refresh_data →
+  step2_compute_kpis → step3_detect_degradation → step4_quality_checks →
+  step5_curate → step6_generate_report
+  And steps 1-5 call BigQuery stored procs via googleapis.bigquery.v2.jobs.query
+  And step 6 triggers the Cloud Run Job for report generation
+  And the workflow uses $${...} escaping for runtime expressions in inline
+  sourceContents (source: infrastructure/cloud-workflows-orchestration.md §3.4)
+  And fail-fast behavior is implemented: any step failure stops the chain
+  And the workflow service account has appropriate IAM roles for all steps
+
+  ---
+  Story 4.2: Configure Cloud Scheduler and gchat Notifications
+  As a carrier steering analyst,
+  I want the pipeline to run automatically on weekday mornings and notify the
+  team on success or failure,
+  So that I have fresh data waiting when I start my day and I'm alerted if
+  something goes wrong.
+
+  Acceptance Criteria:
+
+  Given the Cloud Workflows step chain exists from Story 4.1
+  When the Cloud Scheduler and notification config are added to Pulumi
+  Then a Cloud Scheduler job triggers the workflow on 0 6 * * 1-5 (weekdays
+  06:00 ET) with time_zone: America/Toronto
+  And pause_status is env-aware via Jinja PROJECT_TYPE switch in environment.j2
+  And the scheduler uses oauthToken authentication to the Workflow Executions
+  API
+  And on pipeline success: gchat notification via aia_gchat_workflow includes
+  the GCS report link
+  And on pipeline failure: gchat notification via aia_gchat_workflow includes
+  the error context and failed step name
+  And the gchat webhook URL is stored in Secret Manager and read at workflow
+  runtime
+  (source: infrastructure/cloud-workflows-orchestration.md §8.3)
+
+  ---
+  Story 4.3: Run Historical Backfill and Validate End-to-End in bi-stg
+  As a data engineer,
+  I want the 90-day backfill executed and the full pipeline validated end-to-end
+   in the staging environment,
+  So that the team can confirm the pipeline and report are correct before
+  production deployment.
+
+  Acceptance Criteria:
+
+  Given the full pipeline (workflow + scheduler + notifications) is deployed to
+  bi-stg
+  When the backfill and validation are complete
+  Then sp_backfill_historical has been run for 90 days of historical data
+  And a full pipeline run has been triggered manually and completed successfully
+  And the generated HTML report is accessible in the bi-stg GCS bucket
+  And the report contains all 6 sections with valid data (executive summary,
+  country overview, carrier rankings, trends, usage, data quality)
+  And gchat notifications fired correctly for both success and simulated failure
+   scenarios
+  And pipeline observability logs in stg_data_quality_log are complete for all
+  steps
+
+  ---
+  Story 4.4: Promote to Production (bi-srv)
+  As a carrier steering analyst,
+  I want the validated pipeline promoted to production,
+  So that I receive daily automated reports with real data.
+
+  Acceptance Criteria:
+
+  Given end-to-end validation in bi-stg is complete (Story 4.3)
+  When the Stage 2 PR (fork/main → upstream/main) is merged
+  Then pulumi up bi-srv deploys all resources to production
+  And the Cloud Scheduler is active (pause_status: false) in bi-srv
+  And the first production pipeline run completes successfully
+  And the production report is accessible in the bi-srv GCS bucket
+  And gchat notifications are configured for the production workspace
+  And the steering team has roles/storage.objectViewer on the production GCS
+  bucket
+  (source: infrastructure/bi-layer-overview.md §4)
+
+  ---
+  Epic 4 Summary: 4 stories — workflow wiring, scheduler + notifications,
+  staging validation with backfill, and production promotion.
+
+  Now moving to Epic 5.
+
+  ---
+  Epic 5: Governance & Compliance
+
+  Goal: Complete all mandatory governance gates for a data pipeline project.
+
+  Governance gates (source: lifecycle-config.yaml): dep, dntl, de_identification
+
+  Proposed Stories
+
+  Story 5.1: DEP Review Assessment
+  As a data engineer,
+  I want the Data Enablement Plan review completed for this project,
+  So that data processing of TELUS network data is formally assessed and
+  approved before production use.
+
+  Acceptance Criteria:
+
+  Given the project processes Netscout probe data (TELUS network performance
+  data)
+  When the DEP review is completed
+  Then the DEP assessment covers all data processing described in the pipeline
+  (FR-1 through FR-3)
+  And the data flow (Netscout → BigQuery → curated views → HTML report → GCS) is
+   documented in the DEP submission
+  And the governance gate status is updated from Warned to Addressed in
+  governance-log.md
+  And the DEP review outcome is documented with any conditions or follow-ups
+  (source: governance/data-enablement-plan.md)
+
+  ---
+  Story 5.2: DNTL Data Classification
+  As a data engineer,
+  I want the data classified under the DNTL framework,
+  So that the appropriate handling controls are applied based on data
+  sensitivity.
+
+  Acceptance Criteria:
+
+  Given the project handles aggregated network performance metrics at
+  carrier/country level
+  When DNTL classification is completed
+  Then each data element in the pipeline is classified under DNTL: Do Not Touch,
+   Not for LLM, Touch with Care, or Low Risk
+  And the classification confirms no subscriber PII is present in the pipeline
+  And Canadian data residency requirements are validated
+  (northamerica-northeast1/northeast2 only)
+  And the governance gate status is updated from Warned to Addressed in
+  governance-log.md
+  And the classification decision is documented
+  (source: governance/dntl-data-classification.md)
+
+  ---
+  Story 5.3: De-identification Standards Review
+  As a data engineer,
+  I want a de-identification assessment completed for the data pipeline,
+  So that any personal information risks are identified and mitigated at the
+  aggregation layer.
+
+  Acceptance Criteria:
+
+  Given the pipeline aggregates network metrics at the carrier/country level
+  When the de-identification assessment is completed
+  Then the assessment confirms whether subscriber-level data is used during
+  aggregation (FR-7 subscriber counts)
+  And if subscriber-level data is accessed, appropriate de-identification
+  techniques are applied at the aggregation boundary
+  And the assessment verifies no individual subscriber data appears in any
+  staging or curated table
+  And the governance gate status is updated from Warned to Addressed in
+  governance-log.md
+  And the assessment outcome is documented
+  (source: governance/de-identification-standards.md)
+
+  ---
+  Epic 5 Summary: 3 stories — one per governance gate. This epic can run in
+  parallel with any other epic.
+
+  ---
+  Complete Project Summary
+
+  ┌──────────────────────────────┬──────────┬───────────────────────────────┐
+  │             Epic             │ Stories  │          FRs Covered          │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Epic 1: Project Foundation & │ 4        │ Enables FR-1, FR-2            │
+  │  Data Infrastructure         │          │                               │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Epic 2: Daily Quality        │          │ FR-1, FR-2, FR-3, FR-5, FR-7, │
+  │ Intelligence Pipeline        │ 6        │  FR-9, FR-11, FR-12, FR-13,   │
+  │                              │          │ FR-14, FR-15                  │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Epic 3: Interactive Report   │          │ FR-4, FR-5, FR-6, FR-7, FR-8, │
+  │ Generation & Distribution    │ 8        │  FR-9, FR-10, FR-11, FR-16,   │
+  │                              │          │ FR-17, FR-18                  │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Epic 4: Pipeline             │          │                               │
+  │ Orchestration & Operational  │ 4        │ FR-1, FR-3, NFR-1, NFR-2      │
+  │ Readiness                    │          │                               │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Epic 5: Governance &         │ 3        │ NFR-4, NFR-5                  │
+  │ Compliance                   │          │                               │
+  ├──────────────────────────────┼──────────┼───────────────────────────────┤
+  │ Total                        │ 25       │ All 18 FRs + 5 NFRs covered   │
+  │                              │ stories  │                               │
+  └──────────────────────────────┴──────────┴───────────────────────────────┘
+
+  All epics and stories are complete. Does everything look good, or any
+  adjustments needed?
+
+  Select an Option: [A] Advanced Elicitation [P] Party Mode [C] Continue
+
+✻ Baked for 1m 39s
+
+❯ c 
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 128 lines
+      441  **And** the upload uses the pipeline service account with     
+           `roles/storage.objectCreator`                                 
+      442  **And** the GCS report link is returned for use in            
+           notifications                                                 
+      443  **And** structured logging records the upload path and status 
+      444 +                                                              
+      445 +## Epic 4: Pipeline Orchestration & Operational Readiness     
+      446 +                                                              
+      447 +Wire Cloud Workflows to chain all pipeline steps and report   
+          +generation, set up the Cloud Scheduler, configure gchat       
+          +notifications, run the 90-day historical backfill, and        
+          +validate end-to-end in bi-stg before promoting to bi-srv.     
+          +After this epic, the steering team receives daily automated   
+          +reports.                                                      
+      448 +                                                              
+      449 +### Story 4.1: Wire Cloud Workflows Step Chain                
+      450 +                                                              
+      451 +As a data engineer,                                           
+      452 +I want all pipeline steps and report generation wired as a    
+          +Cloud Workflows step chain in Pulumi,                         
+      453 +So that the full pipeline executes as a single orchestrated   
+          +workflow.                                                     
+      454 +                                                              
+      455 +**Acceptance Criteria:**                                      
+      456 +                                                              
+      457 +**Given** all stored procs (Epic 2) and the report generator  
+          +container (Epic 3) are built                                  
+      458 +**When** the Cloud Workflows definition is added to           
+          +`stacks/roaming-intelligence/Pulumi.yaml`                     
+      459 +**Then** the workflow defines 6 sequential steps:             
+          +`step1_refresh_data` → `step2_compute_kpis` →                 
+          +`step3_detect_degradation` → `step4_quality_checks` →         
+          +`step5_curate` → `step6_generate_report`                      
+      460 +**And** steps 1-5 call BigQuery stored procs via              
+          +`googleapis.bigquery.v2.jobs.query`                           
+      461 +**And** step 6 triggers the Cloud Run Job for report          
+          +generation                                                    
+      462 +**And** the workflow uses `$${...}` escaping for runtime      
+          +expressions in inline `sourceContents` (source:               
+          +infrastructure/cloud-workflows-orchestration.md §3.4)         
+      463 +**And** fail-fast behavior is implemented: any step failure   
+          +stops the chain                                               
+      464 +**And** the workflow service account has appropriate IAM      
+          +roles for all steps                                           
+      465 +                                                              
+      466 +### Story 4.2: Configure Cloud Scheduler and gchat            
+          +Notifications                                                 
+      467 +                                                              
+      468 +As a carrier steering analyst,                                
+      469 +I want the pipeline to run automatically on weekday mornings  
+          +and notify the team on success or failure,                    
+      470 +So that I have fresh data waiting when I start my day and I'm 
+          + alerted if something goes wrong.                             
+      471 +                                                              
+      472 +**Acceptance Criteria:**                                      
+      473 +                                                              
+      474 +**Given** the Cloud Workflows step chain exists from Story    
+          +4.1                                                           
+      475 +**When** the Cloud Scheduler and notification config are      
+          +added to Pulumi                                               
+      476 +**Then** a Cloud Scheduler job triggers the workflow on `0 6  
+          +* * 1-5` (weekdays 06:00 ET) with `time_zone:                 
+          +America/Toronto`                                              
+      477 +**And** `pause_status` is env-aware via Jinja `PROJECT_TYPE`  
+          +switch in `environment.j2`                                    
+      478 +**And** the scheduler uses `oauthToken` authentication to the 
+          + Workflow Executions API                                      
+      479 +**And** on pipeline success: gchat notification via           
+          +`aia_gchat_workflow` includes the GCS report link             
+      480 +**And** on pipeline failure: gchat notification via           
+          +`aia_gchat_workflow` includes the error context and failed    
+          +step name                                                     
+      481 +**And** the gchat webhook URL is stored in Secret Manager and 
+          + read at workflow runtime                                     
+      482 +(source: infrastructure/cloud-workflows-orchestration.md      
+          +§8.3)                                                         
+      483 +                                                              
+      484 +### Story 4.3: Run Historical Backfill and Validate           
+          +End-to-End in bi-stg                                          
+      485 +                                                              
+      486 +As a data engineer,                                           
+      487 +I want the 90-day backfill executed and the full pipeline     
+          +validated end-to-end in the staging environment,              
+      488 +So that the team can confirm the pipeline and report are      
+          +correct before production deployment.                         
+      489 +                                                              
+      490 +**Acceptance Criteria:**                                      
+      491 +                                                              
+      492 +**Given** the full pipeline (workflow + scheduler +           
+          +notifications) is deployed to `bi-stg`                        
+      493 +**When** the backfill and validation are complete             
+      494 +**Then** `sp_backfill_historical` has been run for 90 days of 
+          + historical data                                              
+      495 +**And** a full pipeline run has been triggered manually and   
+          +completed successfully                                        
+      496 +**And** the generated HTML report is accessible in the        
+          +`bi-stg` GCS bucket                                           
+      497 +**And** the report contains all 6 sections with valid data    
+          +(executive summary, country overview, carrier rankings,       
+          +trends, usage, data quality)                                  
+      498 +**And** gchat notifications fired correctly for both success  
+          +and simulated failure scenarios                               
+      499 +**And** pipeline observability logs in `stg_data_quality_log` 
+          + are complete for all steps                                   
+      500 +                                                              
+      501 +### Story 4.4: Promote to Production (bi-srv)                 
+      502 +                                                              
+      503 +As a carrier steering analyst,                                
+      504 +I want the validated pipeline promoted to production,         
+      505 +So that I receive daily automated reports with real data.     
+      506 +                                                              
+      507 +**Acceptance Criteria:**                                      
+      508 +                                                              
+      509 +**Given** end-to-end validation in `bi-stg` is complete       
+          +(Story 4.3)                                                   
+      510 +**When** the Stage 2 PR (fork/main → upstream/main) is merged 
+      511 +**Then** `pulumi up bi-srv` deploys all resources to          
+          +production                                                    
+      512 +**And** the Cloud Scheduler is active (`pause_status: false`) 
+          + in `bi-srv`                                                  
+      513 +**And** the first production pipeline run completes           
+          +successfully                                                  
+      514 +**And** the production report is accessible in the `bi-srv`   
+          +GCS bucket                                                    
+      515 +**And** gchat notifications are configured for the production 
+          + workspace                                                    
+      516 +**And** the steering team has `roles/storage.objectViewer` on 
+          + the production GCS bucket                                    
+      517 +(source: infrastructure/bi-layer-overview.md §4)              
+      518 +                                                              
+      519 +## Epic 5: Governance & Compliance                            
+      520 +                                                              
+      521 +Complete all mandatory governance gates for a data pipeline   
+          +project: DEP Review, DNTL Classification, and                 
+          +De-identification Standards assessment. This epic can run in  
+          +parallel with any other epic.                                 
+      522 +                                                              
+      523 +### Story 5.1: DEP Review Assessment                          
+      524 +                                                              
+      525 +As a data engineer,                                           
+      526 +I want the Data Enablement Plan review completed for this     
+          +project,                                                      
+      527 +So that data processing of TELUS network data is formally     
+          +assessed and approved before production use.                  
+      528 +                                                              
+      529 +**Acceptance Criteria:**                                      
+      530 +                                                              
+      531 +**Given** the project processes Netscout probe data (TELUS    
+          +network performance data)                                     
+      532 +**When** the DEP review is completed                          
+      533 +**Then** the DEP assessment covers all data processing        
+          +described in the pipeline (FR-1 through FR-3)                 
+      534 +**And** the data flow (Netscout → BigQuery → curated views →  
+          +HTML report → GCS) is documented in the DEP submission        
+      535 +**And** the governance gate status is updated from `Warned`   
+          +to `Addressed` in governance-log.md                           
+      536 +**And** the DEP review outcome is documented with any         
+          +conditions or follow-ups                                      
+      537 +(source: governance/data-enablement-plan.md)                  
+      538 +                                                              
+      539 +### Story 5.2: DNTL Data Classification                       
+      540 +                                                              
+      541 +As a data engineer,                                           
+      542 +I want the data classified under the DNTL framework,          
+      543 +So that the appropriate handling controls are applied based   
+          +on data sensitivity.                                          
+      544 +                                                              
+      545 +**Acceptance Criteria:**                                      
+      546 +                                                              
+      547 +**Given** the project handles aggregated network performance  
+          +metrics at carrier/country level                              
+      548 +**When** DNTL classification is completed                     
+      549 +**Then** each data element in the pipeline is classified      
+          +under DNTL: Do Not Touch, Not for LLM, Touch with Care, or    
+          +Low Risk                                                      
+      550 +**And** the classification confirms no subscriber PII is      
+          +present in the pipeline                                       
+      551 +**And** Canadian data residency requirements are validated    
+          +(northamerica-northeast1/northeast2 only)                     
+      552 +**And** the governance gate status is updated from `Warned`   
+          +to `Addressed` in governance-log.md                           
+      553 +**And** the classification decision is documented             
+      554 +(source: governance/dntl-data-classification.md)              
+      555 +                                                              
+      556 +### Story 5.3: De-identification Standards Review             
+      557 +                                                              
+      558 +As a data engineer,                                           
+      559 +I want a de-identification assessment completed for the data  
+          +pipeline,                                                     
+      560 +So that any personal information risks are identified and     
+          +mitigated at the aggregation layer.                           
+      561 +                                                              
+      562 +**Acceptance Criteria:**                                      
+      563 +                                                              
+      564 +**Given** the pipeline aggregates network metrics at the      
+          +carrier/country level                                         
+      565 +**When** the de-identification assessment is completed        
+      566 +**Then** the assessment confirms whether subscriber-level     
+          +data is used during aggregation (FR-7 subscriber counts)      
+      567 +**And** if subscriber-level data is accessed, appropriate     
+          +de-identification techniques are applied at the aggregation   
+          +boundary                                                      
+      568 +**And** the assessment verifies no individual subscriber data 
+          + appears in any staging or curated table                      
+      569 +**And** the governance gate status is updated from `Warned`   
+          +to `Addressed` in governance-log.md                           
+      570 +**And** the assessment outcome is documented                  
+      571 +(source: governance/de-identification-standards.md)           
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2]                                          
+      2 +stepsCompleted: [1, 2, 3]                                       
+      3  inputDocuments:                                                 
+      4    - "planning-artifacts/prd.md"                                 
+      5    - "planning-artifacts/architecture.md"                        
+
+⏺ Now loading the final validation step.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Final Validation
+
+  1. FR Coverage Validation — All 18 FRs covered
+
+  ┌───────┬───────────────┬─────────┐
+  │  FR   │    Stories    │ Status  │
+  ├───────┼───────────────┼─────────┤
+  │ FR-1  │ 2.1, 4.1, 4.2 │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-2  │ 2.1, 2.6      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-3  │ 2.1-2.5, 4.3  │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-4  │ 3.3           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-5  │ 2.2, 3.4      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-6  │ 3.4           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-7  │ 2.1, 3.6      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-8  │ 3.6           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-9  │ 2.2, 3.4      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-10 │ 3.4           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-11 │ 2.5, 3.5      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-12 │ 2.3, 3.5      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-13 │ 2.4, 3.2, 3.7 │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-14 │ 2.4, 3.7      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-15 │ 2.4, 3.7      │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-16 │ 3.8           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-17 │ 3.5           │ Covered │
+  ├───────┼───────────────┼─────────┤
+  │ FR-18 │ 3.3, 3.4      │ Covered │
+  └───────┴───────────────┴─────────┘
+
+  2. Architecture Implementation Validation — Pass
+
+  - Starter template: Story 1.1 forks bi-layer catalog templates as the first
+  story
+  - Table creation: Story 1.4 creates dataset and schemas needed by Epic 2 procs
+   — infrastructure prerequisite, not "all tables upfront"
+
+  3. Story Quality Validation — Pass
+
+  - All 25 stories scoped for single dev agent completion
+  - All stories have Given/When/Then acceptance criteria with specific testable
+  conditions
+  - All stories reference applicable FRs
+  - No forward dependencies within any epic
+
+  4. Epic Structure Validation — Pass
+
+  - All epics deliver user value (not technical layers)
+  - File churn is incidental: SQL procs only in Epic 2, Python sections only in
+  Epic 3, Pulumi.yaml grows incrementally across Epics 1/4 with distinct
+  resources each time
+
+  5. Dependency Validation — Pass
+
+  - Epic independence: Each epic delivers complete functionality for its domain
+  - Within-epic flow: All stories depend only on previous stories
+  - Epic 5 (Governance) runs independently in parallel
+
+  ---
+  All validations complete! [C] Complete Workflow
+
+✻ Cooked for 1m 29s
+
+❯ c 
+
+⏺ Update(_bmad-output/planning-artifacts/epics.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2 -stepsCompleted: [1, 2, 3]                                       
+      2 +stepsCompleted: [1, 2, 3, 4]                                    
+      3  inputDocuments:                                                 
+      4    - "planning-artifacts/prd.md"                                 
+      5    - "planning-artifacts/architecture.md"                        
+
+⏺ Now let me run the on_complete hook.
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow.on_complete": ""
+     }
+
+⏺ Epics and Stories workflow complete! The document is saved at
+  _bmad-output/planning-artifacts/epics.md.
+
+  Summary:
+  - 5 epics, 25 stories covering all 18 FRs and 5 NFRs
+  - Dependencies: Epic 1 → 2 → 3 → 4 (sequential), Epic 5 (parallel)
+  - Ready for sprint planning and story implementation
+
+  Feel free to ask any questions about the epics and stories. When you're ready
+  for the next step, you can:
+  - /bmad-sprint-planning — generate sprint tracking from these epics
+  - /bmad-create-story — create a detailed story spec file for implementation
+  - /bmad-help — get guidance on what to do next
+
+✻ Baked for 35s
+
+❯ /export epics_stories_creation 
+  ⎿  Conversation exported to: epics_stories_creation.txt
+
+❯ /telus-jira-mock 
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow": {
+         "activation_steps_prepend": [
+     … +10 lines (ctrl+o to expand)
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Hey Felipe! Welcome to the Jira Mock Manager for International Roaming
+  Intelligence.
+
+  [Phase 2/5: Planning — Data Pipeline]
+
+  This skill can:
+  - Create epic folders and story files from your epics.md
+  - Transition story statuses (pending → in_progress → qa → done / blocked)
+  - Add new stories, bugs, tasks, or spikes to the backlog
+  - Sprint status reports
+
+  Since we just finished creating epics and stories, would you like me to create
+   all epic folders and story files from the epics artifact? Or did you have a
+  different action in mind?
+
+✻ Churned for 33s
+
+❯ create all 
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Bash(mkdir -p /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developme
+      nt/test/_bmad-output/implementation-artifacts/jira-mock/{project-foundatio
+      n-and-data-in…)
+  ⎿  Done
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/project-foundation-and-d
+       ata-infrastructure/epic.md)
+  ⎿  Wrote 11 lines to _bmad-output/implementation-artifacts/jira-mock/proj
+     ect-foundation-and-data-infrastructure/epic.md
+     ---
+     title: "Project Foundation & Data Infrastructure"
+     type: epic
+     status: pending
+     stories_total: 4
+     stories_complete: 0
+     governance_gates: [dep, dntl, de_identification]
+     product_type: data_pipeline
+     ---
+
+     … +1 line (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/epic.md)
+  ⎿  Wrote 11 lines to _bmad-output/implementation-artifacts/jira-mock/dail
+     y-quality-intelligence-pipeline/epic.md
+     ---
+     title: "Daily Quality Intelligence Pipeline"
+     type: epic
+     status: pending
+     stories_total: 6
+     stories_complete: 0
+     governance_gates: [dep, dntl, de_identification]
+     product_type: data_pipeline
+     ---
+
+     … +1 line (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/epic.md)
+  ⎿  Wrote 11 lines to _bmad-output/implementation-artifacts/jira-mock/inte
+     ractive-report-generation-and-distribution/epic.md
+     ---
+     title: "Interactive Report Generation & Distribution"
+     type: epic
+     status: pending
+     stories_total: 8
+     stories_complete: 0
+     governance_gates: [dep, dntl, de_identification]
+     product_type: data_pipeline
+     ---
+
+     … +1 line (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration-a
+       nd-operational-readiness/epic.md)
+  ⎿  Wrote 11 lines to _bmad-output/implementation-artifacts/jira-mock/pipe
+     line-orchestration-and-operational-readiness/epic.md
+     ---
+     title: "Pipeline Orchestration & Operational Readiness"
+     type: epic
+     status: pending
+     stories_total: 4
+     stories_complete: 0
+     governance_gates: [dep, dntl, de_identification]
+     product_type: data_pipeline
+     ---
+
+     … +1 line (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/governance-and-complianc
+       e/epic.md)
+  ⎿  Wrote 11 lines to _bmad-output/implementation-artifacts/jira-mock/gove
+     rnance-and-compliance/epic.md
+     ---
+     title: "Governance & Compliance"
+     type: epic
+     status: pending
+     stories_total: 3
+     stories_complete: 0
+     governance_gates: [dep, dntl, de_identification]
+     product_type: data_pipeline
+     ---
+
+     … +1 line (ctrl+o to expand)
+
+⏺ Now creating all 25 story files.
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/project-foundation-and-d
+       ata-infrastructure/set-up-bi-layer-project-structure.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/project-foundation-and
+     -data-infrastructure/set-up-bi-layer-project-structure.md
+     ---
+     title: "Set Up Bi-Layer Project Structure"
+     type: story
+     status: pending
+     epic: "project-foundation-and-data-infrastructure"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/project-foundation-and-d
+       ata-infrastructure/validate-netscout-bigquery-schema.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/project-foundation-and
+     -data-infrastructure/validate-netscout-bigquery-schema.md
+     ---
+     title: "Validate Netscout BigQuery Schema"
+     type: story
+     status: pending
+     epic: "project-foundation-and-data-infrastructure"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/project-foundation-and-d
+       ata-infrastructure/request-datahub-access-for-source-data.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/project-foundation-and
+     -data-infrastructure/request-datahub-access-for-source-data.md
+     ---
+     title: "Request Datahub Access for Source Data"
+     type: story
+     status: pending
+     epic: "project-foundation-and-data-infrastructure"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/project-foundation-and-d
+       ata-infrastructure/create-bigquery-dataset-and-core-table-definitions.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/proj
+     ect-foundation-and-data-infrastructure/create-bigquery-dataset-and-cor
+     e-table-definitions.md
+     ---
+     title: "Create BigQuery Dataset and Core Table Definitions"
+     type: story
+     status: pending
+     epic: "project-foundation-and-data-infrastructure"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-kpi-refresh-stored-procedure.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/dail
+     y-quality-intelligence-pipeline/build-kpi-refresh-stored-procedure.md
+     ---
+     title: "Build KPI Refresh Stored Procedure"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-composite-quality-score-stored-procedure.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/daily-quality-intellig
+     ence-pipeline/build-composite-quality-score-stored-procedure.md
+     ---
+     title: "Build Composite Quality Score Stored Procedure"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-degradation-detection-stored-procedure.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/daily-quality-intellig
+     ence-pipeline/build-degradation-detection-stored-procedure.md
+     ---
+     title: "Build Degradation Detection Stored Procedure"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-data-quality-checks-stored-procedure.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/daily-quality-intellig
+     ence-pipeline/build-data-quality-checks-stored-procedure.md
+     ---
+     title: "Build Data Quality Checks Stored Procedure"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-curated-output-layer.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/dail
+     y-quality-intelligence-pipeline/build-curated-output-layer.md
+     ---
+     title: "Build Curated Output Layer"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/daily-quality-intelligen
+       ce-pipeline/build-historical-backfill-procedure.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/dail
+     y-quality-intelligence-pipeline/build-historical-backfill-procedure.md
+     ---
+     title: "Build Historical Backfill Procedure"
+     type: story
+     status: pending
+     epic: "daily-quality-intelligence-pipeline"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/set-up-report-generator-container-and-base.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/set-up-report-generator-container-and-base.md
+     ---
+     title: "Set Up Report Generator Container and Base Template"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-executive-summary-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-executive-summary-report-section.md
+     ---
+     title: "Build Executive Summary Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-country-overview-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-country-overview-report-section.md
+     ---
+     title: "Build Country Overview Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-carrier-rankings-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-carrier-rankings-report-section.md
+     ---
+     title: "Build Carrier Rankings Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-trend-charts-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-trend-charts-report-section.md
+     ---
+     title: "Build Trend Charts Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-usage-analytics-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-usage-analytics-report-section.md
+     ---
+     title: "Build Usage Analytics Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-data-quality-report-section.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-data-quality-report-section.md
+     ---
+     title: "Build Data Quality Report Section"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/interactive-report-gener
+       ation-and-distribution/build-gcs-upload-and-report-output.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/interactive-report-gen
+     eration-and-distribution/build-gcs-upload-and-report-output.md
+     ---
+     title: "Build GCS Upload and Report Output"
+     type: story
+     status: pending
+     epic: "interactive-report-generation-and-distribution"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration-a
+       nd-operational-readiness/wire-cloud-workflows-step-chain.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration
+     -and-operational-readiness/wire-cloud-workflows-step-chain.md
+     ---
+     title: "Wire Cloud Workflows Step Chain"
+     type: story
+     status: pending
+     epic: "pipeline-orchestration-and-operational-readiness"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration-a
+       nd-operational-readiness/configure-cloud-scheduler-and-gchat-notification
+       s.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/pipe
+     line-orchestration-and-operational-readiness/configure-cloud-scheduler
+     -and-gchat-notifications.md
+     ---
+     title: "Configure Cloud Scheduler and gchat Notifications"
+     type: story
+     status: pending
+     epic: "pipeline-orchestration-and-operational-readiness"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration-a
+       nd-operational-readiness/run-historical-backfill-and-validate-end-to-end-
+       in.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/pipe
+     line-orchestration-and-operational-readiness/run-historical-backfill-a
+     nd-validate-end-to-end-in.md
+     ---
+     title: "Run Historical Backfill and Validate End-to-End in bi-stg"
+     type: story
+     status: pending
+     epic: "pipeline-orchestration-and-operational-readiness"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration-a
+       nd-operational-readiness/promote-to-production-bi-srv.md)
+  ⎿  Wrote 13 lines to
+     _bmad-output/implementation-artifacts/jira-mock/pipeline-orchestration
+     -and-operational-readiness/promote-to-production-bi-srv.md
+     ---
+     title: "Promote to Production (bi-srv)"
+     type: story
+     status: pending
+     epic: "pipeline-orchestration-and-operational-readiness"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/governance-and-complianc
+       e/dep-review-assessment.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/gove
+     rnance-and-compliance/dep-review-assessment.md
+     ---
+     title: "DEP Review Assessment"
+     type: story
+     status: pending
+     epic: "governance-and-compliance"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/governance-and-complianc
+       e/dntl-data-classification.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/gove
+     rnance-and-compliance/dntl-data-classification.md
+     ---
+     title: "DNTL Data Classification"
+     type: story
+     status: pending
+     epic: "governance-and-compliance"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Write(_bmad-output/implementation-artifacts/jira-mock/governance-and-complianc
+       e/de-identification-standards-review.md)
+  ⎿  Wrote 13 lines to _bmad-output/implementation-artifacts/jira-mock/gove
+     rnance-and-compliance/de-identification-standards-review.md
+     ---
+     title: "De-identification Standards Review"
+     type: story
+     status: pending
+     epic: "governance-and-compliance"
+     product_type: data_pipeline
+     governance_gates: [dep, dntl, de_identification]
+     infrastructure_pattern: ""
+     created: "2026-05-22"
+     updated: "2026-05-22"
+     … +3 lines (ctrl+o to expand)
+
+⏺ Now updating project-state.md with the story counts.
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ Update(_bmad-output/project-state.md)
+  ⎿  Added 1 line, removed 1 line
+      3  product_type: "data_pipeline"                                   
+      4  current_phase: planning                                         
+      5  created: "2026-05-21"                                           
+      6 -last_synced: "2026-05-21"                                       
+      6 +last_synced: "2026-05-22"                                       
+      7  phase_entered_at:                                               
+      8    planning: "2026-05-21T00:00:00Z"                              
+      9  governance:                                                     
+
+⏺ Update(_bmad-output/project-state.md)
+  ⎿  Added 2 lines, removed 2 lines
+      11    dntl: warned                                                 
+      12    de_identification: warned                                    
+      13  stories:                                                       
+      14 -  total: 0                                                     
+      14 +  total: 25                                                    
+      15    complete: 0                                                  
+      16    in_progress: 0                                               
+      17    blocked: 0                                                   
+      18 -  pending: 0                                                   
+      18 +  pending: 25                                                  
+      19  overrides_count: 0                                             
+      20  ssot_gaps_count: 0                                             
+      21  ---                                                            
+
+⏺ Jira mock updated.
+
+  Epic files created: 5
+  Story files created: 25
+  Files skipped (already exist): 0
+
+  Project state synced — 25 stories total, 25 pending.
+
+✻ Sautéed for 3m 10s
+
+❯ /telus-phase stories 
+
+⏺ Bash(python3 /Users/felipe.rodrigues/Documents/Code/tellus/ai_first_developmen
+      t/test/_bmad/scripts/resolve_customization.py --skill
+      /Users/felipe.rodrigues/Documents…)
+  ⎿  {
+       "workflow": {
+         "activation_steps_prepend": [
+     … +9 lines (ctrl+o to expand)
+
+⏺ Read 2 files (ctrl+o to expand)
+
+⏺ Update(_bmad-output/project-state.md)
+  ⎿  Added 1 line, removed 1 line
+      1  ---                                                             
+      2  project_name: "International Roaming Intelligence"              
+      3  product_type: "data_pipeline"                                   
+      4 -current_phase: planning                                         
+      4 +current_phase: stories                                          
+      5  created: "2026-05-21"                                           
+      6  last_synced: "2026-05-22"                                       
+      7  phase_entered_at:                                               
+
+⏺ Update(_bmad-output/project-state.md)
+  ⎿  Added 1 line
+       6  last_synced: "2026-05-22"                                      
+       7  phase_entered_at:                                              
+       8    planning: "2026-05-21T00:00:00Z"                             
+       9 +  stories: "2026-05-22T00:00:00Z"                              
+      10  governance:                                                    
+      11    dep: warned                                                  
+      12    dntl: warned                                                 
+
+⏺ Update(_bmad-output/project-state.md)
+  ⎿  Added 1 line, removed 1 line
+      31                                                                 
+      32  - [x] init                                                     
+      33  - [x] planning                                                 
+      34 -- [ ] stories                                                  
+      34 +- [x] stories                                                  
+      35  - [ ] implementation                                           
+      36  - [ ] completion                                               
+      37                                                                 
+
+⏺ ✓ Moved to phase 3/5: stories
+
+✻ Worked for 46s
