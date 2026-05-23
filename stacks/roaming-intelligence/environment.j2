@@ -1,0 +1,56 @@
+{# environment.j2 — International Roaming Intelligence
+   Env-specific variables for bi-stg and bi-srv.
+   Referenced by Pulumi.yaml via Jinja templating.
+   (source: infrastructure/bi-layer-overview.md §3, engineering/pulumi-best-practices.md)
+#}
+
+{# --- GCS Report Output Bucket --- #}
+{# Separate bucket per environment for report output #}
+{% if PROJECT_TYPE == "bi-stg" -%}
+  {% set report_bucket = "roaming-intelligence-reports-stg" %}
+{%- elif PROJECT_TYPE == "bi-srv" -%}
+  {% set report_bucket = "roaming-intelligence-reports-srv" %}
+{%- else -%}
+  {{ raise("Unknown PROJECT_TYPE '" + PROJECT_TYPE + "': must be bi-stg or bi-srv") }}
+{%- endif %}
+
+{# --- Cloud Run Report Image --- #}
+{# Container image for the Python report generator #}
+{% if PROJECT_TYPE == "bi-stg" -%}
+  {% set report_image = "northamerica-northeast1-docker.pkg.dev/" + PROJECT_ID + "/roaming-intelligence/report-generator:stg" %}
+{%- elif PROJECT_TYPE == "bi-srv" -%}
+  {% set report_image = "northamerica-northeast1-docker.pkg.dev/" + PROJECT_ID + "/roaming-intelligence/report-generator:srv" %}
+{%- else -%}
+  {{ raise("Unknown PROJECT_TYPE '" + PROJECT_TYPE + "': must be bi-stg or bi-srv") }}
+{%- endif %}
+
+{# --- Schedule & Pause Status --- #}
+{# Architecture decision: both envs active (weekdays 06:00 ET) #}
+{% set schedule = "0 6 * * 1-5" %}
+{% set time_zone = "America/Toronto" %}
+{% if PROJECT_TYPE == "bi-stg" -%}
+  {% set pause_status = false %}
+{%- elif PROJECT_TYPE == "bi-srv" -%}
+  {% set pause_status = false %}
+{%- else -%}
+  {{ raise("Unknown PROJECT_TYPE '" + PROJECT_TYPE + "': must be bi-stg or bi-srv") }}
+{%- endif %}
+
+{# --- Google Chat Notification Secret --- #}
+{% if PROJECT_TYPE == "bi-stg" -%}
+  {% set gchat_secret_id = "ROAMING_INTELLIGENCE_GCHAT_STG" %}
+{%- elif PROJECT_TYPE == "bi-srv" -%}
+  {% set gchat_secret_id = "ROAMING_INTELLIGENCE_GCHAT_SRV" %}
+{%- else -%}
+  {{ raise("Unknown PROJECT_TYPE '" + PROJECT_TYPE + "': must be bi-stg or bi-srv") }}
+{%- endif %}
+
+{# --- Service Account (builder) --- #}
+{# The bi-layer service account that runs Cloud Workflows and Cloud Run Jobs #}
+{% if PROJECT_TYPE == "bi-stg" -%}
+  {% set builder = "bilayer-sa@" + PROJECT_ID + ".iam.gserviceaccount.com" %}
+{%- elif PROJECT_TYPE == "bi-srv" -%}
+  {% set builder = "bilayer-sa@" + PROJECT_ID + ".iam.gserviceaccount.com" %}
+{%- else -%}
+  {{ raise("Unknown PROJECT_TYPE '" + PROJECT_TYPE + "': must be bi-stg or bi-srv") }}
+{%- endif %}

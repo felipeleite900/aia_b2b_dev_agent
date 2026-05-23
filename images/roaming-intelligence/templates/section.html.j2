@@ -1,0 +1,10 @@
+{# Reusable section wrapper for individual report sections.
+   Each section module renders its content into this wrapper.
+#}
+<h2>{{ title }}</h2>
+{% if description %}
+<p class="section-description">{{ description }}</p>
+{% endif %}
+<div class="section-content">
+    {{ content | safe }}
+</div>
