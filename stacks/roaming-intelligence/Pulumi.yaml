@@ -28,6 +28,9 @@ variables:
   # Cloud Run Job image — env-specific tag
   report_image: {{ report_image }}
 
+  # Cloud Run Job name — kebab-case (Cloud Run forbids underscores)
+  job_nm: roaming-intelligence-report
+
   # gchat webhook secret for pipeline notifications
   gchat_secret_id: {{ gchat_secret_id }}
 
@@ -212,6 +215,29 @@ resources:
         query: "SELECT 1 AS placeholder"
         useLegacySql: false
 
+  # ──────────────────────────────────────────────────────────────────────
+  # Cloud Run Job — Python report generator (Step 6)
+  # ──────────────────────────────────────────────────────────────────────
+
+  report_job:
+    type: gcp:cloudrunv2:Job
+    properties:
+      name: ${job_nm}
+      location: ${location}
+      template:
+        template:
+          containers:
+            - image: ${report_image}
+              env:
+                - name: GCP_PROJECT
+                  value: ${project}
+                - name: DATASET
+                  value: ${process_nm}
+                - name: REPORT_BUCKET
+                  value: ${report_bucket}
+          serviceAccount: {{ builder }}
+          maxRetries: 1
+
   # Cloud Workflows — 6-step pipeline
   # (Step implementations added in Epic 2 and Epic 3)
   pipeline_workflow:
@@ -272,7 +298,7 @@ resources:
                     - step6_generate_report:
                         call: http.post
                         args:
-                          url: "https://${location}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${project}/jobs/${process_nm}-report:run"
+                          url: "https://${location}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${project}/jobs/${report_job.name}:run"
                           auth:
                             type: OAuth2
                         result: run_result
@@ -394,4 +420,13 @@ resources:
     properties:
       datasetId: ${default_dataset.datasetId}
       role: roles/bigquery.dataEditor
+      member: serviceAccount:{{ builder }}
+
+  # IAM — Cloud Run invoker for workflow SA to trigger the report job
+  pipeline_sa_run_invoker:
+    type: gcp:cloudrunv2:JobIamMember
+    properties:
+      name: ${report_job.name}
+      location: ${location}
+      role: roles/run.invoker
       member: serviceAccount:{{ builder }}

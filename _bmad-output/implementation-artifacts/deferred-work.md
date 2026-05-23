@@ -39,3 +39,12 @@
 - `ref_mcc_country` table has no uniqueness constraint on `mcc` — future duplicate entries would fan out JOIN rows. Current CSV seed data is clean.
 - `session_count` column name is misleading — it's `SUM(usr_pln_rqst_cnt)` (total requests), not a count of sessions. Schema mapping doc calls it "Total requests as session proxy."
 - `AVG(latency)` excludes NULLs silently — if most sessions lack RTT measurements, the latency KPI represents only a subset. No coverage metric exists to surface this.
+
+## Deferred from: code review of cloud-run-job-provision (2026-05-23)
+
+- Workflow step6 uses v1 Cloud Run API path to trigger a v2 Job — may need migration to v2 endpoint or `googleapis.run.v2` connector. Verify v1 compatibility in both bi-stg and bi-srv.
+- Workflow step6 fires-and-forgets: `http.post` to `:run` returns 200 on acceptance, not completion. Add polling loop (like `run_bq_proc`) to wait for execution terminal state.
+- `report_gcs_path` date arithmetic broken: `text.right_pad` pads right (not left), and `sys.now().day - 1` yields 0 on 1st of month. Replace with proper date formatting.
+- No `REFRESH_DATE` env var passed to Cloud Run Job — relies on Python default (yesterday). For backfill/late runs, pass explicit date from workflow via HTTP body override.
+- No explicit resource limits or timeout on Cloud Run Job container. Set `memory`, `cpu`, and `timeout` once report size/complexity is known.
+- Verify workflow execution SA is `{{ builder }}` — if workflow runs under a different SA, the `roles/run.invoker` IAM binding targets the wrong principal.
